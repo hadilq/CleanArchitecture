@@ -1,0 +1,54 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+
+android {
+    compileSdkVersion 28
+    defaultConfig {
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        testInstrumentationRunner rootProject.ext.testInstrumentationRunner
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+        test.java.srcDirs += 'src/test/kotlin'
+        androidTest.java.srcDirs += 'src/androidTest/kotlin'
+    }
+}
+
+dependencies {
+    def applicationDependencies = rootProject.ext.mainApplication
+    def unitTestDependencies = rootProject.ext.unitTesting
+    def acceptanceTestDependencies = rootProject.ext.acceptanceTesting
+
+    kapt applicationDependencies.daggerCompiler
+
+    implementation applicationDependencies.kotlin
+    implementation applicationDependencies.supportCompat
+    implementation applicationDependencies.dagger
+    implementation applicationDependencies.rxJava
+    implementation applicationDependencies.retrofit
+    implementation applicationDependencies.retrofitGsonConverter
+    implementation applicationDependencies.retrofitRxJava2Adapter
+
+    testImplementation unitTestDependencies.kotlin
+    testImplementation unitTestDependencies.kotlinTest
+    testImplementation unitTestDependencies.robolectric
+    testImplementation unitTestDependencies.junit
+    testImplementation unitTestDependencies.mockito
+
+    androidTestImplementation acceptanceTestDependencies.testRunner
+    androidTestImplementation acceptanceTestDependencies.testRules
+    androidTestImplementation acceptanceTestDependencies.espressoCore
+    androidTestImplementation acceptanceTestDependencies.espressoIntents
+    androidTestImplementation acceptanceTestDependencies.androidAnnotations
+
+    implementation project(':common-data')
+    implementation project(':album-details-domain')
+}

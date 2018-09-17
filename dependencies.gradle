@@ -1,0 +1,66 @@
+ext {
+
+    kotlinVersion = '1.2.70'
+
+    // Android
+    minSdkVersion = 15
+    targetSdkVersion = 28
+    testInstrumentationRunner = "android.support.test.runner.AndroidJUnitRunner"
+
+    //libraries
+    androidSupportLibVersion = '27.1.1'
+    constraintLayoutVersion = '1.1.2'
+    retrofitVersion = '2.3.0'
+    objectboxVersion = '2.1.0'
+    picassoVersion = '2.71828'
+    okhttpLoggingInterceptorVersion = '3.11.0'
+
+    //Unit Testing
+    junitVersion = '4.12'
+    mockitoVersion = '1.4.0'
+    archComponentsVersion = '1.1.1'
+    robolectricVersion = '3.8'
+
+    //Acceptance Testing
+    runnerVersion = '1.0.2'
+    espressoVersion = '3.0.2'
+
+    mainApplication = [
+            supportCompat           : "com.android.support:appcompat-v7:$androidSupportLibVersion",
+            recycler                : "com.android.support:recyclerview-v7:$androidSupportLibVersion",
+            design                  : "com.android.support:design:$androidSupportLibVersion",
+            picasso                 : "com.squareup.picasso:picasso:$picassoVersion",
+            constraintLayout        : "com.android.support.constraint:constraint-layout:$constraintLayoutVersion",
+            kotlin                  : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion",
+            rxJava                  : "io.reactivex.rxjava2:rxjava:2.1.6",
+            rxAndroid               : "io.reactivex.rxjava2:rxandroid:2.1.0",
+            dagger                  : "com.google.dagger:dagger:2.13",
+            daggerCompiler          : "com.google.dagger:dagger-compiler:2.13",
+            archComponents          : "android.arch.lifecycle:extensions:$archComponentsVersion",
+            archComponentsStreams   : "android.arch.lifecycle:reactivestreams:$archComponentsVersion",
+            archComponentsCompiler  : "android.arch.lifecycle:compiler:$archComponentsVersion",
+            retrofit                : "com.squareup.retrofit2:retrofit:$retrofitVersion",
+            retrofitGsonConverter   : "com.squareup.retrofit2:converter-gson:$retrofitVersion",
+            retrofitRxJava2Adapter  : "com.squareup.retrofit2:adapter-rxjava2:$retrofitVersion",
+            okhttpLoggingInterceptor: "com.squareup.okhttp3:logging-interceptor:$okhttpLoggingInterceptorVersion",
+            objectboxAndroid        : "io.objectbox:objectbox-android:$objectboxVersion",
+            objectboxProcessor      : "io.objectbox:objectbox-processor:$objectboxVersion",
+            objectboxKotlin         : "io.objectbox:objectbox-kotlin:$objectboxVersion",
+    ]
+
+    unitTesting = [
+            kotlin     : "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion",
+            kotlinTest : "org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion",
+            robolectric: "org.robolectric:robolectric:$robolectricVersion",
+            junit      : "junit:junit:$junitVersion",
+            mockito    : "com.nhaarman:mockito-kotlin:$mockitoVersion",
+    ]
+
+    acceptanceTesting = [
+            testRunner        : "com.android.support.test:runner:$runnerVersion",
+            testRules         : "com.android.support.test:rules:$runnerVersion",
+            espressoCore      : "com.android.support.test.espresso:espresso-core:$espressoVersion",
+            espressoIntents   : "com.android.support.test.espresso:espresso-intents:$espressoVersion",
+            androidAnnotations: "com.android.support:support-annotations:$androidSupportLibVersion",
+    ]
+}

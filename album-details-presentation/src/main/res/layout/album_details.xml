@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:background="@color/bg"
+  android:fitsSystemWindows="true"
+>
+  <android.support.design.widget.AppBarLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+  >
+
+    <android.support.v7.widget.Toolbar
+      android:id="@+id/toolbar"
+      android:layout_width="match_parent"
+      android:layout_height="?android:attr/actionBarSize"
+      android:background="@color/colorPrimary"
+      app:titleTextColor="@color/font"
+      app:title="@string/album_details"
+      app:contentInsetStartWithNavigation="0dp" />
+  </android.support.design.widget.AppBarLayout>
+
+  <android.support.v7.widget.RecyclerView
+    android:id="@+id/detailsView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="top"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+  />
+
+  <ImageView
+    android:id="@+id/emptyView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:src="@drawable/rick_and_morty"
+    android:visibility="gone"
+    android:scaleType="center"
+    android:paddingBottom="160dp"
+  />
+
+  <ProgressBar
+    android:id="@+id/progressView"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:indeterminateOnly="true"
+    android:indeterminateTint="@color/colorSecondary"
+  />
+
+  <LinearLayout
+    android:id="@+id/retryLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_gravity="center">
+
+    <TextView
+      android:id="@+id/errorView"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center_horizontal"
+      android:textColor="@color/font"
+      android:layout_marginRight="100dp"
+      android:layout_marginLeft="100dp"
+      android:layout_marginBottom="10dp"
+    />
+
+    <Button
+      android:id="@+id/retryView"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center_horizontal"
+      android:padding="10dp"
+      android:text="@string/retry"
+    />
+
+  </LinearLayout>
+
+</android.support.design.widget.CoordinatorLayout>

@@ -1,0 +1,17 @@
+apply plugin: 'kotlin'
+targetCompatibility = 1.8
+sourceCompatibility = 1.8
+
+dependencies {
+    def applicationDependencies = rootProject.ext.mainApplication
+    def unitTestDependencies = rootProject.ext.unitTesting
+
+    implementation applicationDependencies .kotlin
+    implementation applicationDependencies .rxJava
+
+    testImplementation unitTestDependencies .junit
+    testImplementation unitTestDependencies .mockito
+
+    implementation project(':common-domain')
+
+}

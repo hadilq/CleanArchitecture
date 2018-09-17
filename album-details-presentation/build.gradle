@@ -1,0 +1,60 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+
+android {
+    compileSdkVersion 28
+    defaultConfig {
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        testInstrumentationRunner rootProject.ext.testInstrumentationRunner
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+        test.java.srcDirs += 'src/test/kotlin'
+        androidTest.java.srcDirs += 'src/androidTest/kotlin'
+    }
+}
+
+dependencies {
+    def applicationDependencies = rootProject.ext.mainApplication
+    def unitTestDependencies = rootProject.ext.unitTesting
+    def acceptanceTestDependencies = rootProject.ext.acceptanceTesting
+
+    kapt applicationDependencies.daggerCompiler
+    kapt applicationDependencies.archComponentsCompiler
+
+    implementation applicationDependencies.kotlin
+    implementation applicationDependencies.supportCompat
+    implementation applicationDependencies.recycler
+    implementation applicationDependencies.design
+    implementation applicationDependencies.dagger
+    implementation applicationDependencies.archComponents
+    implementation applicationDependencies.rxJava
+
+    testImplementation unitTestDependencies.kotlin
+    testImplementation unitTestDependencies.kotlinTest
+    testImplementation unitTestDependencies.robolectric
+    testImplementation unitTestDependencies.junit
+    testImplementation unitTestDependencies.mockito
+
+    androidTestImplementation acceptanceTestDependencies.testRunner
+    androidTestImplementation acceptanceTestDependencies.testRules
+    androidTestImplementation acceptanceTestDependencies.espressoCore
+    androidTestImplementation acceptanceTestDependencies.espressoIntents
+    androidTestImplementation acceptanceTestDependencies.androidAnnotations
+
+
+    implementation project(':common-presentation')
+    implementation project(':common-data')
+    implementation project(':common-domain')
+    implementation project(':album-details-domain')
+    implementation project(':album-details-data')
+}

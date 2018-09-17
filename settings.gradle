@@ -1,0 +1,1 @@
+include ':main-presentation', ':common-presentation', ':common-data', ':common-domain', ':albums-presentation', ':albums-domain', ':albums-data', ':album-details-presentation', ':album-details-data', ':album-details-domain'

@@ -1,0 +1,5 @@
+<resources>
+  <string name="app_name">com.gitlab.sample.presentation</string>
+  <string name="retry">Retry</string>
+  <string name="error_happened">There is a problem. Please try again.</string>
+</resources>
