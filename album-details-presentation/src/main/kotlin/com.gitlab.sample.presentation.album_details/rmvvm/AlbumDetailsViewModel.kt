@@ -4,6 +4,7 @@ import com.gitlab.sample.domain.album_details.entities.AlbumDetailsEntity
 import com.gitlab.sample.domain.album_details.usecases.GetAlbumDetails
 import com.gitlab.sample.presentation.album_details.R
 import com.gitlab.sample.presentation.common.BaseViewModel
+import com.gitlab.sample.presentation.common.extention.filterTo
 
 /**
  * Created by Hadi on 9/21/18.
@@ -16,13 +17,20 @@ class AlbumDetailsViewModel(private val useCase: GetAlbumDetails) : BaseViewMode
     val savedDetails = mutableListOf<AlbumDetailsEntity>()
     var albumId: Long = 0
 
-    fun getAlbumDetails() = addDisposable(useCase.observe(albumId)
-            .doOnSubscribe { viewState.value = LoadingViewState(true) }
-            .doOnComplete { viewState.value = LoadingViewState(false) }
-            .doOnError { viewState.value = LoadingViewState(false) }
-            .doOnDispose { viewState.value = LoadingViewState(false) }
-            .map { list -> savedDetails.addAll(list); list }
-            .map { GetAlbumViewState(it) as AlbumDetailsViewState }
-            .onErrorReturn { ErrorAlbumViewState(R.string.error_happened, it) }
-            .subscribe { viewState.value = it })
+    init {
+        // Reactive way to handling View actions
+        addDisposable(actionSteam.filterTo(GetAlbumDetailsAction::class.java)
+                .flatMap { _ ->
+                    useCase.observe(albumId)
+                            .doOnSubscribe { viewState.value = LoadingViewState(true) }
+                            .doOnComplete { viewState.value = LoadingViewState(false) }
+                            .doOnError { viewState.value = LoadingViewState(false) }
+                            .doOnDispose { viewState.value = LoadingViewState(false) }
+
+                }
+                .map { list -> savedDetails.addAll(list); list }
+                .map { GetAlbumViewState(it) as AlbumDetailsViewState }
+                .onErrorReturn { ErrorAlbumViewState(R.string.error_happened, it) }
+                .subscribe { viewState.value = it })
+    }
 }

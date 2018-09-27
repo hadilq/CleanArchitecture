@@ -88,7 +88,7 @@ class AlbumDetailsFragment : BaseFragment() {
     }
 
     private fun getDetails() {
-        viewModel.getAlbumDetails()
+        viewModel.actionSteam.onNext(GetAlbumDetailsAction)
     }
 
     private fun handleAlbums(viewState: GetAlbumViewState) {

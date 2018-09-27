@@ -21,9 +21,9 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.View
 import com.gitlab.sample.presentation.album.di.AlbumInjector
 import com.gitlab.sample.presentation.album.di.AlbumsSubComponent
-import com.gitlab.sample.presentation.album.rmvvm.*
 import com.gitlab.sample.presentation.album.recycler.AlbumAdapter
 import com.gitlab.sample.presentation.album.recycler.AlbumViewData
+import com.gitlab.sample.presentation.album.rmvvm.*
 import com.gitlab.sample.presentation.common.BaseFragment
 import com.gitlab.sample.presentation.common.ViewState
 import com.gitlab.sample.presentation.common.extention.filterTo
@@ -84,7 +84,7 @@ class AlbumFragment : BaseFragment() {
     }
 
     private fun getAlbums() {
-        viewModel.getAlbums()
+        viewModel.actionSteam.onNext(GetAlbumAction)
     }
 
     private fun handleAlbums(viewState: GetAlbumViewState) {

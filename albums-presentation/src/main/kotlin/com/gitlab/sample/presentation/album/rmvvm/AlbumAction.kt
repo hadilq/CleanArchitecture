@@ -21,3 +21,4 @@ import com.gitlab.sample.presentation.common.Action
 sealed class AlbumAction : Action
 
 class AlbumClickedAction(val albumId: Long) : AlbumAction()
+object GetAlbumAction : AlbumAction()

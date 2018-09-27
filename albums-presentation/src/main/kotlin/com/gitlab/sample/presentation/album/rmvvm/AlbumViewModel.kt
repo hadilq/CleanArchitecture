@@ -32,24 +32,25 @@ class AlbumViewModel(private val useCase: GetAlbums) : BaseViewModel() {
 
     init {
         // Reactive way to handling View actions
-        actionSteam.filterTo(AlbumClickedAction::class.java)
-                .throttleFirst(1000, TimeUnit.MILLISECONDS) // Avoid double click less than one second
-                .subscribe(::albumClicked) { /*If reach here log an assertion because it should never happen*/ }
+        addDisposable(actionSteam.filterTo(AlbumClickedAction::class.java)
+                .throttleFirst(1000, TimeUnit.MILLISECONDS) // Avoid double click(Multi view click) less than one second
+                .subscribe(::albumClicked) { /*If reach here log an assertion because it should never happen*/ })
+
+        addDisposable(actionSteam.filterTo(GetAlbumAction::class.java)
+                .flatMap { _ ->
+                    useCase.observe()
+                            .doOnSubscribe { viewState.value = LoadingViewState(true) }
+                            .doOnComplete { viewState.value = LoadingViewState(false) }
+                            .doOnError { viewState.value = LoadingViewState(false) }
+                            .doOnDispose { viewState.value = LoadingViewState(false) }
+                }
+                .map { list -> savedAlbums.addAll(list); list }
+                .map { GetAlbumViewState(it) as AlbumViewState }
+                .onErrorReturn { ErrorAlbumViewState(R.string.error_happened, it) }
+                .subscribe { viewState.value = it })
     }
 
     private fun albumClicked(clickedAction: AlbumClickedAction) {
         viewState.value = NavigateViewState(AlbumDetailsNavigator(clickedAction.albumId))
     }
-
-    fun getAlbums() = addDisposable(useCase.observe()
-            .doOnSubscribe { viewState.value = LoadingViewState(true) }
-            .doOnComplete { viewState.value = LoadingViewState(false) }
-            .doOnError { viewState.value = LoadingViewState(false) }
-            .doOnDispose { viewState.value = LoadingViewState(false) }
-            .map { list -> savedAlbums.addAll(list); list }
-            .map { GetAlbumViewState(it) as AlbumViewState }
-            .onErrorReturn { ErrorAlbumViewState(R.string.error_happened, it) }
-            .subscribe { viewState.value = it })
-
-
 }
