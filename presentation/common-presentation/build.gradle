@@ -4,11 +4,11 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion compileVersion
     defaultConfig {
-        minSdkVersion rootProject.ext.minSdkVersion
-        targetSdkVersion rootProject.ext.targetSdkVersion
-        testInstrumentationRunner rootProject.ext.testInstrumentationRunner
+        minSdkVersion minVersion
+        targetSdkVersion targetVersion
+        testInstrumentationRunner testInstrumentationRunner
     }
     buildTypes {
         release {
@@ -24,9 +24,6 @@ android {
 }
 
 dependencies {
-    def applicationDependencies = rootProject.ext.mainApplication
-    def unitTestDependencies = rootProject.ext.unitTesting
-    def acceptanceTestDependencies = rootProject.ext.acceptanceTesting
 
     kapt applicationDependencies.daggerCompiler
     kapt applicationDependencies.archComponentsCompiler

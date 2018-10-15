@@ -4,14 +4,14 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion compileVersion
     defaultConfig {
         applicationId "com.gitlab.sample.cleanarchitecture"
-        minSdkVersion rootProject.ext.minSdkVersion
-        targetSdkVersion rootProject.ext.targetSdkVersion
+        minSdkVersion minVersion
+        targetSdkVersion targetVersion
         versionCode 1
         versionName "1.0"
-        testInstrumentationRunner rootProject.ext.testInstrumentationRunner
+        testInstrumentationRunner testInstrumentationRunner
     }
     buildTypes {
         release {
@@ -27,9 +27,6 @@ android {
 }
 
 dependencies {
-    def applicationDependencies = rootProject.ext.mainApplication
-    def unitTestDependencies = rootProject.ext.unitTesting
-    def acceptanceTestDependencies = rootProject.ext.acceptanceTesting
 
     kapt applicationDependencies.daggerCompiler
     kapt applicationDependencies.archComponentsCompiler
