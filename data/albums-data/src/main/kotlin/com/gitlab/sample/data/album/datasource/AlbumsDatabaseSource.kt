@@ -16,21 +16,19 @@
  * */
 package com.gitlab.sample.data.album.datasource
 
+import com.gitlab.sample.data.album.extensions.map
 import com.gitlab.sample.data.common.db.dao.AlbumDao
-import com.gitlab.sample.data.album.mapper.AlbumDataToEntityMapper
-import com.gitlab.sample.data.album.mapper.AlbumEntityToDataMapper
 import com.gitlab.sample.domain.album.entities.AlbumEntity
+import com.gitlab.sample.presentation.album.entities.AlbumData
 import io.reactivex.Observable
 
 class AlbumsDatabaseSource(private val albumDao: AlbumDao) : AlbumsDatabaseDataSource {
-    private val mapper = AlbumDataToEntityMapper()
-    private val mapperReverse = AlbumEntityToDataMapper()
 
     override fun getAlbums(): Observable<List<AlbumEntity>> = albumDao.getAlbums()
-            .flatMap { mapper.observable(it) }
+            .map { it.map(AlbumData::map) }
 
     override fun saveAll(albums: List<AlbumEntity>) {
         albumDao.clear()
-        albumDao.saveAlbums(mapperReverse.mapsFrom(albums))
+        albumDao.saveAlbums(albums.map(AlbumEntity::map))
     }
 }

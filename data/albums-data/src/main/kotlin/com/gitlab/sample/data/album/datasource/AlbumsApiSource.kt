@@ -16,16 +16,16 @@
  * */
 package com.gitlab.sample.data.album.datasource
 
+import com.gitlab.sample.data.album.extensions.map
 import com.gitlab.sample.data.common.api.Api
-import com.gitlab.sample.data.album.mapper.AlbumDtoToEntityMapper
+import com.gitlab.sample.data.common.api.entities.AlbumDto
 import com.gitlab.sample.domain.album.entities.AlbumEntity
 import io.reactivex.Observable
 
 class AlbumsApiSource(private val api: Api) : AlbumsApiDataSource {
-    private val mapper = AlbumDtoToEntityMapper()
 
     override fun getAlbums(): Observable<List<AlbumEntity>> = api.getAlbums()
             .toObservable()
-            .flatMap { mapper.observable(it) }
+            .map { it.map(AlbumDto::map) }
 
 }

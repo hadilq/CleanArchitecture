@@ -14,19 +14,26 @@
  * limitations under the License.
  *
  * */
-package com.gitlab.sample.data.album_details.mapper
+package com.gitlab.sample.data.album.extensions
 
-import com.gitlab.sample.data.common.api.entities.PhotoDto
-import com.gitlab.sample.data.common.utils.Mapper
-import com.gitlab.sample.domain.album_details.entities.AlbumDetailsEntity
+import com.gitlab.sample.data.common.api.entities.AlbumDto
+import com.gitlab.sample.domain.album.entities.AlbumEntity
+import com.gitlab.sample.presentation.album.entities.AlbumData
 
-class PhotoDtoToEntityMapper(private val albumId: Long) : Mapper<PhotoDto, AlbumDetailsEntity>() {
-    override fun mapFrom(from: PhotoDto): AlbumDetailsEntity = AlbumDetailsEntity(
-            id = from.id,
-            albumId = albumId,
-            title = from.title,
-            url = from.url,
-            thumbnailUrl = from.thumbnailUrl
-    )
+fun AlbumData.map() = AlbumEntity(
+        id = id,
+        userId = userId,
+        title = title
+)
 
-}
+fun AlbumDto.map() = AlbumEntity(
+        id = id,
+        userId = userId,
+        title = title
+)
+
+fun AlbumEntity.map() = AlbumData(
+        id = id,
+        userId = userId,
+        title = title
+)

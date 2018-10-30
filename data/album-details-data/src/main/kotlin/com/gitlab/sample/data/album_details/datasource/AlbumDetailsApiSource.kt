@@ -16,8 +16,9 @@
  * */
 package com.gitlab.sample.data.album_details.datasource
 
-import com.gitlab.sample.data.album_details.mapper.PhotoDtoToEntityMapper
+import com.gitlab.sample.data.album_details.extensions.map
 import com.gitlab.sample.data.common.api.Api
+import com.gitlab.sample.data.common.api.entities.PhotoDto
 import com.gitlab.sample.domain.album_details.entities.AlbumDetailsEntity
 import io.reactivex.Observable
 
@@ -28,5 +29,5 @@ class AlbumDetailsApiSource(private val api: Api) : AlbumDetailsApiDataSource {
             .flatMap { Observable.fromIterable(it) }
             .filter { it.albumId == albumId }
             .toList().toObservable()
-            .flatMap { val mapper = PhotoDtoToEntityMapper(albumId); mapper.observable(it) }
+            .map { it.map(PhotoDto::map) }
 }
