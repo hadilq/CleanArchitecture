@@ -21,7 +21,4 @@ import io.reactivex.Observable
 
 interface AlbumDetailsApiDataSource {
     fun getAlbumDetails(albumId: Long): Observable<List<AlbumDetailsEntity>>
-
-    fun saveAll(albumDetails: List<AlbumDetailsEntity>) {}
-
 }
