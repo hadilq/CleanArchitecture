@@ -14,11 +14,14 @@
  * limitations under the License.
  *
  * */
-package com.gitlab.sample.data.album_details.di
+package com.gitlab.sample.data.album_details.datasource
 
-interface AlbumDetailsDiNamed {
-    companion object {
-        const val API_DATA_SOURCE = "API_DATA_SOURCE"
-        const val DATABASE_DATA_SOURCE = "DATABASE_DATA_SOURCE"
-    }
+import com.gitlab.sample.domain.album_details.entities.AlbumDetailsEntity
+import io.reactivex.Observable
+
+interface AlbumDetailsDatabaseDataSource {
+    fun getAlbumDetails(albumId: Long): Observable<List<AlbumDetailsEntity>>
+
+    fun saveAll(albumDetails: List<AlbumDetailsEntity>) {}
+
 }

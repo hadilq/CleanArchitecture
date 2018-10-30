@@ -16,16 +16,15 @@
  * */
 package com.gitlab.sample.data.album_details.repositories
 
-import com.gitlab.sample.data.album_details.datasource.AlbumDetailsDataSource
-import com.gitlab.sample.data.album_details.di.AlbumDetailsDiNamed
+import com.gitlab.sample.data.album_details.datasource.AlbumDetailsApiSource
+import com.gitlab.sample.data.album_details.datasource.AlbumDetailsDatabaseDataSource
 import com.gitlab.sample.domain.album_details.entities.AlbumDetailsEntity
 import com.gitlab.sample.domain.album_details.repositories.AlbumDetailsRepository
 import io.reactivex.Observable
-import javax.inject.Named
 
 class AlbumDetailsRepositoryImpl(
-        @Named(AlbumDetailsDiNamed.API_DATA_SOURCE) private val apiSource: AlbumDetailsDataSource,
-        @Named(AlbumDetailsDiNamed.DATABASE_DATA_SOURCE) private val databaseSource: AlbumDetailsDataSource
+        private val apiSource: AlbumDetailsApiSource,
+        private val databaseSource: AlbumDetailsDatabaseDataSource
 ) : AlbumDetailsRepository {
     override fun getAlbumDetails(albumId: Long): Observable<List<AlbumDetailsEntity>> =
             databaseSource.getAlbumDetails(albumId).flatMap {

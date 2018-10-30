@@ -22,7 +22,6 @@ import com.gitlab.sample.presentation.album.rmvvm.AlbumClickedAction
 import com.gitlab.sample.presentation.common.BaseViewHolder
 import  com.gitlab.sample.presentation.album.R
 
-
 class AlbumViewHolder(view: View) : BaseViewHolder<AlbumViewData>(view) {
     override fun onBind(data: AlbumViewData) {
         (itemView.findViewById(R.id.titleView) as TextView).text = data.entity.title

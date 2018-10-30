@@ -21,7 +21,7 @@ import com.gitlab.sample.data.common.api.Api
 import com.gitlab.sample.domain.album_details.entities.AlbumDetailsEntity
 import io.reactivex.Observable
 
-class AlbumDetailsApiSource(private val api: Api) : AlbumDetailsDataSource {
+class AlbumDetailsApiSource(private val api: Api) : AlbumDetailsApiDataSource {
 
     override fun getAlbumDetails(albumId: Long): Observable<List<AlbumDetailsEntity>> = api.getPhotos()
             .toObservable()

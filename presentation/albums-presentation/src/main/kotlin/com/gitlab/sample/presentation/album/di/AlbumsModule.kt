@@ -16,10 +16,10 @@
  * */
 package com.gitlab.sample.presentation.album.di
 
+import com.gitlab.sample.data.album.datasource.AlbumsApiDataSource
 import com.gitlab.sample.data.album.datasource.AlbumsApiSource
-import com.gitlab.sample.data.album.datasource.AlbumsDataSource
+import com.gitlab.sample.data.album.datasource.AlbumsDatabaseDataSource
 import com.gitlab.sample.data.album.datasource.AlbumsDatabaseSource
-import com.gitlab.sample.data.album.di.AlbumsDiNamed
 import com.gitlab.sample.data.album.repositories.AlbumsRepositoryImpl
 import com.gitlab.sample.data.common.api.Api
 import com.gitlab.sample.data.common.db.dao.AlbumDao
@@ -28,30 +28,27 @@ import com.gitlab.sample.domain.album.usecases.GetAlbums
 import com.gitlab.sample.presentation.common.ASyncTransformer
 import dagger.Module
 import dagger.Provides
-import javax.inject.Named
 
 @Module
 class AlbumsModule {
 
     @Provides
     @AlbumsScope
-    @Named(AlbumsDiNamed.DATABASE_DATA_SOURCE)
-    fun provideDatabaseSource(albumDao: AlbumDao): AlbumsDataSource {
+    fun provideDatabaseSource(albumDao: AlbumDao): AlbumsDatabaseDataSource {
         return AlbumsDatabaseSource(albumDao)
     }
 
     @Provides
     @AlbumsScope
-    @Named(AlbumsDiNamed.API_DATA_SOURCE)
-    fun provideApiSource(api: Api): AlbumsDataSource {
+    fun provideApiSource(api: Api): AlbumsApiDataSource {
         return AlbumsApiSource(api)
     }
 
     @Provides
     @AlbumsScope
     fun provideRepository(
-            @Named(AlbumsDiNamed.API_DATA_SOURCE) apiSource: AlbumsDataSource,
-            @Named(AlbumsDiNamed.DATABASE_DATA_SOURCE) databaseSource: AlbumsDataSource
+            apiSource: AlbumsApiDataSource,
+            databaseSource: AlbumsDatabaseDataSource
     ): AlbumsRepository {
         return AlbumsRepositoryImpl(apiSource, databaseSource)
     }

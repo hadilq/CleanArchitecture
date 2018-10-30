@@ -22,7 +22,7 @@ import com.gitlab.sample.data.common.db.dao.AlbumDetailsDao
 import com.gitlab.sample.domain.album_details.entities.AlbumDetailsEntity
 import io.reactivex.Observable
 
-class AlbumDetailsDatabaseSource(private val albumDetailsDao: AlbumDetailsDao) : AlbumDetailsDataSource {
+class AlbumDetailsDatabaseSource(private val albumDetailsDao: AlbumDetailsDao) : AlbumDetailsDatabaseDataSource {
     private val mapper = AlbumDetailsDataToEntityMapper()
     private val mapperReverse = AlbumDetailsEntityToDataMapper()
 

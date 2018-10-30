@@ -14,14 +14,13 @@
  * limitations under the License.
  *
  * */
-package com.gitlab.sample.presentation.album_details.rmvvm
+package com.gitlab.sample.data.album.datasource
 
-import android.support.annotation.StringRes
-import com.gitlab.sample.domain.album_details.entities.AlbumDetailsEntity
-import com.gitlab.sample.presentation.common.ViewState
+import com.gitlab.sample.domain.album.entities.AlbumEntity
+import io.reactivex.Observable
 
-sealed class AlbumDetailsViewState : ViewState
+interface AlbumsDatabaseDataSource {
+    fun getAlbums(): Observable<List<AlbumEntity>>
 
-class GetAlbumViewState(val photos: List<AlbumDetailsEntity>) : AlbumDetailsViewState()
-class ErrorAlbumViewState(@StringRes val errorMessage: Int, val error: Throwable) : AlbumDetailsViewState()
-class LoadingViewState(val loading: Boolean) : AlbumDetailsViewState()
+    fun saveAll(albums: List<AlbumEntity>)
+}

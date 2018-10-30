@@ -14,14 +14,11 @@
  * limitations under the License.
  *
  * */
-package com.gitlab.sample.data.album_details.datasource
+package com.gitlab.sample.data.album.datasource
 
-import com.gitlab.sample.domain.album_details.entities.AlbumDetailsEntity
+import com.gitlab.sample.domain.album.entities.AlbumEntity
 import io.reactivex.Observable
 
-interface AlbumDetailsDataSource {
-    fun getAlbumDetails(albumId: Long): Observable<List<AlbumDetailsEntity>>
-
-    fun saveAll(albumDetails: List<AlbumDetailsEntity>) {}
-
+interface AlbumsApiDataSource {
+    fun getAlbums(): Observable<List<AlbumEntity>>
 }
