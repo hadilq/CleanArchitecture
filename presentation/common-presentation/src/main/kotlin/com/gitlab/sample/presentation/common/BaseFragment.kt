@@ -31,8 +31,8 @@ abstract class BaseFragment : DaggerFragment() {
 
     private val compositeDisposable: CompositeDisposable = CompositeDisposable()
 
-    protected fun addDisposable(disposable: Disposable) {
-        compositeDisposable.add(disposable)
+    protected fun Disposable.track() {
+        compositeDisposable.add(this)
     }
 
     abstract fun layoutId(): Int
@@ -47,12 +47,8 @@ abstract class BaseFragment : DaggerFragment() {
         return vm
     }
 
-    private fun clearDisposables() {
-        compositeDisposable.clear()
-    }
-
     override fun onDestroy() {
-        clearDisposables()
+        compositeDisposable.clear()
         super.onDestroy()
     }
 }

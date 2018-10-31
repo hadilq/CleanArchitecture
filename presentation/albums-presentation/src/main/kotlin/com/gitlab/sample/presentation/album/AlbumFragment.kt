@@ -46,13 +46,13 @@ class AlbumFragment : BaseFragment() {
 
         viewModel = viewModel(viewModelFactory) {
             val subject = PublishSubject.create<ViewState>()
-            addDisposable(register(this@AlbumFragment, subject))
+            register(this@AlbumFragment, subject).track()
 
             // Avoid creating the state machine with "when(state){}" to avoid a big, unreadable block of "when clause"
-            subject.filterTo(GetAlbumViewState::class.java).subscribe(::handleAlbums)
-            subject.filterTo(ErrorAlbumViewState::class.java).subscribe(::handleFailure)
-            subject.filterTo(LoadingViewState::class.java).subscribe(::handleLoading)
-            subject.filterTo(NavigateViewState::class.java).subscribe(::handleNavigate)
+            subject.filterTo(GetAlbumViewState::class.java).subscribe(::handleAlbums).track()
+            subject.filterTo(ErrorAlbumViewState::class.java).subscribe(::handleFailure).track()
+            subject.filterTo(LoadingViewState::class.java).subscribe(::handleLoading).track()
+            subject.filterTo(NavigateViewState::class.java).subscribe(::handleNavigate).track()
         }
     }
 
@@ -72,7 +72,7 @@ class AlbumFragment : BaseFragment() {
         albumsView.adapter = adapter
         adapter.onCreateViewHolder = { viewHolder ->
             // Pipe the View actions to the ViewModel
-            addDisposable(viewHolder.actionStream.subscribe(viewModel.actionSteam::onNext))
+            viewHolder.actionStream.subscribe(viewModel.actionSteam::onNext).track()
         }
         emptyView.gone()
         retryLayout.gone()

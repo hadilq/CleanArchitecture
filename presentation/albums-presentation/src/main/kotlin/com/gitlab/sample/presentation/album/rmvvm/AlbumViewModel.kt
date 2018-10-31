@@ -37,12 +37,16 @@ class AlbumViewModel @Inject constructor(
 
     init {
         // Reactive way to handling View actions
-        addDisposable(actionSteam.filterTo(AlbumClickedAction::class.java)
-                .throttleFirst(1000, TimeUnit.MILLISECONDS) // Avoid double click(Multi view click) less than one second
-                .subscribe(::albumClicked) { /*If reach here log an assertion because it should never happen*/ })
+        actionSteam.filterTo(AlbumClickedAction::class.java)
+                .throttleFirst(
+                        1000, TimeUnit.MILLISECONDS
+                ) // Avoid double click(Multi view click) less than one second
+                .subscribe(
+                        ::albumClicked
+                ) { /*If reach here log an assertion because it should never happen*/ }.track()
 
-        addDisposable(actionSteam.filterTo(GetAlbumAction::class.java)
-                .flatMap { _ ->
+        actionSteam.filterTo(GetAlbumAction::class.java)
+                .flatMap {
                     useCase.observe()
                             .doOnSubscribe { viewState.value = LoadingViewState(true) }
                             .doOnComplete { viewState.value = LoadingViewState(false) }
@@ -52,7 +56,7 @@ class AlbumViewModel @Inject constructor(
                 .map { list -> savedAlbums.addAll(list); list }
                 .map { GetAlbumViewState(it) as AlbumViewState }
                 .onErrorReturn { ErrorAlbumViewState(R.string.error_happened, it) }
-                .subscribe { viewState.value = it })
+                .subscribe { viewState.value = it }.track()
     }
 
     private fun albumClicked(clickedAction: AlbumClickedAction) {

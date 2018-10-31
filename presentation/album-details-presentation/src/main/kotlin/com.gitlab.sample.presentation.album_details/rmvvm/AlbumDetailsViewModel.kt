@@ -33,7 +33,7 @@ class AlbumDetailsViewModel @Inject constructor(private val useCase: GetAlbumDet
 
     init {
         // Reactive way to handling View actions
-        addDisposable(actionSteam.filterTo(GetAlbumDetailsAction::class.java)
+        actionSteam.filterTo(GetAlbumDetailsAction::class.java)
                 .flatMap { _ ->
                     useCase.observe(albumId)
                             .doOnSubscribe { viewState.value = LoadingViewState(true) }
@@ -45,6 +45,6 @@ class AlbumDetailsViewModel @Inject constructor(private val useCase: GetAlbumDet
                 .map { list -> savedDetails.addAll(list); list }
                 .map { GetAlbumViewState(it) as AlbumDetailsViewState }
                 .onErrorReturn { ErrorAlbumViewState(R.string.error_happened, it) }
-                .subscribe { viewState.value = it })
+                .subscribe { viewState.value = it }.track()
     }
 }

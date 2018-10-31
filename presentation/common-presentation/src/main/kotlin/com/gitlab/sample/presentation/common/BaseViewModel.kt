@@ -43,15 +43,11 @@ abstract class BaseViewModel : ViewModel() {
                     .filter { val new = lastViewState != it;lastViewState = it;new }
                     .subscribe(observer::onNext)
 
-    protected fun addDisposable(disposable: Disposable) {
-        compositeDisposable.add(disposable)
-    }
-
-    private fun clearDisposables() {
-        compositeDisposable.clear()
+    protected fun Disposable.track() {
+        compositeDisposable.add(this)
     }
 
     override fun onCleared() {
-        clearDisposables()
+        compositeDisposable.clear()
     }
 }
