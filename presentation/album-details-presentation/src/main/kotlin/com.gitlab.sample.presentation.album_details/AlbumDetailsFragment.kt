@@ -16,12 +16,11 @@
  * */
 package com.gitlab.sample.presentation.album_details
 
+import android.arch.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.support.v7.widget.StaggeredGridLayoutManager
 import android.util.DisplayMetrics
 import android.view.View
-import com.gitlab.sample.presentation.album_details.di.AlbumDetailsInjector
-import com.gitlab.sample.presentation.album_details.di.AlbumDetailsSubComponent
 import com.gitlab.sample.presentation.album_details.recycler.AlbumDetailsAdapter
 import com.gitlab.sample.presentation.album_details.recycler.AlbumPhotoViewData
 import com.gitlab.sample.presentation.album_details.rmvvm.*
@@ -40,15 +39,12 @@ class AlbumDetailsFragment : BaseFragment() {
     @Inject
     lateinit var adapter: AlbumDetailsAdapter
     @Inject
-    lateinit var viewModelFactory: AlbumDetailsViewModelFactory
+    lateinit var viewModelFactory: ViewModelProvider.Factory
 
     private lateinit var viewModel: AlbumDetailsViewModel
-    private lateinit var subComponent: AlbumDetailsSubComponent
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        subComponent = AlbumDetailsInjector.createAlbumsComponent()
-        subComponent.inject(this)
 
         viewModel = viewModel(viewModelFactory) {
             val subject = PublishSubject.create<ViewState>()

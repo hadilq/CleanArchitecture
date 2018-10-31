@@ -17,23 +17,21 @@
 package com.gitlab.sample.cleanarchitecture
 
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
-import com.gitlab.sample.cleanarchitecture.di.app.AppComponent
-import com.gitlab.sample.cleanarchitecture.di.injector.AppInjector
+import com.gitlab.sample.presentation.common.di.NavigatorFactory
+import dagger.android.support.DaggerAppCompatActivity
+import javax.inject.Inject
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : DaggerAppCompatActivity() {
 
-    private lateinit var appComponent: AppComponent
+    @Inject
+    lateinit var navigatorFactory: NavigatorFactory
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_layout)
 
-        appComponent = AppInjector.getAppComponent()
-
         if (savedInstanceState == null) {
-            MainNavigator().launchFragment(appComponent, supportFragmentManager)
+            navigatorFactory.create(MainNavigator::class.java).launchFragment(supportFragmentManager)
         }
-
     }
 }

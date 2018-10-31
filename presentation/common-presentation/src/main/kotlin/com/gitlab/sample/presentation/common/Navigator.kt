@@ -17,9 +17,8 @@
 package com.gitlab.sample.presentation.common
 
 import android.support.v4.app.FragmentManager
-import com.gitlab.sample.presentation.common.di.BaseComponent
 
-interface Navigator<T : BaseComponent> {
-    fun launchFragment(component: T, fragment: BaseFragment) {}
-    fun launchFragment(component: T, fm: FragmentManager) {}
+interface Navigator {
+    fun launchFragment(fragment: BaseFragment) {}
+    fun launchFragment(fm: FragmentManager) {}
 }

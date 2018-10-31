@@ -16,11 +16,10 @@
  * */
 package com.gitlab.sample.presentation.album
 
+import android.arch.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
-import com.gitlab.sample.presentation.album.di.AlbumInjector
-import com.gitlab.sample.presentation.album.di.AlbumsSubComponent
 import com.gitlab.sample.presentation.album.recycler.AlbumAdapter
 import com.gitlab.sample.presentation.album.recycler.AlbumViewData
 import com.gitlab.sample.presentation.album.rmvvm.*
@@ -38,15 +37,12 @@ class AlbumFragment : BaseFragment() {
     @Inject
     lateinit var adapter: AlbumAdapter
     @Inject
-    lateinit var viewModelFactory: AlbumViewModelFactory
+    lateinit var viewModelFactory: ViewModelProvider.Factory
 
     private lateinit var viewModel: AlbumViewModel
-    private lateinit var subComponent: AlbumsSubComponent
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        subComponent = AlbumInjector.createAlbumsComponent()
-        subComponent.inject(this)
 
         viewModel = viewModel(viewModelFactory) {
             val subject = PublishSubject.create<ViewState>()
@@ -116,6 +112,6 @@ class AlbumFragment : BaseFragment() {
     }
 
     private fun handleNavigate(viewState: NavigateViewState) {
-        viewState.navigator.launchFragment(subComponent, this)
+        viewState.navigator.launchFragment(this)
     }
 }

@@ -16,14 +16,13 @@
  * */
 package com.gitlab.sample.presentation.album.di
 
-import com.gitlab.sample.presentation.album.rmvvm.AlbumDetailsNavigator
 import com.gitlab.sample.presentation.album.AlbumFragment
-import com.gitlab.sample.presentation.common.di.BaseComponent
-import dagger.Subcomponent
+import dagger.Module
+import dagger.android.ContributesAndroidInjector
 
-@AlbumsScope
-@Subcomponent(modules = [AlbumsModule::class])
-interface AlbumsSubComponent : BaseComponent {
-    fun inject(albumDetailsNavigator: AlbumFragment)
-    fun inject(albumDetailsNavigator: AlbumDetailsNavigator)
+@Module
+abstract class AlbumsFragmentModule {
+    @AlbumsScope
+    @ContributesAndroidInjector(modules = [])
+    internal abstract fun get(): AlbumFragment
 }

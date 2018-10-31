@@ -20,10 +20,15 @@ import com.gitlab.sample.domain.album.entities.AlbumEntity
 import com.gitlab.sample.domain.album.usecases.GetAlbums
 import com.gitlab.sample.presentation.album.R
 import com.gitlab.sample.presentation.common.BaseViewModel
+import com.gitlab.sample.presentation.common.di.NavigatorFactory
 import com.gitlab.sample.presentation.common.extention.filterTo
 import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 
-class AlbumViewModel(private val useCase: GetAlbums) : BaseViewModel() {
+class AlbumViewModel @Inject constructor(
+        private val useCase: GetAlbums,
+        private val navigatorFactory: NavigatorFactory
+) : BaseViewModel() {
 
     // After disabling "Always up to date data" feature of LiveData(see BaseViewModel), because of its
     // downsides(Just imagine multi page GetAlbumViewState), we have to add this variable to keep the data
@@ -51,6 +56,8 @@ class AlbumViewModel(private val useCase: GetAlbums) : BaseViewModel() {
     }
 
     private fun albumClicked(clickedAction: AlbumClickedAction) {
-        viewState.value = NavigateViewState(AlbumDetailsNavigator(clickedAction.albumId))
+        val navigator = navigatorFactory.create(AlbumDetailsNavigator::class.java)
+        navigator.albumId = clickedAction.albumId
+        viewState.value = NavigateViewState(navigator)
     }
 }

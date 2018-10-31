@@ -16,28 +16,48 @@
  * */
 package com.gitlab.sample.cleanarchitecture.di.app
 
-import com.gitlab.sample.cleanarchitecture.MainNavigator
+import com.gitlab.sample.cleanarchitecture.App
+import com.gitlab.sample.cleanarchitecture.di.navigator.NavigatorModule
+import com.gitlab.sample.cleanarchitecture.di.viewmodel.ViewModelModule
 import com.gitlab.sample.data.common.di.DatabaseModule
 import com.gitlab.sample.data.common.di.NetworkModule
+import com.gitlab.sample.presentation.album.di.AlbumsFragmentModule
 import com.gitlab.sample.presentation.album.di.AlbumsModule
-import com.gitlab.sample.presentation.album.di.AlbumsSubComponent
+import com.gitlab.sample.presentation.album_details.di.AlbumDetailsFragmentModule
 import com.gitlab.sample.presentation.album_details.di.AlbumDetailsModule
-import com.gitlab.sample.presentation.album_details.di.AlbumDetailsSubComponent
-import com.gitlab.sample.presentation.common.di.BaseComponent
+import dagger.BindsInstance
 import dagger.Component
+import dagger.android.AndroidInjector
+import dagger.android.support.AndroidSupportInjectionModule
+import dagger.android.support.DaggerApplication
 import javax.inject.Singleton
+
 
 @Singleton
 @Component(
         modules = [
+            AndroidSupportInjectionModule::class,
             AppModule::class,
             NetworkModule::class,
-            DatabaseModule::class
+            DatabaseModule::class,
+            MainActivityModule::class,
+            ViewModelModule::class,
+            NavigatorModule::class,
+            AlbumsFragmentModule::class,
+            AlbumsModule::class,
+            AlbumDetailsFragmentModule::class,
+            AlbumDetailsModule::class
         ]
 )
-interface AppComponent : BaseComponent {
-    fun plus(module: AlbumsModule): AlbumsSubComponent
-    fun plus(module: AlbumDetailsModule): AlbumDetailsSubComponent
+interface AppComponent : AndroidInjector<DaggerApplication> {
 
-    fun inject(mainNavigator: MainNavigator)
+    @Component.Builder
+    interface Builder {
+        @BindsInstance
+        fun application(app: App): Builder
+
+        fun networkModule(networkModule: NetworkModule): Builder
+
+        fun build(): AppComponent
+    }
 }

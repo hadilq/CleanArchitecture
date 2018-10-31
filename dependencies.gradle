@@ -15,6 +15,7 @@ ext {
     objectboxVersion = '2.1.0'
     picassoVersion = '2.71828'
     okhttpLoggingInterceptorVersion = '3.11.0'
+    daggerVersion = '2.19'
 
     //Unit Testing
     junitVersion = '4.12'
@@ -35,8 +36,10 @@ ext {
             kotlin                  : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion",
             rxJava                  : "io.reactivex.rxjava2:rxjava:2.1.6",
             rxAndroid               : "io.reactivex.rxjava2:rxandroid:2.1.0",
-            dagger                  : "com.google.dagger:dagger:2.13",
-            daggerCompiler          : "com.google.dagger:dagger-compiler:2.13",
+            dagger                  : "com.google.dagger:dagger:$daggerVersion",
+            daggerAndroid           : "com.google.dagger:dagger-android-support:$daggerVersion",
+            daggerCompiler          : "com.google.dagger:dagger-compiler:$daggerVersion",
+            daggerProcessor         : "com.google.dagger:dagger-android-processor:$daggerVersion",
             archComponents          : "android.arch.lifecycle:extensions:$archComponentsVersion",
             archComponentsStreams   : "android.arch.lifecycle:reactivestreams:$archComponentsVersion",
             archComponentsCompiler  : "android.arch.lifecycle:compiler:$archComponentsVersion",

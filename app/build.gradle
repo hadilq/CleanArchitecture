@@ -29,12 +29,14 @@ android {
 dependencies {
 
     kapt applicationDependencies.daggerCompiler
+    kapt applicationDependencies.daggerProcessor
     kapt applicationDependencies.archComponentsCompiler
 
     implementation applicationDependencies.kotlin
     implementation applicationDependencies.supportCompat
     implementation applicationDependencies.recycler
     implementation applicationDependencies.dagger
+    implementation applicationDependencies.daggerAndroid
     implementation applicationDependencies.archComponents
     implementation applicationDependencies.rxJava
     implementation applicationDependencies.retrofit

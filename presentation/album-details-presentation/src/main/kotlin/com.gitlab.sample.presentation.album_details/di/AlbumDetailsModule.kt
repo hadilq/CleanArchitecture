@@ -32,19 +32,16 @@ import dagger.Provides
 class AlbumDetailsModule {
 
     @Provides
-    @AlbumDetailsScope
     fun provideDatabaseSource(dao: AlbumDetailsDao): AlbumDetailsDatabaseDataSource {
         return AlbumDetailsDatabaseSource(dao)
     }
 
     @Provides
-    @AlbumDetailsScope
     fun provideApiSource(api: Api): AlbumDetailsApiSource {
         return AlbumDetailsApiSource(api)
     }
 
     @Provides
-    @AlbumDetailsScope
     fun provideRepository(
             apiSource: AlbumDetailsApiSource,
             databaseSource: AlbumDetailsDatabaseDataSource
@@ -53,7 +50,6 @@ class AlbumDetailsModule {
     }
 
     @Provides
-    @AlbumDetailsScope
     fun provideUseCase(
             repository: AlbumDetailsRepository
     ): GetAlbumDetails {

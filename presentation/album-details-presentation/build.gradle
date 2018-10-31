@@ -20,6 +20,7 @@ android {
 dependencies {
 
     kapt applicationDependencies.daggerCompiler
+    kapt applicationDependencies.daggerProcessor
     kapt applicationDependencies.archComponentsCompiler
 
     implementation applicationDependencies.kotlin
@@ -27,6 +28,7 @@ dependencies {
     implementation applicationDependencies.recycler
     implementation applicationDependencies.design
     implementation applicationDependencies.dagger
+    implementation applicationDependencies.daggerAndroid
     implementation applicationDependencies.archComponents
     implementation applicationDependencies.rxJava
 

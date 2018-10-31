@@ -26,24 +26,18 @@ import dagger.Provides
 import javax.inject.Singleton
 
 @Module
-class AppModule(private val application: App) {
+class AppModule {
 
     @Singleton
     @Provides
-    fun provideApp(): App {
-        return application
+    fun provideApplication(app: App): Application {
+        return app
     }
 
     @Singleton
     @Provides
-    fun provideApplication(): Application {
-        return application
-    }
-
-    @Singleton
-    @Provides
-    fun provideAppContext(): Context {
-        return application.applicationContext
+    fun provideAppContext(app: App): Context {
+        return app.applicationContext
     }
 
     @Singleton

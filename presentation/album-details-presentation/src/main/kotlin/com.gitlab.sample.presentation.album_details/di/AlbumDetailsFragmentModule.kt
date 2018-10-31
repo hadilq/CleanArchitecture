@@ -17,11 +17,12 @@
 package com.gitlab.sample.presentation.album_details.di
 
 import com.gitlab.sample.presentation.album_details.AlbumDetailsFragment
-import com.gitlab.sample.presentation.common.di.BaseComponent
-import dagger.Subcomponent
+import dagger.Module
+import dagger.android.ContributesAndroidInjector
 
-@AlbumDetailsScope
-@Subcomponent(modules = [])
-interface AlbumDetailsSubComponent : BaseComponent {
-    fun inject(albumDetailsFragment: AlbumDetailsFragment)
+@Module
+abstract class AlbumDetailsFragmentModule {
+    @AlbumDetailsScope
+    @ContributesAndroidInjector(modules = [])
+    internal abstract fun get(): AlbumDetailsFragment
 }

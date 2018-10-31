@@ -21,8 +21,9 @@ import com.gitlab.sample.domain.album_details.usecases.GetAlbumDetails
 import com.gitlab.sample.presentation.album_details.R
 import com.gitlab.sample.presentation.common.BaseViewModel
 import com.gitlab.sample.presentation.common.extention.filterTo
+import javax.inject.Inject
 
-class AlbumDetailsViewModel(private val useCase: GetAlbumDetails) : BaseViewModel() {
+class AlbumDetailsViewModel @Inject constructor(private val useCase: GetAlbumDetails) : BaseViewModel() {
 
     // After disabling "Always up to date data" feature of LiveData(see BaseViewModel), because of its
     // downsides(Just imagine multi page GetAlbumViewState), we have to add this variable to keep the data

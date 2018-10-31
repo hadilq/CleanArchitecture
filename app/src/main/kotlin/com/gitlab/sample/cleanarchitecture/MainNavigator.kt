@@ -16,21 +16,17 @@
  * */
 package com.gitlab.sample.cleanarchitecture
 
-import android.annotation.SuppressLint
 import android.support.v4.app.FragmentManager
-import com.gitlab.sample.cleanarchitecture.di.app.AppComponent
 import com.gitlab.sample.presentation.common.BaseFragmentFactory
 import com.gitlab.sample.presentation.common.FragmentType
 import com.gitlab.sample.presentation.common.Navigator
 import javax.inject.Inject
 
-class MainNavigator : Navigator<AppComponent> {
+class MainNavigator @Inject constructor() : Navigator {
     @Inject
     lateinit var factory: BaseFragmentFactory
 
-    @SuppressLint("CommitTransaction")
-    override fun launchFragment(component: AppComponent, fm: FragmentManager) {
-        component.inject(this)
+    override fun launchFragment(fm: FragmentManager) {
         factory.commitFragment(fm.beginTransaction(), factory.create(FragmentType.ALBUMS))
     }
 }

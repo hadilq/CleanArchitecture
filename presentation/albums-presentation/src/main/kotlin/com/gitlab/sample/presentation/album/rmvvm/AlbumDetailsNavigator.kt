@@ -18,17 +18,17 @@ package com.gitlab.sample.presentation.album.rmvvm
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import com.gitlab.sample.presentation.album.di.AlbumsSubComponent
 import com.gitlab.sample.presentation.common.*
 import javax.inject.Inject
 
-class AlbumDetailsNavigator(val albumId: Long) : Navigator<AlbumsSubComponent> {
+class AlbumDetailsNavigator @Inject constructor() : Navigator {
     @Inject
     lateinit var factory: BaseFragmentFactory
 
+    var albumId: Long = 0
+
     @SuppressLint("CommitTransaction")
-    override fun launchFragment(component: AlbumsSubComponent, fragment: BaseFragment) {
-        component.inject(this)
+    override fun launchFragment(fragment: BaseFragment) {
         val details = factory.create(FragmentType.ALBUM_DETAILS)
 
         val bundle = Bundle()
