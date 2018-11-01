@@ -19,20 +19,24 @@ package com.gitlab.sample.presentation.album_details.recycler
 import android.support.v7.widget.RecyclerView
 import android.view.ViewGroup
 import com.gitlab.sample.presentation.album_details.di.AlbumDetailsScope
-import com.gitlab.sample.presentation.common.BaseViewHolder
-import com.gitlab.sample.presentation.common.ViewData
-import com.gitlab.sample.presentation.common.extention.inflate
+import com.gitlab.sample.presentation.album_details.di.viewholder.AlbumViewHolderBridge
+import com.gitlab.sample.presentation.album_details.di.viewholder.AlbumViewHolderFactory
+import com.gitlab.sample.presentation.common.recycler.BaseViewHolder
+import com.gitlab.sample.presentation.common.recycler.ViewData
 import javax.inject.Inject
 
 @AlbumDetailsScope
-class AlbumDetailsAdapter @Inject constructor() : RecyclerView.Adapter<BaseViewHolder<*>>() {
+class AlbumDetailsAdapter @Inject constructor(
+        private val factory: AlbumViewHolderFactory,
+        private val bridge: AlbumViewHolderBridge
+) : RecyclerView.Adapter<BaseViewHolder<*>>() {
 
     private val list = mutableListOf<ViewData>()
     lateinit var onCreateViewHolder: (BaseViewHolder<*>) -> Unit
-    var itemWidth: Int = 0
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<*> {
-        val viewHolder = AlbumPhotoViewHolder(parent.inflate(viewType), itemWidth)
+        bridge.parent = parent
+        val viewHolder = factory.create(AlbumPhotoViewHolder::class.java)
         onCreateViewHolder.invoke(viewHolder)
         return viewHolder
     }
@@ -51,9 +55,5 @@ class AlbumDetailsAdapter @Inject constructor() : RecyclerView.Adapter<BaseViewH
 
     fun addAll(data: List<ViewData>) {
         list.addAll(data)
-    }
-
-    fun isEmpty(): Boolean {
-        return list.isEmpty()
     }
 }

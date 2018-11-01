@@ -14,16 +14,6 @@
  * limitations under the License.
  *
  * */
-package com.gitlab.sample.presentation.album.di
+package com.gitlab.sample.presentation.album_details.di.viewholder
 
-import com.gitlab.sample.presentation.album.AlbumFragment
-import com.gitlab.sample.presentation.album_details.di.viewholder.AlbumsViewHolderModule
-import dagger.Module
-import dagger.android.ContributesAndroidInjector
-
-@Module
-abstract class AlbumsFragmentModule {
-    @AlbumsScope
-    @ContributesAndroidInjector(modules = [AlbumsViewHolderModule::class])
-    internal abstract fun get(): AlbumFragment
-}
+interface AlbumViewHolder

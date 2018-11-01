@@ -14,8 +14,8 @@
  * limitations under the License.
  *
  * */
-package com.gitlab.sample.presentation.common
+package com.gitlab.sample.presentation.album_details.di.viewholder
 
-interface ViewData {
-    fun getType(): Int
+interface AlbumViewHolderFactory {
+    fun <T : AlbumViewHolder> create(clazz: Class<T>): T
 }

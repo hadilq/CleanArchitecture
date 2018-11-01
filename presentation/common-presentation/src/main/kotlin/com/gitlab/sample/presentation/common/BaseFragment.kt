@@ -24,8 +24,12 @@ import android.view.ViewGroup
 import dagger.android.support.DaggerFragment
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
+import javax.inject.Inject
 
 abstract class BaseFragment : DaggerFragment() {
+
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
 
     private val compositeDisposable: CompositeDisposable = CompositeDisposable()
 

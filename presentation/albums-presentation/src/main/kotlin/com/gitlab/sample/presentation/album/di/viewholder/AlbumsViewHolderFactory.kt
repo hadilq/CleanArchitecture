@@ -14,14 +14,8 @@
  * limitations under the License.
  *
  * */
-package com.gitlab.sample.presentation.album_details.di
+package com.gitlab.sample.presentation.album.di.viewholder
 
-import com.gitlab.sample.presentation.album_details.AlbumDetailsFragment
-import com.gitlab.sample.presentation.common.di.BaseComponent
-import dagger.Subcomponent
-
-@AlbumDetailsScope
-@Subcomponent(modules = [])
-interface AlbumDetailsSubComponent : BaseComponent {
-    fun inject(albumDetailsFragment: AlbumDetailsFragment)
+interface AlbumsViewHolderFactory {
+    fun <T : AlbumsViewHolder> create(clazz: Class<T>): T
 }

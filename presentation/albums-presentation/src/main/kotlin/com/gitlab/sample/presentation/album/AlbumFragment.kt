@@ -16,7 +16,6 @@
  * */
 package com.gitlab.sample.presentation.album
 
-import android.arch.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import com.gitlab.sample.presentation.album.recycler.AlbumAdapter
@@ -36,8 +35,6 @@ class AlbumFragment : BaseFragment() {
 
     @Inject
     lateinit var adapter: AlbumAdapter
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
 
     private lateinit var viewModel: AlbumViewModel
 

@@ -18,10 +18,23 @@ package com.gitlab.sample.presentation.album_details.recycler
 
 import android.view.View
 import android.widget.ImageView
-import com.gitlab.sample.presentation.common.BaseViewHolder
+import com.gitlab.sample.presentation.album_details.di.viewholder.AlbumViewHolderBridge
+import com.gitlab.sample.presentation.album_details.di.viewholder.AlbumViewHolder
+import com.gitlab.sample.presentation.common.extention.inflate
 import com.gitlab.sample.presentation.common.extention.loadFromUrl
+import com.gitlab.sample.presentation.common.recycler.BaseViewHolder
+import javax.inject.Inject
 
-class AlbumPhotoViewHolder(view: View, private val itemWidth: Int = 0) : BaseViewHolder<AlbumPhotoViewData>(view) {
+class AlbumPhotoViewHolder(
+        view: View,
+        private val itemWidth: Int
+) : BaseViewHolder<AlbumPhotoViewData>(view), AlbumViewHolder {
+
+    @Inject
+    constructor(bridge: AlbumViewHolderBridge) : this(
+            bridge.parent.inflate(AlbumPhotoViewData.VIEW_TYPE),
+            bridge.itemWidth
+    )
 
     init {
         itemView.layoutParams.height = itemWidth

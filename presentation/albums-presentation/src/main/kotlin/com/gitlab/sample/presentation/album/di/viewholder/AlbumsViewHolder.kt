@@ -14,18 +14,6 @@
  * limitations under the License.
  *
  * */
-package com.gitlab.sample.presentation.album_details.di
+package com.gitlab.sample.presentation.album.di.viewholder
 
-import com.gitlab.sample.presentation.common.di.Injector
-
-interface AlbumDetailsInjector : Injector {
-    fun createComponent(): AlbumDetailsSubComponent
-
-    companion object {
-        var injector: AlbumDetailsInjector? = null
-
-        fun createAlbumsComponent(): AlbumDetailsSubComponent {
-            return injector!!.createComponent()
-        }
-    }
-}
+interface AlbumsViewHolder

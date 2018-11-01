@@ -16,10 +16,10 @@
  * */
 package com.gitlab.sample.presentation.album_details
 
-import android.arch.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.support.v7.widget.StaggeredGridLayoutManager
 import android.util.DisplayMetrics
+import com.gitlab.sample.presentation.album_details.di.viewholder.AlbumViewHolderBridge
 import com.gitlab.sample.presentation.album_details.recycler.AlbumDetailsAdapter
 import com.gitlab.sample.presentation.album_details.recycler.AlbumPhotoViewData
 import com.gitlab.sample.presentation.album_details.rmvvm.AlbumDetailsViewModel
@@ -38,7 +38,7 @@ class AlbumDetailsFragment : BaseFragment() {
     @Inject
     lateinit var adapter: AlbumDetailsAdapter
     @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
+    lateinit var bridge: AlbumViewHolderBridge
 
     private lateinit var viewModel: AlbumDetailsViewModel
 
@@ -69,7 +69,7 @@ class AlbumDetailsFragment : BaseFragment() {
         activity?.apply {
             val displayMetrics = DisplayMetrics()
             windowManager.defaultDisplay.getMetrics(displayMetrics)
-            adapter.itemWidth = displayMetrics.widthPixels / getMaxSpan()
+            bridge.itemWidth = displayMetrics.widthPixels / getMaxSpan()
         } ?: let { /*If reach here log an assertion because it should never happen*/ }
 
         adapter.onCreateViewHolder = { viewHolder ->

@@ -17,12 +17,13 @@
 package com.gitlab.sample.presentation.album_details.di
 
 import com.gitlab.sample.presentation.album_details.AlbumDetailsFragment
+import com.gitlab.sample.presentation.album_details.di.viewholder.AlbumViewHolderModule
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
 @Module
 abstract class AlbumDetailsFragmentModule {
     @AlbumDetailsScope
-    @ContributesAndroidInjector(modules = [])
+    @ContributesAndroidInjector(modules = [AlbumViewHolderModule::class])
     internal abstract fun get(): AlbumDetailsFragment
 }

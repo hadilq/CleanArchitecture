@@ -18,20 +18,25 @@ package com.gitlab.sample.presentation.album.recycler
 
 import android.support.v7.widget.RecyclerView
 import android.view.ViewGroup
+import com.gitlab.sample.presentation.album.di.viewholder.AlbumsViewHolderBridge
 import com.gitlab.sample.presentation.album.di.AlbumsScope
-import com.gitlab.sample.presentation.common.BaseViewHolder
-import com.gitlab.sample.presentation.common.ViewData
-import com.gitlab.sample.presentation.common.extention.inflate
+import com.gitlab.sample.presentation.album.di.viewholder.AlbumsViewHolderFactory
+import com.gitlab.sample.presentation.common.recycler.BaseViewHolder
+import com.gitlab.sample.presentation.common.recycler.ViewData
 import javax.inject.Inject
 
 @AlbumsScope
-class AlbumAdapter @Inject constructor() : RecyclerView.Adapter<BaseViewHolder<*>>() {
+class AlbumAdapter @Inject constructor(
+        private val factory: AlbumsViewHolderFactory,
+        private val bridge: AlbumsViewHolderBridge
+) : RecyclerView.Adapter<BaseViewHolder<*>>() {
 
     private val list = mutableListOf<ViewData>()
     lateinit var onCreateViewHolder: (BaseViewHolder<*>) -> Unit
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<*> {
-        val viewHolder = AlbumViewHolder(parent.inflate(viewType))
+        bridge.parent = parent
+        val viewHolder = factory.create(AlbumViewHolder::class.java)
         onCreateViewHolder.invoke(viewHolder)
         return viewHolder
     }

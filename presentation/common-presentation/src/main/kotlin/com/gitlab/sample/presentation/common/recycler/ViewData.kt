@@ -14,14 +14,8 @@
  * limitations under the License.
  *
  * */
-package com.gitlab.sample.presentation.common
+package com.gitlab.sample.presentation.common.recycler
 
-import android.support.v7.widget.RecyclerView
-import android.view.View
-import io.reactivex.subjects.PublishSubject
-
-abstract class BaseViewHolder<in T : ViewData>(view: View) : RecyclerView.ViewHolder(view) {
-    val actionStream = PublishSubject.create<Action>()
-
-    abstract fun onBind(data: T)
+interface ViewData {
+    fun getType(): Int
 }

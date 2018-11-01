@@ -14,16 +14,15 @@
  * limitations under the License.
  *
  * */
-package com.gitlab.sample.presentation.album.di
+package com.gitlab.sample.presentation.common.recycler
 
-import com.gitlab.sample.presentation.album.AlbumFragment
-import com.gitlab.sample.presentation.album_details.di.viewholder.AlbumsViewHolderModule
-import dagger.Module
-import dagger.android.ContributesAndroidInjector
+import android.support.v7.widget.RecyclerView
+import android.view.View
+import com.gitlab.sample.presentation.common.Action
+import io.reactivex.subjects.PublishSubject
 
-@Module
-abstract class AlbumsFragmentModule {
-    @AlbumsScope
-    @ContributesAndroidInjector(modules = [AlbumsViewHolderModule::class])
-    internal abstract fun get(): AlbumFragment
+abstract class BaseViewHolder<in T : ViewData>(view: View) : RecyclerView.ViewHolder(view) {
+    val actionStream = PublishSubject.create<Action>()
+
+    abstract fun onBind(data: T)
 }

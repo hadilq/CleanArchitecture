@@ -18,11 +18,21 @@ package com.gitlab.sample.presentation.album.recycler
 
 import android.view.View
 import android.widget.TextView
+import com.gitlab.sample.presentation.album.R
+import com.gitlab.sample.presentation.album.di.viewholder.AlbumsViewHolderBridge
+import com.gitlab.sample.presentation.album.di.viewholder.AlbumsViewHolder
 import com.gitlab.sample.presentation.album.rmvvm.AlbumClickedAction
-import com.gitlab.sample.presentation.common.BaseViewHolder
-import  com.gitlab.sample.presentation.album.R
+import com.gitlab.sample.presentation.common.extention.inflate
+import com.gitlab.sample.presentation.common.recycler.BaseViewHolder
+import javax.inject.Inject
 
-class AlbumViewHolder(view: View) : BaseViewHolder<AlbumViewData>(view) {
+class AlbumViewHolder(view: View) : BaseViewHolder<AlbumViewData>(view), AlbumsViewHolder {
+
+    @Inject
+    constructor(bridge: AlbumsViewHolderBridge) : this(
+            bridge.parent.inflate(AlbumViewData.VIEW_TYPE)
+    )
+
     override fun onBind(data: AlbumViewData) {
         (itemView.findViewById(R.id.titleView) as TextView).text = data.entity.title
 
