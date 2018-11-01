@@ -16,13 +16,18 @@
  * */
 package com.gitlab.sample.presentation.album.rmvvm
 
+import android.arch.lifecycle.MutableLiveData
+import android.util.Log
 import com.gitlab.sample.domain.album.entities.AlbumEntity
 import com.gitlab.sample.domain.album.usecases.GetAlbums
 import com.gitlab.sample.presentation.album.R
 import com.gitlab.sample.presentation.common.BaseViewModel
+import com.gitlab.sample.presentation.common.Navigator
 import com.gitlab.sample.presentation.common.di.NavigatorFactory
 import com.gitlab.sample.presentation.common.extention.filterTo
+import com.gitlab.sample.presentation.common.livedata.SingleLiveEvent
 import java.util.concurrent.TimeUnit
+import java.util.concurrent.atomic.AtomicBoolean
 import javax.inject.Inject
 
 class AlbumViewModel @Inject constructor(
@@ -30,38 +35,47 @@ class AlbumViewModel @Inject constructor(
         private val navigatorFactory: NavigatorFactory
 ) : BaseViewModel() {
 
-    // After disabling "Always up to date data" feature of LiveData(see BaseViewModel), because of its
-    // downsides(Just imagine multi page GetAlbumViewState), we have to add this variable to keep the data
-    // on configuration change.
-    val savedAlbums = mutableListOf<AlbumEntity>()
+    val albumViewState = MutableLiveData<AlbumViewState>()
+    val loadingViewState = MutableLiveData<Boolean>()
+    val navigateViewState = SingleLiveEvent<Navigator>()
+
+    private val operated = AtomicBoolean(false)
 
     init {
         // Reactive way to handling View actions
         actionSteam.filterTo(AlbumClickedAction::class.java)
-                .throttleFirst(
-                        1000, TimeUnit.MILLISECONDS
-                ) // Avoid double click(Multi view click) less than one second
-                .subscribe(
-                        ::albumClicked
-                ) { /*If reach here log an assertion because it should never happen*/ }.track()
+                .throttleFirst(1000, TimeUnit.MILLISECONDS) // Avoid double click(Multi view click) less than one second
+                .subscribe(::albumClicked) { /*If reach here log an assertion because it should never happen*/ }.track()
 
         actionSteam.filterTo(GetAlbumAction::class.java)
+                .filter { operated.compareAndSet(false, true) || it.force }
                 .flatMap {
+                    Log.e("AlbumViewModel", "usecase is called")
+
                     useCase.observe()
-                            .doOnSubscribe { viewState.value = LoadingViewState(true) }
-                            .doOnComplete { viewState.value = LoadingViewState(false) }
-                            .doOnError { viewState.value = LoadingViewState(false) }
-                            .doOnDispose { viewState.value = LoadingViewState(false) }
+                            .doOnSubscribe { loadingViewState.value = true }
+                            .doOnComplete { loadingViewState.value = false }
+                            .doOnError { loadingViewState.value = false }
                 }
-                .map { list -> savedAlbums.addAll(list); list }
-                .map { GetAlbumViewState(it) as AlbumViewState }
-                .onErrorReturn { ErrorAlbumViewState(R.string.error_happened, it) }
-                .subscribe { viewState.value = it }.track()
+                .map(::mapAlbums)
+                .onErrorReturn {
+                    val value = albumViewState.value
+                    ErrorAlbumViewState(
+                            R.string.error_happened,
+                            it,
+                            (value as?GetAlbumViewState)?.albums ?: (value as?ErrorAlbumViewState)?.albums
+                    )
+                }
+                .subscribe { albumViewState.value = it }.track()
     }
+
+    private fun mapAlbums(
+            it: List<AlbumEntity>
+    ): AlbumViewState = GetAlbumViewState(it)
 
     private fun albumClicked(clickedAction: AlbumClickedAction) {
         val navigator = navigatorFactory.create(AlbumDetailsNavigator::class.java)
         navigator.albumId = clickedAction.albumId
-        viewState.value = NavigateViewState(navigator)
+        navigateViewState.value = navigator
     }
 }

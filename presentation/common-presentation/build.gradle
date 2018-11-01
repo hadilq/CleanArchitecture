@@ -35,7 +35,6 @@ dependencies {
     implementation applicationDependencies.dagger
     implementation applicationDependencies.daggerAndroid
     implementation applicationDependencies.archComponents
-    implementation applicationDependencies.archComponentsStreams
     implementation applicationDependencies.rxJava
     implementation applicationDependencies.rxAndroid
     implementation applicationDependencies.retrofit

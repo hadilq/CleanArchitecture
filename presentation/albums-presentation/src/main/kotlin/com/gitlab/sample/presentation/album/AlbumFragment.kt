@@ -19,16 +19,16 @@ package com.gitlab.sample.presentation.album
 import android.arch.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
-import android.view.View
 import com.gitlab.sample.presentation.album.recycler.AlbumAdapter
 import com.gitlab.sample.presentation.album.recycler.AlbumViewData
-import com.gitlab.sample.presentation.album.rmvvm.*
+import com.gitlab.sample.presentation.album.rmvvm.AlbumViewModel
+import com.gitlab.sample.presentation.album.rmvvm.ErrorAlbumViewState
+import com.gitlab.sample.presentation.album.rmvvm.GetAlbumAction
+import com.gitlab.sample.presentation.album.rmvvm.GetAlbumViewState
 import com.gitlab.sample.presentation.common.BaseFragment
-import com.gitlab.sample.presentation.common.ViewState
-import com.gitlab.sample.presentation.common.extention.filterTo
+import com.gitlab.sample.presentation.common.Navigator
 import com.gitlab.sample.presentation.common.extention.gone
 import com.gitlab.sample.presentation.common.extention.visible
-import io.reactivex.subjects.PublishSubject
 import kotlinx.android.synthetic.main.albums.*
 import javax.inject.Inject
 
@@ -41,33 +41,26 @@ class AlbumFragment : BaseFragment() {
 
     private lateinit var viewModel: AlbumViewModel
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        viewModel = viewModel(viewModelFactory) {
-            val subject = PublishSubject.create<ViewState>()
-            register(this@AlbumFragment, subject).track()
-
-            // Avoid creating the state machine with "when(state){}" to avoid a big, unreadable block of "when clause"
-            subject.filterTo(GetAlbumViewState::class.java).subscribe(::handleAlbums).track()
-            subject.filterTo(ErrorAlbumViewState::class.java).subscribe(::handleFailure).track()
-            subject.filterTo(LoadingViewState::class.java).subscribe(::handleLoading).track()
-            subject.filterTo(NavigateViewState::class.java).subscribe(::handleNavigate).track()
-        }
-    }
-
     override fun layoutId() = R.layout.albums
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        initView()
-        if (viewModel.savedAlbums.isEmpty()) {
-            getAlbums()
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
+        viewModel = viewModel(viewModelFactory) {
+            albumViewState.observe {
+                when (it) {
+                    is GetAlbumViewState -> handleAlbums(it)
+                    is ErrorAlbumViewState -> handleFailure(it)
+                }
+            }
+            navigateViewState.observe(::handleNavigate)
+            loadingViewState.observe(::handleLoading)
         }
+        initView()
+        getAlbums()
     }
 
     private fun initView() {
-        adapter.addAll(viewModel.savedAlbums.map { AlbumViewData(it) })
         albumsView.layoutManager = LinearLayoutManager(context)
         albumsView.adapter = adapter
         adapter.onCreateViewHolder = { viewHolder ->
@@ -80,7 +73,7 @@ class AlbumFragment : BaseFragment() {
     }
 
     private fun getAlbums() {
-        viewModel.actionSteam.onNext(GetAlbumAction)
+        viewModel.actionSteam.onNext(GetAlbumAction(false))
     }
 
     private fun handleAlbums(viewState: GetAlbumViewState) {
@@ -98,11 +91,11 @@ class AlbumFragment : BaseFragment() {
     private fun handleFailure(viewState: ErrorAlbumViewState) {
         retryLayout.visible()
         errorView.text = getString(viewState.errorMessage)
-        retryView.setOnClickListener { getAlbums() }
+        retryView.setOnClickListener { viewModel.actionSteam.onNext(GetAlbumAction(true)) }
     }
 
-    private fun handleLoading(viewState: LoadingViewState) {
-        if (viewState.loading) {
+    private fun handleLoading(loading: Boolean) {
+        if (loading) {
             progressView.visible()
         } else {
             progressView.gone()
@@ -111,7 +104,7 @@ class AlbumFragment : BaseFragment() {
         emptyView.gone()
     }
 
-    private fun handleNavigate(viewState: NavigateViewState) {
-        viewState.navigator.launchFragment(this)
+    private fun handleNavigate(navigator: Navigator) {
+        navigator.launchFragment(this)
     }
 }

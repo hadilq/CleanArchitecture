@@ -16,35 +16,47 @@
  * */
 package com.gitlab.sample.presentation.album_details.rmvvm
 
+import android.arch.lifecycle.MutableLiveData
 import com.gitlab.sample.domain.album_details.entities.AlbumDetailsEntity
 import com.gitlab.sample.domain.album_details.usecases.GetAlbumDetails
 import com.gitlab.sample.presentation.album_details.R
 import com.gitlab.sample.presentation.common.BaseViewModel
 import com.gitlab.sample.presentation.common.extention.filterTo
+import java.util.concurrent.atomic.AtomicBoolean
 import javax.inject.Inject
 
 class AlbumDetailsViewModel @Inject constructor(private val useCase: GetAlbumDetails) : BaseViewModel() {
 
-    // After disabling "Always up to date data" feature of LiveData(see BaseViewModel), because of its
-    // downsides(Just imagine multi page GetAlbumViewState), we have to add this variable to keep the data
-    // on configuration change.
-    val savedDetails = mutableListOf<AlbumDetailsEntity>()
     var albumId: Long = 0
+
+    val albumDetailsViewState = MutableLiveData<AlbumDetailsViewState>()
+    val loadingViewState = MutableLiveData<Boolean>()
+
+    private val operated = AtomicBoolean(false)
 
     init {
         // Reactive way to handling View actions
         actionSteam.filterTo(GetAlbumDetailsAction::class.java)
-                .flatMap { _ ->
+                .filter { operated.compareAndSet(false, true) || it.force }
+                .flatMap {
                     useCase.observe(albumId)
-                            .doOnSubscribe { viewState.value = LoadingViewState(true) }
-                            .doOnComplete { viewState.value = LoadingViewState(false) }
-                            .doOnError { viewState.value = LoadingViewState(false) }
-                            .doOnDispose { viewState.value = LoadingViewState(false) }
-
+                            .doOnSubscribe { loadingViewState.value = true }
+                            .doOnComplete { loadingViewState.value = false }
+                            .doOnError { loadingViewState.value = false }
                 }
-                .map { list -> savedDetails.addAll(list); list }
-                .map { GetAlbumViewState(it) as AlbumDetailsViewState }
-                .onErrorReturn { ErrorAlbumViewState(R.string.error_happened, it) }
-                .subscribe { viewState.value = it }.track()
+                .map(::mapAlbumDetails)
+                .onErrorReturn {
+                    val value = albumDetailsViewState.value
+                    ErrorAlbumViewState(
+                            R.string.error_happened,
+                            it,
+                            (value as?GetAlbumViewState)?.photos ?: (value as?ErrorAlbumViewState)?.photos
+                    )
+                }
+                .subscribe { albumDetailsViewState.value = it }.track()
     }
+
+    private fun mapAlbumDetails(
+            it: List<AlbumDetailsEntity>
+    ): AlbumDetailsViewState = GetAlbumViewState(it)
 }

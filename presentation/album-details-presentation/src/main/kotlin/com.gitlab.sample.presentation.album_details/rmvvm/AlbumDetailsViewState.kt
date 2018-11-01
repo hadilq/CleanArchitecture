@@ -23,5 +23,6 @@ import com.gitlab.sample.presentation.common.ViewState
 sealed class AlbumDetailsViewState : ViewState
 
 class GetAlbumViewState(val photos: List<AlbumDetailsEntity>) : AlbumDetailsViewState()
-class ErrorAlbumViewState(@StringRes val errorMessage: Int, val error: Throwable) : AlbumDetailsViewState()
-class LoadingViewState(val loading: Boolean) : AlbumDetailsViewState()
+class ErrorAlbumViewState(
+        @StringRes val errorMessage: Int, val error: Throwable, val photos: List<AlbumDetailsEntity>?
+) : AlbumDetailsViewState()

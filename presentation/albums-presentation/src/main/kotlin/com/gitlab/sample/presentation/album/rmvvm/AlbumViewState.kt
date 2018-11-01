@@ -18,12 +18,10 @@ package com.gitlab.sample.presentation.album.rmvvm
 
 import android.support.annotation.StringRes
 import com.gitlab.sample.domain.album.entities.AlbumEntity
-import com.gitlab.sample.presentation.common.Navigator
 import com.gitlab.sample.presentation.common.ViewState
 
 sealed class AlbumViewState : ViewState
 
 class GetAlbumViewState(val albums: List<AlbumEntity>) : AlbumViewState()
-class ErrorAlbumViewState(@StringRes val errorMessage: Int, val error: Throwable) : AlbumViewState()
-class LoadingViewState(val loading: Boolean) : AlbumViewState()
-class NavigateViewState(val navigator: Navigator) : AlbumViewState()
+class ErrorAlbumViewState(@StringRes val errorMessage: Int, val error: Throwable, val albums: List<AlbumEntity>?) :
+        AlbumViewState()

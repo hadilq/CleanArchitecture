@@ -16,9 +16,7 @@
  * */
 package com.gitlab.sample.presentation.common
 
-import android.arch.lifecycle.ViewModel
-import android.arch.lifecycle.ViewModelProvider
-import android.arch.lifecycle.ViewModelProviders
+import android.arch.lifecycle.*
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -33,6 +31,10 @@ abstract class BaseFragment : DaggerFragment() {
 
     protected fun Disposable.track() {
         compositeDisposable.add(this)
+    }
+
+    protected fun <T> LiveData<T>.observe(o: (T) -> Unit) {
+        observe(this@BaseFragment, Observer { o(it!!) })
     }
 
     abstract fun layoutId(): Int

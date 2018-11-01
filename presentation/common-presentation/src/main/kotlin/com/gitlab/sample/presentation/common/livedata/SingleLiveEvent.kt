@@ -14,41 +14,39 @@
  * limitations under the License.
  *
  * */
-package com.gitlab.sample.presentation.common
+package com.gitlab.sample.presentation.common.livedata
 
 import android.arch.lifecycle.LifecycleOwner
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.Observer
 import android.support.annotation.MainThread
-import android.util.Log
-import java.util.concurrent.atomic.AtomicReference
+import java.util.concurrent.CopyOnWriteArraySet
+import java.util.concurrent.atomic.AtomicBoolean
 
-class StreamLiveData<T> : MutableLiveData<T>() {
+class SingleLiveEvent<T> : MutableLiveData<T>() {
 
-    companion object {
-        private const val TAG = "StreamLiveData"
-    }
-
-    private val mPending = AtomicReference<T>(null)
+    private val observers = CopyOnWriteArraySet<ObserverWrapper<T>>()
 
     @MainThread
     override fun observe(owner: LifecycleOwner, observer: Observer<T>) {
+        val wrapper = ObserverWrapper(observer)
+        observers.add(wrapper)
+        super.observe(owner, wrapper)
+    }
 
-        if (hasActiveObservers()) {
-            Log.w(TAG, "Multiple observers registered but only one will be notified of changes.")
-        }
+    override fun removeObservers(owner: LifecycleOwner) {
+        observers.clear()
+        super.removeObservers(owner)
+    }
 
-        // Observe the internal MutableLiveData
-        super.observe(owner, Observer<T> { t ->
-            if (mPending.compareAndSet(t, null)) {
-                observer.onChanged(t)
-            }
-        })
+    override fun removeObserver(observer: Observer<T>) {
+        observers.remove(observer)
+        super.removeObserver(observer)
     }
 
     @MainThread
     override fun setValue(t: T?) {
-        mPending.set(t)
+        observers.forEach { it.newValue() }
         super.setValue(t)
     }
 
@@ -57,6 +55,21 @@ class StreamLiveData<T> : MutableLiveData<T>() {
      */
     @MainThread
     fun call() {
-        this.value = null
+        value = null
+    }
+
+    private class ObserverWrapper<T>(private val observer: Observer<T>) : Observer<T> {
+
+        private val pending = AtomicBoolean(false)
+
+        override fun onChanged(t: T?) {
+            if (pending.compareAndSet(true, false)) {
+                observer.onChanged(t)
+            }
+        }
+
+        fun newValue() {
+            pending.set(true)
+        }
     }
 }

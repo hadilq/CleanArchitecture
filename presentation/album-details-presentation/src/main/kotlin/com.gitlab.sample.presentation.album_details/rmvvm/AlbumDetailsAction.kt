@@ -20,4 +20,4 @@ import com.gitlab.sample.presentation.common.Action
 
 sealed class AlbumDetailsAction : Action
 
-object GetAlbumDetailsAction : AlbumDetailsAction()
+class GetAlbumDetailsAction(val force: Boolean) : AlbumDetailsAction()

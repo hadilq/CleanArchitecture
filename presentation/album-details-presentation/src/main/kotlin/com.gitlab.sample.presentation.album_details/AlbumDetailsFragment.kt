@@ -20,17 +20,16 @@ import android.arch.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.support.v7.widget.StaggeredGridLayoutManager
 import android.util.DisplayMetrics
-import android.view.View
 import com.gitlab.sample.presentation.album_details.recycler.AlbumDetailsAdapter
 import com.gitlab.sample.presentation.album_details.recycler.AlbumPhotoViewData
-import com.gitlab.sample.presentation.album_details.rmvvm.*
+import com.gitlab.sample.presentation.album_details.rmvvm.AlbumDetailsViewModel
+import com.gitlab.sample.presentation.album_details.rmvvm.ErrorAlbumViewState
+import com.gitlab.sample.presentation.album_details.rmvvm.GetAlbumDetailsAction
+import com.gitlab.sample.presentation.album_details.rmvvm.GetAlbumViewState
 import com.gitlab.sample.presentation.common.BaseFragment
 import com.gitlab.sample.presentation.common.BundleKey
-import com.gitlab.sample.presentation.common.ViewState
-import com.gitlab.sample.presentation.common.extention.filterTo
 import com.gitlab.sample.presentation.common.extention.gone
 import com.gitlab.sample.presentation.common.extention.visible
-import io.reactivex.subjects.PublishSubject
 import kotlinx.android.synthetic.main.album_details.*
 import javax.inject.Inject
 
@@ -43,34 +42,27 @@ class AlbumDetailsFragment : BaseFragment() {
 
     private lateinit var viewModel: AlbumDetailsViewModel
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        viewModel = viewModel(viewModelFactory) {
-            val subject = PublishSubject.create<ViewState>()
-            register(this@AlbumDetailsFragment, subject).track()
-
-            // Avoid creating the state machine with "when(state){}" to avoid a big, unreadable block of "when clause"
-            subject.filterTo(GetAlbumViewState::class.java).subscribe(::handleAlbums).track()
-            subject.filterTo(ErrorAlbumViewState::class.java).subscribe(::handleFailure).track()
-            subject.filterTo(LoadingViewState::class.java).subscribe(::handleLoading).track()
-        }
-
-        viewModel.albumId = arguments!!.getLong(BundleKey.ALBUM_ID)
-    }
-
     override fun layoutId() = R.layout.album_details
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        initView()
-        if (viewModel.savedDetails.isEmpty()) {
-            getDetails()
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        viewModel = viewModel(viewModelFactory) {
+            albumId = arguments!!.getLong(BundleKey.ALBUM_ID)
+
+            albumDetailsViewState.observe {
+                when (it) {
+                    is GetAlbumViewState -> handleAlbum(it)
+                    is ErrorAlbumViewState -> handleFailure(it)
+                }
+            }
+            loadingViewState.observe(::handleLoading)
         }
+        initView()
+        getDetails()
     }
 
     private fun initView() {
-        adapter.addAll(viewModel.savedDetails.map { AlbumPhotoViewData(it) })
         detailsView.layoutManager = StaggeredGridLayoutManager(getMaxSpan(), StaggeredGridLayoutManager.VERTICAL)
         detailsView.adapter = adapter
 
@@ -78,9 +70,7 @@ class AlbumDetailsFragment : BaseFragment() {
             val displayMetrics = DisplayMetrics()
             windowManager.defaultDisplay.getMetrics(displayMetrics)
             adapter.itemWidth = displayMetrics.widthPixels / getMaxSpan()
-        } ?: let {
-            /*If reach here log an assertion because it should never happen*/
-        }
+        } ?: let { /*If reach here log an assertion because it should never happen*/ }
 
         adapter.onCreateViewHolder = { viewHolder ->
             // Pipe the View actions to the ViewModel
@@ -96,10 +86,10 @@ class AlbumDetailsFragment : BaseFragment() {
     }
 
     private fun getDetails() {
-        viewModel.actionSteam.onNext(GetAlbumDetailsAction)
+        viewModel.actionSteam.onNext(GetAlbumDetailsAction(false))
     }
 
-    private fun handleAlbums(viewState: GetAlbumViewState) {
+    private fun handleAlbum(viewState: GetAlbumViewState) {
         if (viewState.photos.isEmpty()) {
             emptyView.visible()
             detailsView.gone()
@@ -107,9 +97,7 @@ class AlbumDetailsFragment : BaseFragment() {
             emptyView.gone()
             val count = adapter.itemCount
             adapter.addAll(viewState.photos.map {
-                AlbumPhotoViewData(
-                        it
-                )
+                AlbumPhotoViewData(it)
             })
             adapter.notifyItemRangeInserted(count, viewState.photos.size)
         }
@@ -118,11 +106,11 @@ class AlbumDetailsFragment : BaseFragment() {
     private fun handleFailure(viewState: ErrorAlbumViewState) {
         retryLayout.visible()
         errorView.text = getString(viewState.errorMessage)
-        retryView.setOnClickListener { getDetails() }
+        retryView.setOnClickListener { viewModel.actionSteam.onNext(GetAlbumDetailsAction(true)) }
     }
 
-    private fun handleLoading(viewState: LoadingViewState) {
-        if (viewState.loading) {
+    private fun handleLoading(loading: Boolean) {
+        if (loading) {
             progressView.visible()
         } else {
             progressView.gone()
