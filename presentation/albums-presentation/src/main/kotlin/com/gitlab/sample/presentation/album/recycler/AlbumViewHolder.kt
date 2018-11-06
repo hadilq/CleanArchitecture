@@ -36,8 +36,10 @@ class AlbumViewHolder(view: View) : BaseViewHolder<AlbumViewData>(view), AlbumsV
     override fun onBind(data: AlbumViewData) {
         (itemView.findViewById(R.id.titleView) as TextView).text = data.entity.title
 
-        itemView.setOnClickListener { actionStream.onNext(
-                AlbumClickedAction(data.entity.id)
-        ) }
+        itemView.setOnClickListener {
+            actionStream.onNext(
+                    AlbumClickedAction(data.entity.id)
+            )
+        }
     }
 }

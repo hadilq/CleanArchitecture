@@ -36,7 +36,7 @@ class AlbumDetailsViewModel @Inject constructor(private val useCase: GetAlbumDet
 
     init {
         // Reactive way to handling View actions
-        actionSteam.filterTo(GetAlbumDetailsAction::class.java)
+        actionStream.filterTo(GetAlbumDetailsAction::class.java)
                 .filter { operated.compareAndSet(false, true) || it.force }
                 .flatMap {
                     useCase.observe(albumId)

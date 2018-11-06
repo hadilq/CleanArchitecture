@@ -62,7 +62,7 @@ class AlbumFragment : BaseFragment() {
         albumsView.adapter = adapter
         adapter.onCreateViewHolder = { viewHolder ->
             // Pipe the View actions to the ViewModel
-            viewHolder.actionStream.subscribe(viewModel.actionSteam::onNext).track()
+            viewHolder.actionStream.subscribe(viewModel.actionStream::onNext).track()
         }
         emptyView.gone()
         retryLayout.gone()
@@ -70,7 +70,7 @@ class AlbumFragment : BaseFragment() {
     }
 
     private fun getAlbums() {
-        viewModel.actionSteam.onNext(GetAlbumAction(false))
+        viewModel.actionStream.onNext(GetAlbumAction(false))
     }
 
     private fun handleAlbums(viewState: GetAlbumViewState) {
@@ -88,7 +88,7 @@ class AlbumFragment : BaseFragment() {
     private fun handleFailure(viewState: ErrorAlbumViewState) {
         retryLayout.visible()
         errorView.text = getString(viewState.errorMessage)
-        retryView.setOnClickListener { viewModel.actionSteam.onNext(GetAlbumAction(true)) }
+        retryView.setOnClickListener { viewModel.actionStream.onNext(GetAlbumAction(true)) }
     }
 
     private fun handleLoading(loading: Boolean) {

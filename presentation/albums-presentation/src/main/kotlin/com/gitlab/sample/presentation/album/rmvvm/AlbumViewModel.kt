@@ -43,11 +43,11 @@ class AlbumViewModel @Inject constructor(
 
     init {
         // Reactive way to handling View actions
-        actionSteam.filterTo(AlbumClickedAction::class.java)
+        actionStream.filterTo(AlbumClickedAction::class.java)
                 .throttleFirst(1000, TimeUnit.MILLISECONDS) // Avoid double click(Multi view click) less than one second
                 .subscribe(::albumClicked) { /*If reach here log an assertion because it should never happen*/ }.track()
 
-        actionSteam.filterTo(GetAlbumAction::class.java)
+        actionStream.filterTo(GetAlbumAction::class.java)
                 .filter { operated.compareAndSet(false, true) || it.force }
                 .flatMap {
                     Log.e("AlbumViewModel", "usecase is called")

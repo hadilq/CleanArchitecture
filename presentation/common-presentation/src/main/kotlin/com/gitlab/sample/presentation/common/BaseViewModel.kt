@@ -22,7 +22,7 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.subjects.PublishSubject
 
 abstract class BaseViewModel : ViewModel() {
-    val actionSteam = PublishSubject.create<Action>()
+    val actionStream = PublishSubject.create<Action>()
     private val compositeDisposable: CompositeDisposable = CompositeDisposable()
 
     protected fun Disposable.track() {
