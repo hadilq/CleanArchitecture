@@ -17,36 +17,51 @@
 package com.gitlab.sample.presentation.common.livedata
 
 import android.arch.lifecycle.LifecycleOwner
-import android.arch.lifecycle.MutableLiveData
+import android.arch.lifecycle.MediatorLiveData
 import android.arch.lifecycle.Observer
 import android.support.annotation.MainThread
+import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.CopyOnWriteArraySet
 import java.util.concurrent.atomic.AtomicBoolean
 
-class SingleLiveEvent<T> : MutableLiveData<T>() {
+class SingleLiveEvent<T> : MediatorLiveData<T>() {
 
-    private val observers = CopyOnWriteArraySet<ObserverWrapper<T>>()
+    private val observers = ConcurrentHashMap<LifecycleOwner, MutableSet<ObserverWrapper<T>>>()
 
     @MainThread
     override fun observe(owner: LifecycleOwner, observer: Observer<T>) {
         val wrapper = ObserverWrapper(observer)
-        observers.add(wrapper)
+        val set = observers[owner]
+        set?.let {
+            set.add(wrapper)
+        } ?: run {
+            val newSet = CopyOnWriteArraySet<ObserverWrapper<T>>()
+            newSet.add(wrapper)
+            observers[owner] = newSet
+        }
         super.observe(owner, wrapper)
     }
 
     override fun removeObservers(owner: LifecycleOwner) {
-        observers.clear()
+        observers.remove(owner)
         super.removeObservers(owner)
     }
 
     override fun removeObserver(observer: Observer<T>) {
-        observers.remove(observer)
+        observers.forEach {
+            if (it.value.remove(observer)) {
+                if (it.value.isEmpty()) {
+                    observers.remove(it.key)
+                }
+                return@forEach
+            }
+        }
         super.removeObserver(observer)
     }
 
     @MainThread
     override fun setValue(t: T?) {
-        observers.forEach { it.newValue() }
+        observers.forEach { it.value.forEach { wrapper -> wrapper.newValue() } }
         super.setValue(t)
     }
 
