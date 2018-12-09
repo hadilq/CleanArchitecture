@@ -20,8 +20,8 @@ import android.arch.lifecycle.LifecycleOwner
 import android.arch.lifecycle.MediatorLiveData
 import android.arch.lifecycle.Observer
 import android.support.annotation.MainThread
+import java.util.*
 import java.util.concurrent.ConcurrentHashMap
-import java.util.concurrent.CopyOnWriteArraySet
 import java.util.concurrent.atomic.AtomicBoolean
 
 class SingleLiveEvent<T> : MediatorLiveData<T>() {
@@ -32,10 +32,10 @@ class SingleLiveEvent<T> : MediatorLiveData<T>() {
     override fun observe(owner: LifecycleOwner, observer: Observer<T>) {
         val wrapper = ObserverWrapper(observer)
         val set = observers[owner]
-        set?.let {
-            set.add(wrapper)
+        set?.apply {
+            add(wrapper)
         } ?: run {
-            val newSet = CopyOnWriteArraySet<ObserverWrapper<T>>()
+            val newSet = Collections.newSetFromMap(ConcurrentHashMap<ObserverWrapper<T>, Boolean>())
             newSet.add(wrapper)
             observers[owner] = newSet
         }
