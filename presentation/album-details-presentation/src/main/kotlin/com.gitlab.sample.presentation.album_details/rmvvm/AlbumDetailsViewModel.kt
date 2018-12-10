@@ -16,12 +16,13 @@
  * */
 package com.gitlab.sample.presentation.album_details.rmvvm
 
-import android.arch.lifecycle.MutableLiveData
 import com.gitlab.sample.domain.album_details.entities.AlbumDetailsEntity
 import com.gitlab.sample.domain.album_details.usecases.GetAlbumDetails
 import com.gitlab.sample.presentation.album_details.R
 import com.gitlab.sample.presentation.common.BaseViewModel
 import com.gitlab.sample.presentation.common.extention.filterTo
+import io.reactivex.Flowable
+import io.reactivex.processors.BehaviorProcessor
 import java.util.concurrent.atomic.AtomicBoolean
 import javax.inject.Inject
 
@@ -29,8 +30,8 @@ class AlbumDetailsViewModel @Inject constructor(private val useCase: GetAlbumDet
 
     var albumId: Long = 0
 
-    val albumDetailsViewState = MutableLiveData<AlbumDetailsViewState>()
-    val loadingViewState = MutableLiveData<Boolean>()
+    private val albumDetailsViewState = BehaviorProcessor.create<AlbumDetailsViewState>()
+    private val loadingViewState = BehaviorProcessor.create<Boolean>()
 
     private val operated = AtomicBoolean(false)
 
@@ -40,9 +41,9 @@ class AlbumDetailsViewModel @Inject constructor(private val useCase: GetAlbumDet
                 .filter { operated.compareAndSet(false, true) || it.force }
                 .flatMap {
                     useCase.observe(albumId)
-                            .doOnSubscribe { loadingViewState.value = true }
-                            .doOnComplete { loadingViewState.value = false }
-                            .doOnError { loadingViewState.value = false }
+                            .doOnSubscribe { loadingViewState.onNext(true) }
+                            .doOnComplete { loadingViewState.onNext(false) }
+                            .doOnError { loadingViewState.onNext(false) }
                 }
                 .map(::mapAlbumDetails)
                 .onErrorReturn {
@@ -53,8 +54,11 @@ class AlbumDetailsViewModel @Inject constructor(private val useCase: GetAlbumDet
                             (value as?GetAlbumViewState)?.photos ?: (value as?ErrorAlbumViewState)?.photos
                     )
                 }
-                .subscribe { albumDetailsViewState.value = it }.track()
+                .subscribe { albumDetailsViewState.onNext(it) }.track()
     }
+
+    fun albumDetailsViewState(): Flowable<AlbumDetailsViewState> = albumDetailsViewState.hide()
+    fun loadingViewState(): Flowable<Boolean> = loadingViewState.hide()
 
     private fun mapAlbumDetails(
             it: List<AlbumDetailsEntity>

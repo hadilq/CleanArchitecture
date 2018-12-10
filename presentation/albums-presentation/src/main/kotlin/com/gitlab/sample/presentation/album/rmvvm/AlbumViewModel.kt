@@ -16,7 +16,6 @@
  * */
 package com.gitlab.sample.presentation.album.rmvvm
 
-import android.arch.lifecycle.MutableLiveData
 import android.util.Log
 import com.gitlab.sample.domain.album.entities.AlbumEntity
 import com.gitlab.sample.domain.album.usecases.GetAlbums
@@ -25,7 +24,9 @@ import com.gitlab.sample.presentation.common.BaseViewModel
 import com.gitlab.sample.presentation.common.Navigator
 import com.gitlab.sample.presentation.common.di.NavigatorFactory
 import com.gitlab.sample.presentation.common.extention.filterTo
-import com.gitlab.sample.presentation.common.livedata.SingleLiveEvent
+import io.reactivex.Flowable
+import io.reactivex.processors.BehaviorProcessor
+import io.reactivex.processors.PublishProcessor
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicBoolean
 import javax.inject.Inject
@@ -35,9 +36,9 @@ class AlbumViewModel @Inject constructor(
         private val navigatorFactory: NavigatorFactory
 ) : BaseViewModel() {
 
-    val albumViewState = MutableLiveData<AlbumViewState>()
-    val loadingViewState = MutableLiveData<Boolean>()
-    val navigateViewState = SingleLiveEvent<Navigator>()
+    private val navigateViewState = PublishProcessor.create<Navigator>()
+    private val loadingViewState = BehaviorProcessor.create<Boolean>()
+    private val albumViewState = BehaviorProcessor.create<AlbumViewState>()
 
     private val operated = AtomicBoolean(false)
 
@@ -53,9 +54,9 @@ class AlbumViewModel @Inject constructor(
                     Log.e("AlbumViewModel", "usecase is called")
 
                     useCase.observe()
-                            .doOnSubscribe { loadingViewState.value = true }
-                            .doOnComplete { loadingViewState.value = false }
-                            .doOnError { loadingViewState.value = false }
+                            .doOnSubscribe { loadingViewState.onNext(true) }
+                            .doOnComplete { loadingViewState.onNext(false) }
+                            .doOnError { loadingViewState.onNext(false) }
                 }
                 .map(::mapAlbums)
                 .onErrorReturn {
@@ -66,8 +67,12 @@ class AlbumViewModel @Inject constructor(
                             (value as?GetAlbumViewState)?.albums ?: (value as?ErrorAlbumViewState)?.albums
                     )
                 }
-                .subscribe { albumViewState.value = it }.track()
+                .subscribe { albumViewState.onNext(it) }.track()
     }
+
+    fun loadingViewState(): Flowable<Boolean> = loadingViewState.hide()
+    fun albumViewState(): Flowable<AlbumViewState> = albumViewState.hide()
+    fun navigateViewState(): Flowable<Navigator> = navigateViewState.hide()
 
     private fun mapAlbums(
             it: List<AlbumEntity>
@@ -76,6 +81,6 @@ class AlbumViewModel @Inject constructor(
     private fun albumClicked(clickedAction: AlbumClickedAction) {
         val navigator = navigatorFactory.create(AlbumDetailsNavigator::class.java)
         navigator.albumId = clickedAction.albumId
-        navigateViewState.value = navigator
+        navigateViewState.onNext(navigator)
     }
 }

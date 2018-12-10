@@ -50,13 +50,13 @@ class AlbumDetailsFragment : BaseFragment() {
         viewModel = viewModel(viewModelFactory) {
             albumId = arguments!!.getLong(BundleKey.ALBUM_ID)
 
-            albumDetailsViewState.observe {
+            albumDetailsViewState().observe {
                 when (it) {
                     is GetAlbumViewState -> handleAlbum(it)
                     is ErrorAlbumViewState -> handleFailure(it)
                 }
             }
-            loadingViewState.observe(::handleLoading)
+            loadingViewState().observe(::handleLoading)
         }
         initView()
         getDetails()

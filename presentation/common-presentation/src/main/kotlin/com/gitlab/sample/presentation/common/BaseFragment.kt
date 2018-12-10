@@ -22,6 +22,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import dagger.android.support.DaggerFragment
+import io.reactivex.Flowable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import javax.inject.Inject
@@ -37,8 +38,8 @@ abstract class BaseFragment : DaggerFragment() {
         compositeDisposable.add(this)
     }
 
-    protected fun <T> LiveData<T>.observe(o: (T) -> Unit) {
-        observe(this@BaseFragment, Observer { o(it!!) })
+    protected fun <T> Flowable<T>.observe(o: (T) -> Unit) {
+        RxLifecycleHandler(this@BaseFragment, this, o)
     }
 
     abstract fun layoutId(): Int

@@ -44,14 +44,14 @@ class AlbumFragment : BaseFragment() {
         super.onActivityCreated(savedInstanceState)
 
         viewModel = viewModel(viewModelFactory) {
-            albumViewState.observe {
+            albumViewState().observe {
                 when (it) {
                     is GetAlbumViewState -> handleAlbums(it)
                     is ErrorAlbumViewState -> handleFailure(it)
                 }
             }
-            navigateViewState.observe(::handleNavigate)
-            loadingViewState.observe(::handleLoading)
+            navigateViewState().observe(::handleNavigate)
+            loadingViewState().observe(::handleLoading)
         }
         initView()
         getAlbums()
