@@ -17,16 +17,13 @@
 package com.gitlab.sample.cleanarchitecture
 
 import com.gitlab.sample.cleanarchitecture.di.app.DaggerAppComponent
-import com.gitlab.sample.data.common.di.NetworkModule
 import dagger.android.AndroidInjector
 import dagger.android.support.DaggerApplication
 
 
 class App : DaggerApplication() {
 
-    private val applicationInjector = DaggerAppComponent.builder().application(this)
-            .networkModule(NetworkModule("https://jsonplaceholder.typicode.com/", "api key"))
-            .build()
+    private val applicationInjector by lazy { DaggerAppComponent.builder().create(this) }
 
     override fun applicationInjector(): AndroidInjector<out DaggerApplication> = applicationInjector
 
