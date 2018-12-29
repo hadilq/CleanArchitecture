@@ -16,13 +16,13 @@
  * */
 package com.gitlab.sample.presentation.common.recycler
 
-import android.support.v7.widget.RecyclerView
-import android.view.View
-import com.gitlab.sample.presentation.common.Action
-import io.reactivex.subjects.PublishSubject
+import android.arch.paging.PagedListAdapter
+import android.support.v7.util.DiffUtil
 
-abstract class BaseViewHolder<in T : RecyclerState>(view: View) : RecyclerView.ViewHolder(view) {
-    val actionStream = PublishSubject.create<Action>()
+abstract class BaseAdapter(diff: DiffUtil.ItemCallback<RecyclerState>) :
+        PagedListAdapter<RecyclerState, BaseViewHolder<*>>(diff) {
 
-    abstract fun bindTo(data: T)
+    override fun getItemViewType(position: Int): Int {
+        return getItem(position)?.getType() ?: 0
+    }
 }

@@ -18,12 +18,11 @@ package com.gitlab.sample.presentation.album.recycler
 
 import com.gitlab.sample.domain.album.entities.AlbumEntity
 import com.gitlab.sample.presentation.album.R
-import com.gitlab.sample.presentation.common.recycler.ViewData
+import com.gitlab.sample.presentation.common.recycler.RecyclerState
 
-data class AlbumViewData(val entity: AlbumEntity) : ViewData {
-    override fun getType(): Int {
-        return VIEW_TYPE
-    }
+data class AlbumRecyclerState(val album: AlbumEntity) : RecyclerState {
+
+    override fun getType(): Int = VIEW_TYPE
 
     companion object {
         val VIEW_TYPE = R.layout.album

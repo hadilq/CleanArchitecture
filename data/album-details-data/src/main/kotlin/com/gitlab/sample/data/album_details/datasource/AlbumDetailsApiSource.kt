@@ -16,18 +16,29 @@
  * */
 package com.gitlab.sample.data.album_details.datasource
 
+import android.util.Log
 import com.gitlab.sample.data.album_details.extensions.map
 import com.gitlab.sample.data.common.api.Api
 import com.gitlab.sample.data.common.api.entities.PhotoDto
-import com.gitlab.sample.domain.album_details.entities.AlbumDetailsEntity
+import com.gitlab.sample.data.common.api.entities.PhotosDto
+import com.gitlab.sample.domain.album_details.entities.AlbumsDetailsEntity
 import io.reactivex.Observable
+import io.reactivex.Single
 
 class AlbumDetailsApiSource(private val api: Api) : AlbumDetailsApiDataSource {
 
-    override fun getAlbumDetails(albumId: Long): Observable<List<AlbumDetailsEntity>> = api.getPhotos()
-            .toObservable()
-            .flatMap { Observable.fromIterable(it) }
-            .filter { it.albumId == albumId }
-            .toList().toObservable()
-            .map { it.map(PhotoDto::map) }
+    override fun getAlbumDetails(albumId: Long, offset: Int, limit: Int): Single<AlbumsDetailsEntity> =
+            api.getPhotos()
+                    .toObservable()
+                    .flatMap { Observable.fromIterable(it) }
+                    .filter { it.albumId == albumId }
+                    .toList()
+                    .map {
+                        PhotosDto(
+                                it.subList(Math.min(offset, it.size), Math.min(offset + limit, it.size)),
+                                it.size
+                        )
+                    }
+                    .map { Log.d("AlbumDetailsApiSource", "list: $offset, $limit: $it"); it }
+                    .map { AlbumsDetailsEntity(it.photos.map(PhotoDto::map), it.totalCount) }
 }

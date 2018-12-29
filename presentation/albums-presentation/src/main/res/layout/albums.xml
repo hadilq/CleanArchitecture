@@ -35,9 +35,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center"
+    android:adjustViewBounds="true"
     android:src="@drawable/rick_and_morty"
     android:visibility="gone"
-    android:scaleType="center"
+    android:scaleType="centerInside"
     android:paddingBottom="160dp"
   />
 
@@ -49,34 +50,4 @@
     android:indeterminateOnly="true"
     android:indeterminateTint="@color/colorSecondary"
   />
-
-  <LinearLayout
-    android:id="@+id/retryLayout"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:layout_gravity="center">
-
-    <TextView
-      android:id="@+id/errorView"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_gravity="center_horizontal"
-      android:textColor="@color/font"
-      android:layout_marginRight="100dp"
-      android:layout_marginLeft="100dp"
-      android:layout_marginBottom="10dp"
-    />
-
-    <Button
-      android:id="@+id/retryView"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_gravity="center_horizontal"
-      android:padding="10dp"
-      android:text="@string/retry"
-    />
-
-  </LinearLayout>
-
 </android.support.design.widget.CoordinatorLayout>

@@ -25,7 +25,6 @@ import com.gitlab.sample.data.common.api.Api
 import com.gitlab.sample.data.common.db.dao.AlbumDao
 import com.gitlab.sample.domain.album.repositories.AlbumsRepository
 import com.gitlab.sample.domain.album.usecases.GetAlbums
-import com.gitlab.sample.presentation.common.ASyncTransformer
 import dagger.Module
 import dagger.Provides
 
@@ -54,7 +53,7 @@ class AlbumsModule {
     fun provideUseCase(
             repository: AlbumsRepository
     ): GetAlbums {
-        return GetAlbums(ASyncTransformer(), repository)
+        return GetAlbums(repository)
     }
 
 }

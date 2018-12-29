@@ -16,49 +16,91 @@
  * */
 package com.gitlab.sample.presentation.album.recycler
 
-import android.support.v7.widget.RecyclerView
+import android.support.v7.util.DiffUtil
+import android.util.Log
 import android.view.ViewGroup
-import com.gitlab.sample.presentation.album.di.viewholder.AlbumsViewHolderBridge
 import com.gitlab.sample.presentation.album.di.AlbumsScope
+import com.gitlab.sample.presentation.album.di.viewholder.AlbumsViewHolderBridge
 import com.gitlab.sample.presentation.album.di.viewholder.AlbumsViewHolderFactory
+import com.gitlab.sample.presentation.common.recycler.BaseAdapter
 import com.gitlab.sample.presentation.common.recycler.BaseViewHolder
-import com.gitlab.sample.presentation.common.recycler.ViewData
+import com.gitlab.sample.presentation.common.recycler.RecyclerState
 import javax.inject.Inject
 
 @AlbumsScope
 class AlbumAdapter @Inject constructor(
         private val factory: AlbumsViewHolderFactory,
         private val bridge: AlbumsViewHolderBridge
-) : RecyclerView.Adapter<BaseViewHolder<*>>() {
+) : BaseAdapter(ALBUM_DIFF) {
 
-    private val list = mutableListOf<ViewData>()
     lateinit var onCreateViewHolder: (BaseViewHolder<*>) -> Unit
+    var totalCount: Int = 0
+        set(value) {
+            field = value
+            if (endOfList()) {
+                notifyDataSetChanged()
+            }
+        }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<*> {
         bridge.parent = parent
-        val viewHolder = factory.create(AlbumViewHolder::class.java)
+        val viewHolder: BaseViewHolder<*> = when (viewType) {
+            AlbumRecyclerState.VIEW_TYPE -> factory.create(AlbumViewHolder::class.java)
+            else -> factory.create(LoadingViewHolder::class.java)
+        }
         onCreateViewHolder.invoke(viewHolder)
         return viewHolder
     }
 
     override fun onBindViewHolder(holder: BaseViewHolder<*>, position: Int) {
-        (holder as AlbumViewHolder).onBind(list[position] as AlbumViewData)
+        Log.d("AlbumAdapter ", "onBindViewHolder position: $position")
+        val item = getItem(position)
+        if (item == null) {
+            // Placeholders are disabled so it never happen
+        } else {
+            when (item.getType()) {
+                AlbumRecyclerState.VIEW_TYPE -> (holder as AlbumViewHolder).bindTo(item as AlbumRecyclerState)
+                else -> (holder as LoadingViewHolder).bindTo(item as LoadingRecyclerState)
+            }
+        }
+    }
+
+    private fun endOfList() = totalCount <= super.getItemCount()
+
+    override fun getItemCount(): Int {
+        val itemCount = super.getItemCount()
+        return if (itemCount == 0) 0 else itemCount + if (endOfList()) 0 else 1
     }
 
     override fun getItemViewType(position: Int): Int {
-        return list[position].getType()
+        val itemCount = itemCount
+        if (itemCount != 0 && position == itemCount - 1 && !endOfList()) {
+            return LoadingRecyclerState.VIEW_TYPE
+        }
+        return super.getItemViewType(position)
     }
 
-    override fun getItemCount(): Int {
-        return list.size
+    override fun getItem(position: Int): RecyclerState? {
+        val itemCount = itemCount
+        if (itemCount != 0 && position == itemCount - 1 && !endOfList()) {
+            return LoadingRecyclerState()
+        }
+        return super.getItem(position)
     }
 
-    fun addAll(data: List<ViewData>) {
-        list.addAll(data)
-    }
+    companion object {
+        val ALBUM_DIFF = object : DiffUtil.ItemCallback<RecyclerState>() {
 
-    fun isEmpty(): Boolean {
-        return list.isEmpty()
-    }
+            override fun areItemsTheSame(oldItem: RecyclerState, newItem: RecyclerState): Boolean {
+                return oldItem.getType() == newItem.getType() &&
+                        when (newItem.getType()) {
+                            AlbumRecyclerState.VIEW_TYPE -> (oldItem as AlbumRecyclerState).album.id == (newItem as AlbumRecyclerState).album.id
+                            else -> false
+                        }
+            }
 
+            override fun areContentsTheSame(oldItem: RecyclerState, newItem: RecyclerState): Boolean =
+                    oldItem == newItem
+        }
+    }
 }

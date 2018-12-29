@@ -19,13 +19,11 @@ package com.gitlab.sample.data.album.datasource
 import com.gitlab.sample.data.album.extensions.map
 import com.gitlab.sample.data.common.api.Api
 import com.gitlab.sample.data.common.api.entities.AlbumDto
-import com.gitlab.sample.domain.album.entities.AlbumEntity
-import io.reactivex.Observable
+import com.gitlab.sample.domain.album.entities.AlbumsEntity
+import io.reactivex.Single
 
 class AlbumsApiSource(private val api: Api) : AlbumsApiDataSource {
 
-    override fun getAlbums(): Observable<List<AlbumEntity>> = api.getAlbums()
-            .toObservable()
-            .map { it.map(AlbumDto::map) }
-
+    override fun getAlbums(offset: Int, limit: Int): Single<AlbumsEntity> = api.getAlbums(offset, limit)
+            .map { AlbumsEntity(it.map(AlbumDto::map), /* Hard coded in the sample app. Don't do this in product. */100) }
 }

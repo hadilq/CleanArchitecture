@@ -14,15 +14,8 @@
  * limitations under the License.
  *
  * */
-package com.gitlab.sample.presentation.common.recycler
+package com.gitlab.sample.domain.common
 
-import android.support.v7.widget.RecyclerView
-import android.view.View
-import com.gitlab.sample.presentation.common.Action
-import io.reactivex.subjects.PublishSubject
+import android.arch.paging.DataSource
 
-abstract class BaseViewHolder<in T : RecyclerState>(view: View) : RecyclerView.ViewHolder(view) {
-    val actionStream = PublishSubject.create<Action>()
-
-    abstract fun bindTo(data: T)
-}
+abstract class DataSourceFactory<Key, Value>(var totalCount: Int) : DataSource.Factory<Key, Value>()

@@ -24,6 +24,8 @@ dependencies {
 
     implementation applicationDependencies.kotlin
     implementation applicationDependencies.supportCompat
+    implementation applicationDependencies.paging
+    implementation applicationDependencies.picasso
     implementation applicationDependencies.dagger
     implementation applicationDependencies.rxJava
     implementation applicationDependencies.retrofit

@@ -16,20 +16,44 @@
  * */
 package com.gitlab.sample.data.common.db.dao
 
-import com.gitlab.sample.presentation.album.entities.AlbumData
+import android.arch.paging.DataSource
 import com.gitlab.sample.data.common.db.Database
+import com.gitlab.sample.data.common.db.datasource.LimitOffsetDataSource
+import com.gitlab.sample.presentation.album.entities.AlbumData
+import com.gitlab.sample.presentation.album.entities.AlbumData_
 import io.objectbox.Box
 import io.objectbox.kotlin.boxFor
-import io.reactivex.Observable
+import io.objectbox.reactive.DataSubscription
+import java.util.concurrent.atomic.AtomicInteger
 
 class AlbumDao(database: Database) {
 
     private var dao: Box<AlbumData> = database.boxStore.boxFor()
 
-    fun getAlbums(): Observable<List<AlbumData>> = Observable.fromCallable { dao.all }
-
-    fun saveAlbums(albums: List<AlbumData>) = dao.put(albums)
-
+    fun saveAlbums(albums: List<AlbumData>) {
+        albums.forEach {
+            dao.query().equal(AlbumData_.id, it.id).build().findFirst()?.apply {
+                it._id = _id
+            }
+        }
+        dao.put(albums)
+    }
 
     fun clear() = dao.removeAll()
+
+    fun count(): Int = dao.count().toInt()
+
+    fun getDataSourceFactory(): DataSource.Factory<Int, AlbumData> = object : DataSource.Factory<Int, AlbumData>() {
+
+        private val dataHashCode = AtomicInteger(0)
+        private var subscription: DataSubscription? = null
+
+        override fun create(): DataSource<Int, AlbumData> {
+            subscription?.apply { cancel() }
+            val query = dao.query().build()
+            val dataSource = LimitOffsetDataSource(query, dataHashCode)
+            subscription = query.subscribe().weak().observer(dataSource)
+            return dataSource
+        }
+    }
 }

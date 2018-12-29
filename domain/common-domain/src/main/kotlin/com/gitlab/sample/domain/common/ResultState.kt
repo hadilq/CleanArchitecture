@@ -14,15 +14,19 @@
  * limitations under the License.
  *
  * */
-package com.gitlab.sample.presentation.common.recycler
+package com.gitlab.sample.domain.common
 
-import android.support.v7.widget.RecyclerView
-import android.view.View
-import com.gitlab.sample.presentation.common.Action
-import io.reactivex.subjects.PublishSubject
+import android.arch.paging.DataSource
+import android.arch.paging.PagedList
+import io.reactivex.Flowable
 
-abstract class BaseViewHolder<in T : RecyclerState>(view: View) : RecyclerView.ViewHolder(view) {
-    val actionStream = PublishSubject.create<Action>()
+data class ResultState(
+        val stateStream: Flowable<State>,
+        val factory: DataSource.Factory<Int, Entity>,
+        val boundaryCallback: PagedList.BoundaryCallback<Entity>
+)
 
-    abstract fun bindTo(data: T)
-}
+sealed class State
+data class LoadingState(val loading: Boolean) : State()
+data class TotalCountState(val totalCount: Int) : State()
+data class ErrorState(val throwable: Throwable) : State()

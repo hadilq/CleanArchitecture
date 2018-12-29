@@ -17,32 +17,18 @@
 package com.gitlab.sample.presentation.album.recycler
 
 import android.view.View
-import com.gitlab.sample.presentation.album.R
 import com.gitlab.sample.presentation.album.di.viewholder.AlbumsViewHolder
 import com.gitlab.sample.presentation.album.di.viewholder.AlbumsViewHolderBridge
-import com.gitlab.sample.presentation.album.rmvvm.AlbumClickedAction
 import com.gitlab.sample.presentation.common.extention.inflate
 import com.gitlab.sample.presentation.common.recycler.BaseViewHolder
-import kotlinx.android.synthetic.main.album.view.*
 import javax.inject.Inject
 
-class AlbumViewHolder(view: View) : BaseViewHolder<AlbumRecyclerState>(view), AlbumsViewHolder {
-
-    private var data: AlbumRecyclerState? = null
+class LoadingViewHolder(view: View) : BaseViewHolder<LoadingRecyclerState>(view), AlbumsViewHolder {
 
     @Inject
     constructor(bridge: AlbumsViewHolderBridge) : this(
-            bridge.parent.inflate(R.layout.album)
+            bridge.parent.inflate(LoadingRecyclerState.VIEW_TYPE)
     )
 
-    init {
-        itemView.setOnClickListener {
-            data?.album?.apply { actionStream.onNext(AlbumClickedAction(id)) }
-        }
-    }
-
-    override fun bindTo(data: AlbumRecyclerState) {
-        this.data = data
-        itemView.titleView.text = data.album.title
-    }
+    override fun bindTo(data: LoadingRecyclerState) {}
 }

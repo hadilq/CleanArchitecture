@@ -16,16 +16,19 @@
  * */
 package com.gitlab.sample.presentation.album_details.recycler
 
-import com.gitlab.sample.domain.album_details.entities.AlbumDetailsEntity
-import com.gitlab.sample.presentation.album_details.R
-import com.gitlab.sample.presentation.common.recycler.ViewData
+import android.view.View
+import com.gitlab.sample.presentation.album_details.di.viewholder.AlbumViewHolder
+import com.gitlab.sample.presentation.album_details.di.viewholder.AlbumViewHolderBridge
+import com.gitlab.sample.presentation.common.extention.inflate
+import com.gitlab.sample.presentation.common.recycler.BaseViewHolder
+import javax.inject.Inject
 
-data class AlbumPhotoViewData(val entity: AlbumDetailsEntity): ViewData {
-    override fun getType(): Int {
-        return VIEW_TYPE
-    }
+class LoadingViewHolder(view: View) : BaseViewHolder<LoadingRecyclerState>(view), AlbumViewHolder {
 
-    companion object {
-        val VIEW_TYPE = R.layout.photo
-    }
+    @Inject
+    constructor(bridge: AlbumViewHolderBridge) : this(
+            bridge.parent.inflate(LoadingRecyclerState.VIEW_TYPE)
+    )
+
+    override fun bindTo(data: LoadingRecyclerState) {}
 }

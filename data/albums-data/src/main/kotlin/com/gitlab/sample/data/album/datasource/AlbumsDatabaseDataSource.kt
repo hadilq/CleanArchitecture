@@ -16,11 +16,14 @@
  * */
 package com.gitlab.sample.data.album.datasource
 
+import android.arch.paging.DataSource
 import com.gitlab.sample.domain.album.entities.AlbumEntity
-import io.reactivex.Observable
 
 interface AlbumsDatabaseDataSource {
-    fun getAlbums(): Observable<List<AlbumEntity>>
 
     fun saveAll(albums: List<AlbumEntity>)
+
+    fun countAlbums(): Int
+
+    fun getDataSourceFactory(): DataSource.Factory<Int, AlbumEntity>
 }

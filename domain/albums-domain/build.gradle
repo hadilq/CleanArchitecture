@@ -6,6 +6,7 @@ dependencies {
 
     implementation applicationDependencies.kotlin
     implementation applicationDependencies.rxJava
+    implementation applicationDependencies.paging
 
     testImplementation unitTestDependencies.junit
     testImplementation unitTestDependencies.mockito

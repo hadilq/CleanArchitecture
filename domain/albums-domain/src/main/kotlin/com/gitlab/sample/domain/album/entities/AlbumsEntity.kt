@@ -14,16 +14,11 @@
  * limitations under the License.
  *
  * */
-package com.gitlab.sample.presentation.common
+package com.gitlab.sample.domain.album.entities
 
-import com.gitlab.sample.domain.common.Transformer
-import io.reactivex.Observable
-import io.reactivex.ObservableSource
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
+import com.gitlab.sample.domain.common.Entity
 
-class ASyncTransformer<T> : Transformer<T>() {
-    override fun apply(upstream: Observable<T>): ObservableSource<T> {
-        return upstream.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
-    }
-}
+data class AlbumsEntity(
+        val albums: List<AlbumEntity>,
+        val totalCount: Int
+) : Entity

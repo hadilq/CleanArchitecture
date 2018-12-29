@@ -16,16 +16,29 @@
  * */
 package com.gitlab.sample.presentation.album.rmvvm
 
-import android.arch.lifecycle.MutableLiveData
+import android.arch.paging.DataSource
+import android.arch.paging.PagedList
+import android.arch.paging.RxPagedListBuilder
 import android.util.Log
 import com.gitlab.sample.domain.album.entities.AlbumEntity
+import com.gitlab.sample.domain.album.repositories.AlbumsRepository
 import com.gitlab.sample.domain.album.usecases.GetAlbums
+import com.gitlab.sample.domain.common.Entity
+import com.gitlab.sample.domain.common.ErrorState
+import com.gitlab.sample.domain.common.LoadingState
+import com.gitlab.sample.domain.common.TotalCountState
 import com.gitlab.sample.presentation.album.R
+import com.gitlab.sample.presentation.album.recycler.AlbumRecyclerState
 import com.gitlab.sample.presentation.common.BaseViewModel
 import com.gitlab.sample.presentation.common.Navigator
 import com.gitlab.sample.presentation.common.di.NavigatorFactory
 import com.gitlab.sample.presentation.common.extention.filterTo
-import com.gitlab.sample.presentation.common.livedata.SingleLiveEvent
+import com.gitlab.sample.presentation.common.recycler.RecyclerState
+import io.reactivex.BackpressureStrategy
+import io.reactivex.Flowable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.processors.BehaviorProcessor
+import io.reactivex.processors.PublishProcessor
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicBoolean
 import javax.inject.Inject
@@ -35,47 +48,104 @@ class AlbumViewModel @Inject constructor(
         private val navigatorFactory: NavigatorFactory
 ) : BaseViewModel() {
 
-    val albumViewState = MutableLiveData<AlbumViewState>()
-    val loadingViewState = MutableLiveData<Boolean>()
-    val navigateViewState = SingleLiveEvent<Navigator>()
+    private val navigateViewState = PublishProcessor.create<Navigator>()
+    private val viewState by lazy {
+        val processor = BehaviorProcessor.create<AlbumViewState>()
+        processor.onNext(AlbumViewState(null, false, Int.MAX_VALUE, 0, null))
+        processor
+    }
 
     private val operated = AtomicBoolean(false)
+
+    private var dataSource: DataSource<Int, Entity>? = null
+
+    private val config by lazy {
+        PagedList.Config.Builder()
+                .setPageSize(AlbumsRepository.PAGE_SIZE)
+                .setInitialLoadSizeHint(
+                        AlbumsRepository.PAGE_SIZE * AlbumsRepository.DEFAULT_INITIAL_PAGE_MULTIPLIER
+                )
+                .setPrefetchDistance(AlbumsRepository.PAGE_SIZE / 2)
+                .setEnablePlaceholders(false)
+                .build()
+    }
 
     init {
         // Reactive way to handling View actions
         actionStream.filterTo(AlbumClickedAction::class.java)
-                .throttleFirst(1000, TimeUnit.MILLISECONDS) // Avoid double click(Multi view click) less than one second
+                .throttleFirst(1, TimeUnit.SECONDS) // Avoid double click(Multi view click) less than one second
                 .subscribe(::albumClicked) { /*If reach here log an assertion because it should never happen*/ }.track()
 
         actionStream.filterTo(GetAlbumAction::class.java)
-                .filter { operated.compareAndSet(false, true) || it.force }
-                .flatMap {
-                    Log.e("AlbumViewModel", "usecase is called")
-
-                    useCase.observe()
-                            .doOnSubscribe { loadingViewState.value = true }
-                            .doOnComplete { loadingViewState.value = false }
-                            .doOnError { loadingViewState.value = false }
+                .filter {
+                    if (it.force) dataSource?.invalidate()
+                    operated.compareAndSet(false, true) || it.force
                 }
-                .map(::mapAlbums)
-                .onErrorReturn {
-                    val value = albumViewState.value
-                    ErrorAlbumViewState(
-                            R.string.error_happened,
-                            it,
-                            (value as?GetAlbumViewState)?.albums ?: (value as?ErrorAlbumViewState)?.albums
-                    )
-                }
-                .subscribe { albumViewState.value = it }.track()
+                .toFlowable(BackpressureStrategy.LATEST)
+                .flatMap(::sendEventToDeeperLayers)
+                .subscribe(viewState::onNext)
+                .track()
     }
 
-    private fun mapAlbums(
-            it: List<AlbumEntity>
-    ): AlbumViewState = GetAlbumViewState(it)
+    fun viewState(): Flowable<AlbumViewState> = viewState.hide()
+
+    fun navigateViewState(): Flowable<Navigator> = navigateViewState.hide()
+
+    private fun sendEventToDeeperLayers(
+            @Suppress("UNUSED_PARAMETER") action: GetAlbumAction
+    ): Flowable<AlbumViewState>? {
+        Log.d("AlbumViewModel", "usecase is called")
+
+        val resultState = useCase.resultState()
+        dataSource = resultState.factory.create()
+
+        return Flowable.merge(
+                resultState.stateStream
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .map { state ->
+                            Log.d("AlbumViewModel", "new state: $state")
+                            when (state) {
+                                is LoadingState -> viewState.value!!.copy(
+                                        loading = state.loading, errorMessage = 0, error = null
+                                )
+                                is ErrorState -> {
+                                    state.throwable.printStackTrace()
+                                    viewState.value!!.copy(
+                                            errorMessage = R.string.error_happened, error = state.throwable
+                                    )
+                                }
+                                is TotalCountState -> {
+                                    viewState.value!!.copy(totalCount = state.totalCount)
+                                }
+                            }
+                        },
+                RxPagedListBuilder(
+                        resultState.factory
+                                // We keep a room for having multi-entity streams in the future
+                                .map { e -> e as AlbumEntity }
+                                .map(::AlbumRecyclerState)
+                                .map { a -> a as RecyclerState },
+                        config
+                ).setBoundaryCallback(resultState.boundaryCallback.map())
+                        .buildFlowable(BackpressureStrategy.BUFFER)
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .map { pagedList ->
+                            viewState.value!!.copy(albums = pagedList, errorMessage = 0, error = null)
+                        }
+        )
+    }
 
     private fun albumClicked(clickedAction: AlbumClickedAction) {
         val navigator = navigatorFactory.create(AlbumDetailsNavigator::class.java)
         navigator.albumId = clickedAction.albumId
-        navigateViewState.value = navigator
+        navigateViewState.onNext(navigator)
     }
+
+    private fun PagedList.BoundaryCallback<Entity>.map(): PagedList.BoundaryCallback<RecyclerState> =
+            object : PagedList.BoundaryCallback<RecyclerState>() {
+                override fun onZeroItemsLoaded() = (this@map::onZeroItemsLoaded)()
+                override fun onItemAtEndLoaded(itemAtEnd: RecyclerState) =
+                        (this@map::onItemAtEndLoaded)((itemAtEnd as AlbumRecyclerState).album)
+
+            }
 }

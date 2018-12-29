@@ -16,20 +16,20 @@
  * */
 package com.gitlab.sample.presentation.album_details
 
+import android.arch.paging.PagedList
 import android.os.Bundle
+import android.support.annotation.StringRes
 import android.support.v7.widget.StaggeredGridLayoutManager
 import android.util.DisplayMetrics
 import com.gitlab.sample.presentation.album_details.di.viewholder.AlbumViewHolderBridge
 import com.gitlab.sample.presentation.album_details.recycler.AlbumDetailsAdapter
-import com.gitlab.sample.presentation.album_details.recycler.AlbumPhotoViewData
 import com.gitlab.sample.presentation.album_details.rmvvm.AlbumDetailsViewModel
-import com.gitlab.sample.presentation.album_details.rmvvm.ErrorAlbumViewState
 import com.gitlab.sample.presentation.album_details.rmvvm.GetAlbumDetailsAction
-import com.gitlab.sample.presentation.album_details.rmvvm.GetAlbumViewState
 import com.gitlab.sample.presentation.common.BaseFragment
 import com.gitlab.sample.presentation.common.BundleKey
 import com.gitlab.sample.presentation.common.extention.gone
 import com.gitlab.sample.presentation.common.extention.visible
+import com.gitlab.sample.presentation.common.recycler.RecyclerState
 import kotlinx.android.synthetic.main.album_details.*
 import javax.inject.Inject
 
@@ -44,19 +44,16 @@ class AlbumDetailsFragment : BaseFragment() {
 
     override fun layoutId() = R.layout.album_details
 
-
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = viewModel(viewModelFactory) {
             albumId = arguments!!.getLong(BundleKey.ALBUM_ID)
 
-            albumDetailsViewState.observe {
-                when (it) {
-                    is GetAlbumViewState -> handleAlbum(it)
-                    is ErrorAlbumViewState -> handleFailure(it)
-                }
+            viewState().observe { state ->
+                state.photos?.let { handleAlbum(it, state.totalCount) }
+                state.loading.let(::handleLoading)
+                state.error?.let { handleFailure(state.errorMessage, it) }
             }
-            loadingViewState.observe(::handleLoading)
         }
         initView()
         getDetails()
@@ -76,9 +73,6 @@ class AlbumDetailsFragment : BaseFragment() {
             // Pipe the View actions to the ViewModel
             viewHolder.actionStream.subscribe(viewModel.actionStream::onNext).track()
         }
-        emptyView.gone()
-        retryLayout.gone()
-        progressView.gone()
     }
 
     private fun getMaxSpan(): Int {
@@ -89,24 +83,18 @@ class AlbumDetailsFragment : BaseFragment() {
         viewModel.actionStream.onNext(GetAlbumDetailsAction(false))
     }
 
-    private fun handleAlbum(viewState: GetAlbumViewState) {
-        if (viewState.photos.isEmpty()) {
+    private fun handleAlbum(photos: PagedList<RecyclerState>, totalCount: Int) {
+        adapter.totalCount = totalCount
+        adapter.submitList(photos)
+        if (photos.isEmpty() && totalCount == 0) {
             emptyView.visible()
-            detailsView.gone()
         } else {
             emptyView.gone()
-            val count = adapter.itemCount
-            adapter.addAll(viewState.photos.map {
-                AlbumPhotoViewData(it)
-            })
-            adapter.notifyItemRangeInserted(count, viewState.photos.size)
         }
     }
 
-    private fun handleFailure(viewState: ErrorAlbumViewState) {
-        retryLayout.visible()
-        errorView.text = getString(viewState.errorMessage)
-        retryView.setOnClickListener { viewModel.actionStream.onNext(GetAlbumDetailsAction(true)) }
+    private fun handleFailure(@StringRes errorMessage: Int, @Suppress("UNUSED_PARAMETER") error: Throwable) {
+        showFailure(errorMessage) { viewModel.actionStream.onNext(GetAlbumDetailsAction(true)) }
     }
 
     private fun handleLoading(loading: Boolean) {
@@ -115,7 +103,5 @@ class AlbumDetailsFragment : BaseFragment() {
         } else {
             progressView.gone()
         }
-        retryLayout.gone()
-        emptyView.gone()
     }
 }

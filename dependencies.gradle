@@ -4,7 +4,7 @@ ext {
 
     // Android
     compileVersion = 28
-    minVersion = 15
+    minVersion = 17
     targetVersion = 28
     testInstrumentationRunner = "android.support.test.runner.AndroidJUnitRunner"
 
@@ -30,6 +30,9 @@ ext {
     applicationDependencies = [
             supportCompat           : "com.android.support:appcompat-v7:$androidSupportLibVersion",
             recycler                : "com.android.support:recyclerview-v7:$androidSupportLibVersion",
+            paging                  : 'android.arch.paging:runtime:1.0.1',
+            pagingRx                : 'android.arch.paging:rxjava2:1.0.1',
+            extensions              : 'android.arch.lifecycle:extensions:1.1.1',
             design                  : "com.android.support:design:$androidSupportLibVersion",
             picasso                 : "com.squareup.picasso:picasso:$picassoVersion",
             constraintLayout        : "com.android.support.constraint:constraint-layout:$constraintLayoutVersion",
