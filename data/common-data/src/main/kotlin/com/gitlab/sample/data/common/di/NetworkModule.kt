@@ -16,8 +16,11 @@
  * */
 package com.gitlab.sample.data.common.di
 
+import android.content.Context
 import com.gitlab.sample.data.BuildConfig
 import com.gitlab.sample.data.common.api.Api
+import com.squareup.picasso.OkHttp3Downloader
+import com.squareup.picasso.Picasso
 import dagger.Module
 import dagger.Provides
 import okhttp3.Interceptor
@@ -29,11 +32,23 @@ import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
 @Module
-class NetworkModule(private val baseUrl: String, private val apiKey: String) {
+class NetworkModule {
+
+    private val baseUrl: String = "https://jsonplaceholder.typicode.com/"
+    private val apiKey: String = "api key"
 
     @Singleton
     @Provides
-    fun provideApi(retrofit: Retrofit) = retrofit.create(Api::class.java)
+    fun provideApi(retrofit: Retrofit): Api = retrofit.create(Api::class.java)
+
+    @Singleton
+    @Provides
+    fun providePicasso(context: Context): Picasso {
+        val downloader = OkHttp3Downloader(context, Long.MAX_VALUE)
+        val picasso = Picasso.Builder(context).downloader(downloader).build()
+        Picasso.setSingletonInstance(picasso)
+        return picasso
+    }
 
     @Singleton
     @Provides

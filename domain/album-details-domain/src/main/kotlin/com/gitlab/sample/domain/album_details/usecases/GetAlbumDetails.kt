@@ -16,15 +16,11 @@
  * */
 package com.gitlab.sample.domain.album_details.usecases
 
-import com.gitlab.sample.domain.album_details.entities.AlbumDetailsEntity
 import com.gitlab.sample.domain.album_details.repositories.AlbumDetailsRepository
-import com.gitlab.sample.domain.common.Transformer
-import io.reactivex.Observable
+import com.gitlab.sample.domain.common.ResultState
 
 class GetAlbumDetails(
-        private val transformer: Transformer<List<AlbumDetailsEntity>>,
         private val repository: AlbumDetailsRepository
 ) {
-    fun observe(albumId: Long): Observable<List<AlbumDetailsEntity>> =
-            repository.getAlbumDetails(albumId).compose(transformer)
+    fun resultState(albumId: Long): ResultState = repository.getAlbumDetails(albumId)
 }

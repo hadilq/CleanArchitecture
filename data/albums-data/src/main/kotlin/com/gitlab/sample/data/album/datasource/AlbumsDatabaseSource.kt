@@ -16,19 +16,18 @@
  * */
 package com.gitlab.sample.data.album.datasource
 
+import android.arch.paging.DataSource
 import com.gitlab.sample.data.album.extensions.map
 import com.gitlab.sample.data.common.db.dao.AlbumDao
 import com.gitlab.sample.domain.album.entities.AlbumEntity
-import com.gitlab.sample.presentation.album.entities.AlbumData
-import io.reactivex.Observable
 
 class AlbumsDatabaseSource(private val albumDao: AlbumDao) : AlbumsDatabaseDataSource {
 
-    override fun getAlbums(): Observable<List<AlbumEntity>> = albumDao.getAlbums()
-            .map { it.map(AlbumData::map) }
+    override fun saveAll(albums: List<AlbumEntity>) = albumDao.saveAlbums(albums.map(AlbumEntity::map))
 
-    override fun saveAll(albums: List<AlbumEntity>) {
-        albumDao.clear()
-        albumDao.saveAlbums(albums.map(AlbumEntity::map))
+    override fun countAlbums() = albumDao.count()
+
+    override fun getDataSourceFactory(): DataSource.Factory<Int, AlbumEntity> = albumDao.getDataSourceFactory().map {
+        return@map it.map()
     }
 }

@@ -5,18 +5,13 @@
   android:layout_height="60dp"
   android:foreground="?android:attr/selectableItemBackground"
 >
-  <LinearLayout
+  <TextView
+    android:id="@+id/titleView"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-  >
-    <TextView
-      android:id="@+id/titleView"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:textColor="@color/font"
-      android:layout_gravity="center_vertical"
-      android:layout_margin="5dp"
-    />
-  </LinearLayout>
+    android:layout_height="wrap_content"
+    android:textColor="@color/font"
+    android:layout_gravity="center_vertical"
+    android:layout_margin="5dp"
+  />
+
 </FrameLayout>

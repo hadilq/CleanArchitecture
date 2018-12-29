@@ -16,18 +16,18 @@
  * */
 package com.gitlab.sample.presentation.album
 
+import android.arch.paging.PagedList
 import android.os.Bundle
+import android.support.annotation.StringRes
 import android.support.v7.widget.LinearLayoutManager
 import com.gitlab.sample.presentation.album.recycler.AlbumAdapter
-import com.gitlab.sample.presentation.album.recycler.AlbumViewData
 import com.gitlab.sample.presentation.album.rmvvm.AlbumViewModel
-import com.gitlab.sample.presentation.album.rmvvm.ErrorAlbumViewState
 import com.gitlab.sample.presentation.album.rmvvm.GetAlbumAction
-import com.gitlab.sample.presentation.album.rmvvm.GetAlbumViewState
 import com.gitlab.sample.presentation.common.BaseFragment
 import com.gitlab.sample.presentation.common.Navigator
 import com.gitlab.sample.presentation.common.extention.gone
 import com.gitlab.sample.presentation.common.extention.visible
+import com.gitlab.sample.presentation.common.recycler.RecyclerState
 import kotlinx.android.synthetic.main.albums.*
 import javax.inject.Inject
 
@@ -44,14 +44,12 @@ class AlbumFragment : BaseFragment() {
         super.onActivityCreated(savedInstanceState)
 
         viewModel = viewModel(viewModelFactory) {
-            albumViewState().observe {
-                when (it) {
-                    is GetAlbumViewState -> handleAlbums(it)
-                    is ErrorAlbumViewState -> handleFailure(it)
-                }
+            viewState().observe { state ->
+                state.albums?.let { handleAlbums(it, state.totalCount) }
+                state.loading.let(::handleLoading)
+                state.error?.let { handleFailure(state.errorMessage, it) }
             }
             navigateViewState().observe(::handleNavigate)
-            loadingViewState().observe(::handleLoading)
         }
         initView()
         getAlbums()
@@ -64,31 +62,24 @@ class AlbumFragment : BaseFragment() {
             // Pipe the View actions to the ViewModel
             viewHolder.actionStream.subscribe(viewModel.actionStream::onNext).track()
         }
-        emptyView.gone()
-        retryLayout.gone()
-        progressView.gone()
     }
 
     private fun getAlbums() {
         viewModel.actionStream.onNext(GetAlbumAction(false))
     }
 
-    private fun handleAlbums(viewState: GetAlbumViewState) {
-        if (viewState.albums.isEmpty()) {
+    private fun handleAlbums(albums: PagedList<RecyclerState>, totalCount: Int) {
+        adapter.totalCount = totalCount
+        adapter.submitList(albums)
+        if (albums.isEmpty() && totalCount == 0) {
             emptyView.visible()
-            albumsView.gone()
         } else {
             emptyView.gone()
-            val count = adapter.itemCount
-            adapter.addAll(viewState.albums.map { AlbumViewData(it) })
-            adapter.notifyItemRangeInserted(count, viewState.albums.size)
         }
     }
 
-    private fun handleFailure(viewState: ErrorAlbumViewState) {
-        retryLayout.visible()
-        errorView.text = getString(viewState.errorMessage)
-        retryView.setOnClickListener { viewModel.actionStream.onNext(GetAlbumAction(true)) }
+    private fun handleFailure(@StringRes errorMessage: Int, @Suppress("UNUSED_PARAMETER") error: Throwable) {
+        showFailure(errorMessage) { viewModel.actionStream.onNext(GetAlbumAction(true)) }
     }
 
     private fun handleLoading(loading: Boolean) {
@@ -97,8 +88,6 @@ class AlbumFragment : BaseFragment() {
         } else {
             progressView.gone()
         }
-        retryLayout.gone()
-        emptyView.gone()
     }
 
     private fun handleNavigate(navigator: Navigator) {

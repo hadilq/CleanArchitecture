@@ -19,6 +19,7 @@ import com.gitlab.sample.presentation.album.di.AlbumsScope
 import com.gitlab.sample.presentation.album.di.viewholder.AlbumsViewHolder
 import com.gitlab.sample.presentation.album.di.viewholder.AlbumsViewHolderFactory
 import com.gitlab.sample.presentation.album.recycler.AlbumViewHolder
+import com.gitlab.sample.presentation.album.recycler.LoadingViewHolder
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
@@ -34,4 +35,9 @@ abstract class AlbumsViewHolderModule {
     @IntoMap
     @AlbumsViewHolderKey(AlbumViewHolder::class)
     internal abstract fun bindsAlbumViewHolder(viewHolder: AlbumViewHolder): AlbumsViewHolder
+
+    @Binds
+    @IntoMap
+    @AlbumsViewHolderKey(LoadingViewHolder::class)
+    internal abstract fun bindsLoadingViewHolder(viewHolder: LoadingViewHolder): AlbumsViewHolder
 }

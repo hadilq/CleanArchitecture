@@ -16,9 +16,9 @@
  * */
 package com.gitlab.sample.data.album_details.datasource
 
-import com.gitlab.sample.domain.album_details.entities.AlbumDetailsEntity
-import io.reactivex.Observable
+import com.gitlab.sample.domain.album_details.entities.AlbumsDetailsEntity
+import io.reactivex.Single
 
 interface AlbumDetailsApiDataSource {
-    fun getAlbumDetails(albumId: Long): Observable<List<AlbumDetailsEntity>>
+    fun getAlbumDetails(albumId: Long, offset: Int, limit: Int): Single<AlbumsDetailsEntity>
 }

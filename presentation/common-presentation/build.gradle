@@ -31,6 +31,10 @@ dependencies {
     implementation applicationDependencies.kotlin
     implementation applicationDependencies.supportCompat
     implementation applicationDependencies.recycler
+    implementation applicationDependencies.paging
+    implementation applicationDependencies.pagingRx
+    implementation applicationDependencies.extensions
+    implementation applicationDependencies.design
     implementation applicationDependencies.picasso
     implementation applicationDependencies.dagger
     implementation applicationDependencies.daggerAndroid

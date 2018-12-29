@@ -14,8 +14,8 @@
  * limitations under the License.
  *
  * */
-package com.gitlab.sample.domain.common
+package com.gitlab.sample.presentation.common.recycler
 
-import io.reactivex.ObservableTransformer
-
-abstract class Transformer<T> : ObservableTransformer<T, T>
+interface RecyclerState {
+    fun getType(): Int
+}

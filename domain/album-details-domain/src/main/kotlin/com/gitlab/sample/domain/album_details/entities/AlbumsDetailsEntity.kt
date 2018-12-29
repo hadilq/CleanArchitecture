@@ -14,15 +14,11 @@
  * limitations under the License.
  *
  * */
-package com.gitlab.sample.presentation.common.recycler
+package com.gitlab.sample.domain.album_details.entities
 
-import android.support.v7.widget.RecyclerView
-import android.view.View
-import com.gitlab.sample.presentation.common.Action
-import io.reactivex.subjects.PublishSubject
+import com.gitlab.sample.domain.common.Entity
 
-abstract class BaseViewHolder<in T : RecyclerState>(view: View) : RecyclerView.ViewHolder(view) {
-    val actionStream = PublishSubject.create<Action>()
-
-    abstract fun bindTo(data: T)
-}
+data class AlbumsDetailsEntity(
+        val photos: List<AlbumDetailsEntity>,
+        val totalCount: Int
+) : Entity

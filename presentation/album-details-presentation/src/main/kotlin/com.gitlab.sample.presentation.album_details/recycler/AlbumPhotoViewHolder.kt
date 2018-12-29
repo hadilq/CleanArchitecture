@@ -17,31 +17,35 @@
 package com.gitlab.sample.presentation.album_details.recycler
 
 import android.view.View
-import android.widget.ImageView
-import com.gitlab.sample.presentation.album_details.di.viewholder.AlbumViewHolderBridge
 import com.gitlab.sample.presentation.album_details.di.viewholder.AlbumViewHolder
+import com.gitlab.sample.presentation.album_details.di.viewholder.AlbumViewHolderBridge
 import com.gitlab.sample.presentation.common.extention.inflate
 import com.gitlab.sample.presentation.common.extention.loadFromUrl
 import com.gitlab.sample.presentation.common.recycler.BaseViewHolder
+import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.photo.view.*
 import javax.inject.Inject
 
 class AlbumPhotoViewHolder(
         view: View,
-        private val itemWidth: Int
-) : BaseViewHolder<AlbumPhotoViewData>(view), AlbumViewHolder {
+        private val itemWidth: Int,
+        private val picasso: Picasso
+) : BaseViewHolder<AlbumPhotoRecyclerState>(view), AlbumViewHolder {
 
     @Inject
-    constructor(bridge: AlbumViewHolderBridge) : this(
-            bridge.parent.inflate(AlbumPhotoViewData.VIEW_TYPE),
-            bridge.itemWidth
+    constructor(bridge: AlbumViewHolderBridge, picasso: Picasso) : this(
+            bridge.parent.inflate(AlbumPhotoRecyclerState.VIEW_TYPE),
+            bridge.itemWidth,
+            picasso
     )
 
     init {
         itemView.layoutParams.height = itemWidth
+        itemView.layoutParams.width = itemWidth
         itemView.layoutParams = itemView.layoutParams
     }
 
-    override fun onBind(data: AlbumPhotoViewData) {
-        (itemView as ImageView).loadFromUrl(data.entity.url)
+    override fun bindTo(data: AlbumPhotoRecyclerState) {
+        itemView.phoneView.loadFromUrl(picasso, data.entity.url)
     }
 }

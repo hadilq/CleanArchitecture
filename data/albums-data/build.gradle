@@ -22,6 +22,7 @@ dependencies {
 
     implementation applicationDependencies.kotlin
     implementation applicationDependencies.supportCompat
+    implementation applicationDependencies.paging
     implementation applicationDependencies.dagger
     implementation applicationDependencies.rxJava
     implementation applicationDependencies.retrofit
@@ -41,5 +42,6 @@ dependencies {
     androidTestImplementation acceptanceTestDependencies.androidAnnotations
 
     implementation project(':common-data')
+    implementation project(':common-domain')
     implementation project(':albums-domain')
 }

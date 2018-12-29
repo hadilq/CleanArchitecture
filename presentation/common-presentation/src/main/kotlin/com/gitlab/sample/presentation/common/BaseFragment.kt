@@ -16,11 +16,15 @@
  * */
 package com.gitlab.sample.presentation.common
 
-import android.arch.lifecycle.*
+import android.arch.lifecycle.ViewModel
+import android.arch.lifecycle.ViewModelProvider
+import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
+import android.support.design.widget.Snackbar
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.gitlab.sample.com.gitlab.sample.presentation.R
 import dagger.android.support.DaggerFragment
 import io.reactivex.Flowable
 import io.reactivex.disposables.CompositeDisposable
@@ -33,6 +37,7 @@ abstract class BaseFragment : DaggerFragment() {
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
     private val compositeDisposable: CompositeDisposable = CompositeDisposable()
+    private var snackbar: Snackbar? = null
 
     protected fun Disposable.track() {
         compositeDisposable.add(this)
@@ -57,5 +62,20 @@ abstract class BaseFragment : DaggerFragment() {
     override fun onDestroy() {
         compositeDisposable.clear()
         super.onDestroy()
+    }
+
+
+    protected fun showFailure(errorMessage: Int, retry: (View) -> Unit) {
+        view?.apply {
+            if (snackbar?.isShown == true) {
+                snackbar!!.dismiss()
+            }
+            snackbar = Snackbar.make(this, errorMessage, Snackbar.LENGTH_INDEFINITE)
+                    .setAction(R.string.retry) {
+                        snackbar = null
+                        retry(it)
+                    }
+            snackbar!!.show()
+        }
     }
 }

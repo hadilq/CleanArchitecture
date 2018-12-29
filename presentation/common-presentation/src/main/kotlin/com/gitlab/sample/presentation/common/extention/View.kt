@@ -40,4 +40,8 @@ fun View.invisible() {
 fun ViewGroup.inflate(@LayoutRes layoutRes: Int): View =
         LayoutInflater.from(context).inflate(layoutRes, this, false)
 
-fun ImageView.loadFromUrl(url: String) = Picasso.get().load(url).into(this)
+fun ImageView.loadFromUrl(picasso: Picasso, url: String) {
+    picasso.cancelRequest(this)
+    setImageDrawable(null)
+    picasso.load(url).into(this)
+}

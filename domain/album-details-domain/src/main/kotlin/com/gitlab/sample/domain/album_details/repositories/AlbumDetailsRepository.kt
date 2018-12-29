@@ -16,9 +16,13 @@
  * */
 package com.gitlab.sample.domain.album_details.repositories
 
-import com.gitlab.sample.domain.album_details.entities.AlbumDetailsEntity
-import io.reactivex.Observable
+import com.gitlab.sample.domain.common.ResultState
 
 interface AlbumDetailsRepository {
-    fun getAlbumDetails(albumId: Long): Observable<List<AlbumDetailsEntity>>
+    fun getAlbumDetails(albumId: Long): ResultState
+
+    companion object {
+        const val PAGE_SIZE = 10
+        const val DEFAULT_INITIAL_PAGE_MULTIPLIER = 3
+    }
 }

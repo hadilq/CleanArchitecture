@@ -16,10 +16,12 @@
  * */
 package com.gitlab.sample.domain.album_details.entities
 
+import com.gitlab.sample.domain.common.Entity
+
 data class AlbumDetailsEntity(
         val id: Long,
         val albumId: Long,
         val title: String,
         val url: String,
         val thumbnailUrl: String
-)
+) : Entity

@@ -20,10 +20,14 @@ import com.gitlab.sample.data.common.api.entities.AlbumDto
 import com.gitlab.sample.data.common.api.entities.PhotoDto
 import io.reactivex.Single
 import retrofit2.http.GET
+import retrofit2.http.Query
 
 interface Api {
     @GET("albums")
-    fun getAlbums(): Single<List<AlbumDto>>
+    fun getAlbums(
+            @Query("_start") offset: Int,
+            @Query("_limit") limit: Int
+    ): Single<List<AlbumDto>>
 
     @GET("photos")
     fun getPhotos(): Single<List<PhotoDto>>

@@ -18,11 +18,12 @@ package com.gitlab.sample.presentation.album.entities
 
 import io.objectbox.annotation.Entity
 import io.objectbox.annotation.Id
+import io.objectbox.annotation.Unique
 
 @Entity
 data class AlbumData(
         @Id var _id: Long = 0,
-        val id: Long,
+        @Unique val id: Long,
         val userId: Long,
         val title: String
 )

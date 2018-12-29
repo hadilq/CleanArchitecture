@@ -16,12 +16,15 @@
  * */
 package com.gitlab.sample.presentation.album.rmvvm
 
+import android.arch.paging.PagedList
 import android.support.annotation.StringRes
-import com.gitlab.sample.domain.album.entities.AlbumEntity
 import com.gitlab.sample.presentation.common.ViewState
+import com.gitlab.sample.presentation.common.recycler.RecyclerState
 
-sealed class AlbumViewState : ViewState
-
-class GetAlbumViewState(val albums: List<AlbumEntity>) : AlbumViewState()
-class ErrorAlbumViewState(@StringRes val errorMessage: Int, val error: Throwable, val albums: List<AlbumEntity>?) :
-        AlbumViewState()
+data class AlbumViewState(
+        val albums: PagedList<RecyclerState>?,
+        val loading: Boolean,
+        val totalCount: Int,
+        @StringRes val errorMessage: Int,
+        val error: Throwable?
+) : ViewState

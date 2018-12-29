@@ -14,8 +14,9 @@
  * limitations under the License.
  *
  * */
-package com.gitlab.sample.presentation.common.recycler
+package com.gitlab.sample.data.common.api.entities
 
-interface ViewData {
-    fun getType(): Int
-}
+data class PhotosDto(
+        val photos: List<PhotoDto>,
+        val totalCount: Int
+)
