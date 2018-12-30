@@ -36,8 +36,9 @@ class AlbumAdapter @Inject constructor(
     lateinit var onCreateViewHolder: (BaseViewHolder<*>) -> Unit
     var totalCount: Int = 0
         set(value) {
+            val wasEndOfList = endOfList()
             field = value
-            if (endOfList()) {
+            if (endOfList() && !wasEndOfList) {
                 notifyDataSetChanged()
             }
         }
