@@ -26,9 +26,10 @@ import com.gitlab.sample.presentation.album_details.recycler.AlbumDetailsAdapter
 import com.gitlab.sample.presentation.album_details.rmvvm.AlbumDetailsViewModel
 import com.gitlab.sample.presentation.album_details.rmvvm.GetAlbumDetailsAction
 import com.gitlab.sample.presentation.common.BaseFragment
-import com.gitlab.sample.presentation.common.BundleKey
+import com.gitlab.sample.presentation.common.di.NavigatorFactory
 import com.gitlab.sample.presentation.common.extention.gone
 import com.gitlab.sample.presentation.common.extention.visible
+import com.gitlab.sample.presentation.common.navigator.AlbumDetailsNavigator
 import com.gitlab.sample.presentation.common.recycler.RecyclerState
 import kotlinx.android.synthetic.main.album_details.*
 import javax.inject.Inject
@@ -39,15 +40,19 @@ class AlbumDetailsFragment : BaseFragment() {
     lateinit var adapter: AlbumDetailsAdapter
     @Inject
     lateinit var bridge: AlbumViewHolderBridge
+    @Inject
+    lateinit var navigatorFactory: NavigatorFactory
 
     private lateinit var viewModel: AlbumDetailsViewModel
 
     override fun layoutId() = R.layout.album_details
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
         viewModel = viewModel(viewModelFactory) {
-            albumId = arguments!!.getLong(BundleKey.ALBUM_ID)
+            val navigator = navigatorFactory.create(AlbumDetailsNavigator::class.java)
+            albumId = navigator.getAlbumId(arguments)
 
             viewState().observe { state ->
                 state.photos?.let { handleAlbum(it, state.totalCount) }
@@ -55,6 +60,11 @@ class AlbumDetailsFragment : BaseFragment() {
                 state.error?.let { handleFailure(state.errorMessage, it) }
             }
         }
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
         initView()
         getDetails()
     }

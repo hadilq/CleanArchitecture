@@ -44,6 +44,7 @@ dependencies {
     implementation applicationDependencies.retrofit
     implementation applicationDependencies.retrofitGsonConverter
     implementation applicationDependencies.retrofitRxJava2Adapter
+    implementation applicationDependencies.navigationFragment
 
     testImplementation unitTestDependencies.kotlin
     testImplementation unitTestDependencies.kotlinTest

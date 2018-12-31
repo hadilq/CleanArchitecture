@@ -17,21 +17,12 @@
 package com.gitlab.sample.cleanarchitecture
 
 import android.os.Bundle
-import com.gitlab.sample.presentation.common.di.NavigatorFactory
 import dagger.android.support.DaggerAppCompatActivity
-import javax.inject.Inject
 
 class MainActivity : DaggerAppCompatActivity() {
-
-    @Inject
-    lateinit var navigatorFactory: NavigatorFactory
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_layout)
-
-        if (savedInstanceState == null) {
-            navigatorFactory.create(MainNavigator::class.java).launchFragment(supportFragmentManager)
-        }
     }
 }

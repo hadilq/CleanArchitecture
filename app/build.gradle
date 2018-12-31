@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'androidx.navigation.safeargs'
 
 android {
     compileSdkVersion compileVersion
@@ -44,6 +45,8 @@ dependencies {
     implementation applicationDependencies.archComponents
     implementation applicationDependencies.rxJava
     implementation applicationDependencies.retrofit
+    implementation applicationDependencies.navigationFragment
+    implementation applicationDependencies.navigationUI
 
     testImplementation unitTestDependencies.kotlin
     testImplementation unitTestDependencies.kotlinTest
