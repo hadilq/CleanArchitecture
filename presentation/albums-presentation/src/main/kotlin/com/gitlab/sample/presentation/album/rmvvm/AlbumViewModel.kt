@@ -58,8 +58,6 @@ class AlbumViewModel @Inject constructor(
 
     private val operated = AtomicBoolean(false)
 
-    private var dataSource: DataSource<Int, Entity>? = null
-
     private val config by lazy {
         PagedList.Config.Builder()
                 .setPageSize(AlbumsRepository.PAGE_SIZE)
@@ -78,10 +76,7 @@ class AlbumViewModel @Inject constructor(
                 .subscribe(::albumClicked) { /*If reach here log an assertion because it should never happen*/ }.track()
 
         actionStream.filterTo(GetAlbumAction::class.java)
-                .filter {
-                    if (it.force) dataSource?.invalidate()
-                    operated.compareAndSet(false, true) || it.force
-                }
+                .filter { operated.compareAndSet(false, true) || it.force }
                 .toFlowable(BackpressureStrategy.LATEST)
                 .flatMap(::sendEventToDeeperLayers)
                 .subscribe(viewState::onNext)
@@ -98,7 +93,6 @@ class AlbumViewModel @Inject constructor(
         Log.d("AlbumViewModel", "usecase is called")
 
         val resultState = useCase.resultState()
-        dataSource = resultState.factory.create()
 
         return Flowable.merge(
                 resultState.stateStream

@@ -51,8 +51,6 @@ class AlbumDetailsViewModel @Inject constructor(private val useCase: GetAlbumDet
 
     private val operated = AtomicBoolean(false)
 
-    private var dataSource: DataSource<Int, Entity>? = null
-
     private val config by lazy {
         PagedList.Config.Builder()
                 .setPageSize(AlbumDetailsRepository.PAGE_SIZE)
@@ -81,7 +79,6 @@ class AlbumDetailsViewModel @Inject constructor(private val useCase: GetAlbumDet
     ): Flowable<AlbumDetailsViewState>? {
 
         val resultState = useCase.resultState(albumId)
-        dataSource = resultState.factory.create()
         return Flowable.merge(
                 resultState.stateStream
                         .observeOn(AndroidSchedulers.mainThread())
