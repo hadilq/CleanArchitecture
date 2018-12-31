@@ -15,7 +15,7 @@
  */
 package com.gitlab.sample.cleanarchitecture.di.navigator
 
-import com.gitlab.sample.presentation.common.Navigator
+import com.gitlab.sample.presentation.common.navigator.Navigator
 import dagger.MapKey
 import kotlin.reflect.KClass
 

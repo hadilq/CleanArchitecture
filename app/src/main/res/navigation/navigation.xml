@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/navigation"
+            app:startDestination="@id/albums">
+
+  <fragment android:id="@+id/albums"
+            android:name="com.gitlab.sample.presentation.album.AlbumFragment"
+            android:label="AlbumFragment">
+
+    <action android:id="@+id/actionAlbumDetails"
+            app:destination="@id/albumDetails" />
+  </fragment>
+
+  <fragment android:id="@+id/albumDetails"
+            android:name="com.gitlab.sample.presentation.album_details.AlbumDetailsFragment"
+            android:label="AlbumDetailsFragment">
+
+    <argument android:name="albumId"
+              app:argType="integer" />
+  </fragment>
+</navigation>

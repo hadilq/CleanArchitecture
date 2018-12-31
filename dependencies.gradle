@@ -16,6 +16,7 @@ ext {
     picassoVersion = '2.71828'
     okhttpLoggingInterceptorVersion = '3.11.0'
     daggerVersion = '2.19'
+    navigationVersion = '1.0.0-alpha09'
 
     //Unit Testing
     junitVersion = '4.12'
@@ -52,6 +53,8 @@ ext {
             objectboxAndroid        : "io.objectbox:objectbox-android:$objectboxVersion",
             objectboxProcessor      : "io.objectbox:objectbox-processor:$objectboxVersion",
             objectboxKotlin         : "io.objectbox:objectbox-kotlin:$objectboxVersion",
+            navigationFragment      : "android.arch.navigation:navigation-fragment-ktx:$navigationVersion",
+            navigationUI            : "android.arch.navigation:navigation-ui-ktx:$navigationVersion",
     ]
 
     unitTestDependencies = [

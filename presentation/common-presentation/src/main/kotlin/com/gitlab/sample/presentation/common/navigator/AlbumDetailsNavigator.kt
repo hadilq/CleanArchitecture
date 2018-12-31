@@ -14,11 +14,13 @@
  * limitations under the License.
  *
  * */
-package com.gitlab.sample.presentation.common
+package com.gitlab.sample.presentation.common.navigator
 
-import android.support.v4.app.FragmentManager
+import android.os.Bundle
 
-interface Navigator {
-    fun launchFragment(fragment: BaseFragment) {}
-    fun launchFragment(fm: FragmentManager) {}
+interface AlbumDetailsNavigator : Navigator {
+
+    fun setAlbumId(albumId: Long)
+
+    fun getAlbumId(arguments: Bundle?): Long
 }

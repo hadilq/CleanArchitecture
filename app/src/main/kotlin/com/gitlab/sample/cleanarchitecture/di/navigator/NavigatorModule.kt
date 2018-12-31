@@ -15,10 +15,9 @@
  */
 package com.gitlab.sample.cleanarchitecture.di.navigator
 
-import com.gitlab.sample.cleanarchitecture.MainNavigator
-import com.gitlab.sample.presentation.album.rmvvm.AlbumDetailsNavigator
-import com.gitlab.sample.presentation.common.Navigator
 import com.gitlab.sample.presentation.common.di.NavigatorFactory
+import com.gitlab.sample.presentation.common.navigator.AlbumDetailsNavigator
+import com.gitlab.sample.presentation.common.navigator.Navigator
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
@@ -30,11 +29,6 @@ abstract class NavigatorModule {
 
     @Binds
     @IntoMap
-    @NavigatorKey(MainNavigator::class)
-    abstract fun bindsMainNavigator(navigator: MainNavigator): Navigator
-
-    @Binds
-    @IntoMap
     @NavigatorKey(AlbumDetailsNavigator::class)
-    abstract fun bindsAlbumDetailsNavigator(navigator: AlbumDetailsNavigator): Navigator
+    abstract fun bindsAlbumDetailsNavigator(navigator: AlbumDetailsNavigatorImpl): Navigator
 }

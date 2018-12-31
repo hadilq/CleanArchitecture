@@ -30,9 +30,10 @@ import com.gitlab.sample.domain.common.TotalCountState
 import com.gitlab.sample.presentation.album.R
 import com.gitlab.sample.presentation.album.recycler.AlbumRecyclerState
 import com.gitlab.sample.presentation.common.BaseViewModel
-import com.gitlab.sample.presentation.common.Navigator
 import com.gitlab.sample.presentation.common.di.NavigatorFactory
 import com.gitlab.sample.presentation.common.extention.filterTo
+import com.gitlab.sample.presentation.common.navigator.AlbumDetailsNavigator
+import com.gitlab.sample.presentation.common.navigator.Navigator
 import com.gitlab.sample.presentation.common.recycler.RecyclerState
 import io.reactivex.BackpressureStrategy
 import io.reactivex.Flowable
@@ -137,7 +138,7 @@ class AlbumViewModel @Inject constructor(
 
     private fun albumClicked(clickedAction: AlbumClickedAction) {
         val navigator = navigatorFactory.create(AlbumDetailsNavigator::class.java)
-        navigator.albumId = clickedAction.albumId
+        navigator.setAlbumId(clickedAction.albumId)
         navigateViewState.onNext(navigator)
     }
 

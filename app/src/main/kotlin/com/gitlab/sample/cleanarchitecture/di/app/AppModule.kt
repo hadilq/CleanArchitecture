@@ -19,8 +19,6 @@ package com.gitlab.sample.cleanarchitecture.di.app
 import android.app.Application
 import android.content.Context
 import com.gitlab.sample.cleanarchitecture.App
-import com.gitlab.sample.cleanarchitecture.di.FragmentFactory
-import com.gitlab.sample.presentation.common.BaseFragmentFactory
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -38,11 +36,5 @@ class AppModule {
     @Provides
     fun provideAppContext(app: App): Context {
         return app.applicationContext
-    }
-
-    @Singleton
-    @Provides
-    fun provideBaseFragmentFactory(): BaseFragmentFactory {
-        return FragmentFactory()
     }
 }

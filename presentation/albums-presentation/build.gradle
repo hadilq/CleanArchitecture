@@ -35,6 +35,7 @@ dependencies {
     implementation applicationDependencies.archComponents
     implementation applicationDependencies.rxJava
     implementation applicationDependencies.rxAndroid
+    implementation applicationDependencies.navigationFragment
 
     testImplementation unitTestDependencies.kotlin
     testImplementation unitTestDependencies.kotlinTest

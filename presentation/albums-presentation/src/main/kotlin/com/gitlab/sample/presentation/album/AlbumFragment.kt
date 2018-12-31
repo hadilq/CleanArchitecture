@@ -20,11 +20,12 @@ import android.arch.paging.PagedList
 import android.os.Bundle
 import android.support.annotation.StringRes
 import android.support.v7.widget.LinearLayoutManager
+import androidx.navigation.fragment.findNavController
 import com.gitlab.sample.presentation.album.recycler.AlbumAdapter
 import com.gitlab.sample.presentation.album.rmvvm.AlbumViewModel
 import com.gitlab.sample.presentation.album.rmvvm.GetAlbumAction
 import com.gitlab.sample.presentation.common.BaseFragment
-import com.gitlab.sample.presentation.common.Navigator
+import com.gitlab.sample.presentation.common.navigator.Navigator
 import com.gitlab.sample.presentation.common.extention.gone
 import com.gitlab.sample.presentation.common.extention.visible
 import com.gitlab.sample.presentation.common.recycler.RecyclerState
@@ -40,8 +41,8 @@ class AlbumFragment : BaseFragment() {
 
     override fun layoutId() = R.layout.albums
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
         viewModel = viewModel(viewModelFactory) {
             viewState().observe { state ->
@@ -51,6 +52,11 @@ class AlbumFragment : BaseFragment() {
             }
             navigateViewState().observe(::handleNavigate)
         }
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
         initView()
         getAlbums()
     }
@@ -91,6 +97,6 @@ class AlbumFragment : BaseFragment() {
     }
 
     private fun handleNavigate(navigator: Navigator) {
-        navigator.launchFragment(this)
+        navigator.launchFragment(findNavController())
     }
 }

@@ -14,19 +14,10 @@
  * limitations under the License.
  *
  * */
-package com.gitlab.sample.cleanarchitecture
+package com.gitlab.sample.presentation.common.navigator
 
-import android.support.v4.app.FragmentManager
-import com.gitlab.sample.presentation.common.BaseFragmentFactory
-import com.gitlab.sample.presentation.common.FragmentType
-import com.gitlab.sample.presentation.common.Navigator
-import javax.inject.Inject
+import androidx.navigation.NavController
 
-class MainNavigator @Inject constructor() : Navigator {
-    @Inject
-    lateinit var factory: BaseFragmentFactory
-
-    override fun launchFragment(fm: FragmentManager) {
-        factory.commitFragment(fm.beginTransaction(), factory.create(FragmentType.ALBUMS))
-    }
+interface Navigator {
+    fun launchFragment(nav: NavController)
 }
