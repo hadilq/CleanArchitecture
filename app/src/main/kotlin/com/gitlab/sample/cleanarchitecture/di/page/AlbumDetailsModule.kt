@@ -14,7 +14,7 @@
  * limitations under the License.
  *
  * */
-package com.gitlab.sample.presentation.album_details.di
+package com.gitlab.sample.cleanarchitecture.di.page
 
 import com.gitlab.sample.data.album_details.datasource.AlbumDetailsApiSource
 import com.gitlab.sample.data.album_details.datasource.AlbumDetailsDatabaseDataSource

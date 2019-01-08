@@ -14,7 +14,7 @@
  * limitations under the License.
  *
  * */
-package com.gitlab.sample.presentation.album.di
+package com.gitlab.sample.cleanarchitecture.di.page
 
 import com.gitlab.sample.data.album.datasource.AlbumsApiDataSource
 import com.gitlab.sample.data.album.datasource.AlbumsApiSource
@@ -55,5 +55,4 @@ class AlbumsModule {
     ): GetAlbums {
         return GetAlbums(repository)
     }
-
 }

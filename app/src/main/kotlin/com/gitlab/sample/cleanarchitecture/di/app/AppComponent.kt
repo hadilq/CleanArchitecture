@@ -18,17 +18,16 @@ package com.gitlab.sample.cleanarchitecture.di.app
 
 import com.gitlab.sample.cleanarchitecture.App
 import com.gitlab.sample.cleanarchitecture.di.navigator.NavigatorModule
+import com.gitlab.sample.cleanarchitecture.di.page.AlbumDetailsModule
+import com.gitlab.sample.cleanarchitecture.di.page.AlbumsModule
 import com.gitlab.sample.cleanarchitecture.di.viewmodel.ViewModelModule
 import com.gitlab.sample.data.common.di.DatabaseModule
 import com.gitlab.sample.data.common.di.NetworkModule
 import com.gitlab.sample.presentation.album.di.AlbumsFragmentModule
-import com.gitlab.sample.presentation.album.di.AlbumsModule
 import com.gitlab.sample.presentation.album_details.di.AlbumDetailsFragmentModule
-import com.gitlab.sample.presentation.album_details.di.AlbumDetailsModule
 import dagger.Component
 import dagger.android.AndroidInjector
 import dagger.android.support.AndroidSupportInjectionModule
-import dagger.android.support.DaggerApplication
 import javax.inject.Singleton
 
 

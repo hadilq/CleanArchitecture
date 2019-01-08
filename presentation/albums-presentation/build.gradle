@@ -51,8 +51,6 @@ dependencies {
 
 
     implementation project(':common-presentation')
-    implementation project(':common-data')
     implementation project(':common-domain')
     implementation project(':albums-domain')
-    implementation project(':albums-data')
 }
