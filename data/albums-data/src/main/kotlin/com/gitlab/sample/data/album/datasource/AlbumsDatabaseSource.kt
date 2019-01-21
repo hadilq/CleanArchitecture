@@ -16,7 +16,7 @@
  * */
 package com.gitlab.sample.data.album.datasource
 
-import android.arch.paging.DataSource
+import androidx.paging.DataSource
 import com.gitlab.sample.data.album.extensions.map
 import com.gitlab.sample.data.common.db.dao.AlbumDao
 import com.gitlab.sample.domain.album.entities.AlbumEntity

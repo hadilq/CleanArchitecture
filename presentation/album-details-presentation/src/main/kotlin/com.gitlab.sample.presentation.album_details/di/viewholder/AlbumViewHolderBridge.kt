@@ -15,7 +15,7 @@
  */
 package com.gitlab.sample.presentation.album_details.di.viewholder
 
-import android.support.annotation.MainThread
+import androidx.annotation.MainThread
 import android.view.ViewGroup
 import com.gitlab.sample.presentation.album_details.di.AlbumDetailsScope
 import javax.inject.Inject

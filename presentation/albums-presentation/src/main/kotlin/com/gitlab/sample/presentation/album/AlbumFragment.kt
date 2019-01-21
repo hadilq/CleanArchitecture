@@ -16,11 +16,11 @@
  * */
 package com.gitlab.sample.presentation.album
 
-import android.arch.paging.PagedList
+import androidx.paging.PagedList
 import android.os.Bundle
-import android.support.annotation.StringRes
-import android.support.v7.widget.LinearLayoutManager
+import androidx.annotation.StringRes
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.gitlab.sample.presentation.album.recycler.AlbumAdapter
 import com.gitlab.sample.presentation.album.rmvvm.AlbumViewModel
 import com.gitlab.sample.presentation.album.rmvvm.GetAlbumAction

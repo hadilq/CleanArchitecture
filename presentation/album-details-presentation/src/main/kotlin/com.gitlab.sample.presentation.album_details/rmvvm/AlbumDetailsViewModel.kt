@@ -16,9 +16,9 @@
  * */
 package com.gitlab.sample.presentation.album_details.rmvvm
 
-import android.arch.paging.DataSource
-import android.arch.paging.PagedList
-import android.arch.paging.RxPagedListBuilder
+import androidx.paging.DataSource
+import androidx.paging.PagedList
+import androidx.paging.RxPagedListBuilder
 import android.util.Log
 import com.gitlab.sample.domain.album_details.entities.AlbumDetailsEntity
 import com.gitlab.sample.domain.album_details.repositories.AlbumDetailsRepository

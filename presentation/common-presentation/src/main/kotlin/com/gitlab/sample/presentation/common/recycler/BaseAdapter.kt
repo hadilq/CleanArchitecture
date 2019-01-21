@@ -16,8 +16,8 @@
  * */
 package com.gitlab.sample.presentation.common.recycler
 
-import android.arch.paging.PagedListAdapter
-import android.support.v7.util.DiffUtil
+import androidx.paging.PagedListAdapter
+import androidx.recyclerview.widget.DiffUtil
 
 abstract class BaseAdapter(diff: DiffUtil.ItemCallback<RecyclerState>) :
         PagedListAdapter<RecyclerState, BaseViewHolder<*>>(diff) {

@@ -15,8 +15,8 @@
  */
 package com.gitlab.sample.cleanarchitecture.di.viewmodel
 
-import android.arch.lifecycle.ViewModel
-import android.arch.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import com.gitlab.sample.presentation.album.rmvvm.AlbumViewModel
 import com.gitlab.sample.presentation.album_details.rmvvm.AlbumDetailsViewModel
 import dagger.Binds

@@ -1,10 +1,10 @@
 package com.gitlab.sample.presentation.common
 
-import android.arch.lifecycle.Lifecycle
-import android.arch.lifecycle.Lifecycle.State.DESTROYED
-import android.arch.lifecycle.LifecycleObserver
-import android.arch.lifecycle.LifecycleOwner
-import android.arch.lifecycle.OnLifecycleEvent
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.Lifecycle.State.DESTROYED
+import androidx.lifecycle.LifecycleObserver
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.OnLifecycleEvent
 import io.reactivex.Flowable
 import io.reactivex.disposables.Disposable
 

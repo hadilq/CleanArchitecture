@@ -16,7 +16,7 @@
  * */
 package com.gitlab.sample.data.album_details.datasource
 
-import android.arch.paging.DataSource
+import androidx.paging.DataSource
 import com.gitlab.sample.domain.album_details.entities.AlbumDetailsEntity
 
 interface AlbumDetailsDatabaseDataSource {

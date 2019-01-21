@@ -16,26 +16,26 @@
  * */
 package com.gitlab.sample.presentation.common.livedata
 
-import android.arch.lifecycle.LifecycleOwner
-import android.arch.lifecycle.MediatorLiveData
-import android.arch.lifecycle.Observer
-import android.support.annotation.MainThread
+import androidx.annotation.MainThread
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.Observer
 import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.atomic.AtomicBoolean
 
 class SingleLiveEvent<T> : MediatorLiveData<T>() {
 
-    private val observers = ConcurrentHashMap<LifecycleOwner, MutableSet<ObserverWrapper<T>>>()
+    private val observers = ConcurrentHashMap<LifecycleOwner, MutableSet<ObserverWrapper<in T>>>()
 
     @MainThread
-    override fun observe(owner: LifecycleOwner, observer: Observer<T>) {
+    override fun observe(owner: LifecycleOwner, observer: Observer<in T>) {
         val wrapper = ObserverWrapper(observer)
         val set = observers[owner]
         set?.apply {
             add(wrapper)
         } ?: run {
-            val newSet = Collections.newSetFromMap(ConcurrentHashMap<ObserverWrapper<T>, Boolean>())
+            val newSet = Collections.newSetFromMap(ConcurrentHashMap<ObserverWrapper<in T>, Boolean>())
             newSet.add(wrapper)
             observers[owner] = newSet
         }
@@ -47,7 +47,7 @@ class SingleLiveEvent<T> : MediatorLiveData<T>() {
         super.removeObservers(owner)
     }
 
-    override fun removeObserver(observer: Observer<T>) {
+    override fun removeObserver(observer: Observer<in T>) {
         observers.forEach {
             if (it.value.remove(observer)) {
                 if (it.value.isEmpty()) {

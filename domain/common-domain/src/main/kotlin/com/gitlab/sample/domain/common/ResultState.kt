@@ -16,8 +16,8 @@
  * */
 package com.gitlab.sample.domain.common
 
-import android.arch.paging.DataSource
-import android.arch.paging.PagedList
+import androidx.paging.DataSource
+import androidx.paging.PagedList
 import io.reactivex.Flowable
 
 data class ResultState(

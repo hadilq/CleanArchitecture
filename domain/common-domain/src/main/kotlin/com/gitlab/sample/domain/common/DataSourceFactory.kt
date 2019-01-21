@@ -16,6 +16,6 @@
  * */
 package com.gitlab.sample.domain.common
 
-import android.arch.paging.DataSource
+import androidx.paging.DataSource
 
 abstract class DataSourceFactory<Key, Value>(var totalCount: Int) : DataSource.Factory<Key, Value>()

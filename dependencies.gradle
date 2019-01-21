@@ -6,10 +6,11 @@ ext {
     compileVersion = 28
     minVersion = 17
     targetVersion = 28
-    testInstrumentationRunner = "android.support.test.runner.AndroidJUnitRunner"
+    testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
     //libraries
-    androidSupportLibVersion = '27.1.1'
+    androidXLibVersion = '1.0.0'
+    androidXMaterialLibVersion = '1.0.0-rc01'
     constraintLayoutVersion = '1.1.2'
     retrofitVersion = '2.3.0'
     objectboxVersion = '2.1.0'
@@ -21,22 +22,22 @@ ext {
     //Unit Testing
     junitVersion = '4.12'
     mockitoVersion = '1.4.0'
-    archComponentsVersion = '1.1.1'
+    androidXLifecycleLibVersion='2.0.0-rc01'
     robolectricVersion = '3.8'
 
     //Acceptance Testing
-    runnerVersion = '1.0.2'
-    espressoVersion = '3.0.2'
+    androidXTestVersion = '1.1.0'
+    androidXEspressoVersion = '3.1.0'
 
     applicationDependencies = [
-            supportCompat           : "com.android.support:appcompat-v7:$androidSupportLibVersion",
-            recycler                : "com.android.support:recyclerview-v7:$androidSupportLibVersion",
-            paging                  : 'android.arch.paging:runtime:1.0.1',
-            pagingRx                : 'android.arch.paging:rxjava2:1.0.1',
-            extensions              : 'android.arch.lifecycle:extensions:1.1.1',
-            design                  : "com.android.support:design:$androidSupportLibVersion",
+            supportCompat           : "androidx.appcompat:appcompat:$androidXLibVersion",
+            recycler                : "androidx.recyclerview:recyclerview:$androidXLibVersion",
+            paging                  : 'androidx.paging:paging-runtime:2.0.0-beta01',
+            pagingRx                : 'androidx.paging:paging-rxjava2:2.0.0-beta01',
+            extensions              : 'androidx.lifecycle:lifecycle-extensions:2.0.0-beta01',
+            design                  : "com.google.android.material:material:$androidXMaterialLibVersion",
             picasso                 : "com.squareup.picasso:picasso:$picassoVersion",
-            constraintLayout        : "com.android.support.constraint:constraint-layout:$constraintLayoutVersion",
+            constraintLayout        : "androidx.constraintlayout:constraintlayout:$constraintLayoutVersion",
             kotlin                  : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion",
             rxJava                  : "io.reactivex.rxjava2:rxjava:2.1.6",
             rxAndroid               : "io.reactivex.rxjava2:rxandroid:2.1.0",
@@ -44,8 +45,8 @@ ext {
             daggerAndroid           : "com.google.dagger:dagger-android-support:$daggerVersion",
             daggerCompiler          : "com.google.dagger:dagger-compiler:$daggerVersion",
             daggerProcessor         : "com.google.dagger:dagger-android-processor:$daggerVersion",
-            archComponents          : "android.arch.lifecycle:extensions:$archComponentsVersion",
-            archComponentsCompiler  : "android.arch.lifecycle:compiler:$archComponentsVersion",
+            archComponents          : "androidx.lifecycle:lifecycle-extensions:$androidXLifecycleLibVersion",
+            archComponentsCompiler  : "androidx.lifecycle:lifecycle-compiler:$androidXLifecycleLibVersion",
             retrofit                : "com.squareup.retrofit2:retrofit:$retrofitVersion",
             retrofitGsonConverter   : "com.squareup.retrofit2:converter-gson:$retrofitVersion",
             retrofitRxJava2Adapter  : "com.squareup.retrofit2:adapter-rxjava2:$retrofitVersion",
@@ -66,10 +67,10 @@ ext {
     ]
 
     acceptanceTestDependencies = [
-            testRunner        : "com.android.support.test:runner:$runnerVersion",
-            testRules         : "com.android.support.test:rules:$runnerVersion",
-            espressoCore      : "com.android.support.test.espresso:espresso-core:$espressoVersion",
-            espressoIntents   : "com.android.support.test.espresso:espresso-intents:$espressoVersion",
-            androidAnnotations: "com.android.support:support-annotations:$androidSupportLibVersion",
+            testRunner        : "androidx.test.ext:junit:$androidXTestVersion",
+            testRules         : "androidx.test:rules:$androidXTestVersion",
+            espressoCore      : "androidx.test.espresso:espresso-core:$androidXEspressoVersion",
+            espressoIntents   : "androidx.test.espresso:espresso-intents:$androidXEspressoVersion",
+            androidAnnotations: "androidx.annotation:annotation:$androidXLibVersion",
     ]
 }

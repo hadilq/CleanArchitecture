@@ -16,15 +16,15 @@
  * */
 package com.gitlab.sample.presentation.common
 
-import android.arch.lifecycle.ViewModel
-import android.arch.lifecycle.ViewModelProvider
-import android.arch.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import android.support.design.widget.Snackbar
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.gitlab.sample.com.gitlab.sample.presentation.R
+import com.google.android.material.snackbar.Snackbar
 import dagger.android.support.DaggerFragment
 import io.reactivex.Flowable
 import io.reactivex.disposables.CompositeDisposable

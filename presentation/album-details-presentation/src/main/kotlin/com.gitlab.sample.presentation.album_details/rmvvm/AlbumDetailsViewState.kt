@@ -16,8 +16,8 @@
  * */
 package com.gitlab.sample.presentation.album_details.rmvvm
 
-import android.arch.paging.PagedList
-import android.support.annotation.StringRes
+import androidx.paging.PagedList
+import androidx.annotation.StringRes
 import com.gitlab.sample.presentation.common.ViewState
 import com.gitlab.sample.presentation.common.recycler.RecyclerState
 

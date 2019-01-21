@@ -16,7 +16,7 @@
  * */
 package com.gitlab.sample.presentation.common.recycler
 
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import android.view.View
 import com.gitlab.sample.presentation.common.Action
 import io.reactivex.subjects.PublishSubject

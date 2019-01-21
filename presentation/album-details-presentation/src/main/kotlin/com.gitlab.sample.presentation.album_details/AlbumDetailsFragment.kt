@@ -16,11 +16,11 @@
  * */
 package com.gitlab.sample.presentation.album_details
 
-import android.arch.paging.PagedList
+import androidx.paging.PagedList
 import android.os.Bundle
-import android.support.annotation.StringRes
-import android.support.v7.widget.StaggeredGridLayoutManager
 import android.util.DisplayMetrics
+import androidx.annotation.StringRes
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.gitlab.sample.presentation.album_details.di.viewholder.AlbumViewHolderBridge
 import com.gitlab.sample.presentation.album_details.recycler.AlbumDetailsAdapter
 import com.gitlab.sample.presentation.album_details.rmvvm.AlbumDetailsViewModel

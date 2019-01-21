@@ -16,7 +16,7 @@
  * */
 package com.gitlab.sample.presentation.album_details.recycler
 
-import android.support.v7.util.DiffUtil
+import androidx.recyclerview.widget.DiffUtil
 import android.util.Log
 import android.view.ViewGroup
 import com.gitlab.sample.presentation.album_details.di.AlbumDetailsScope

@@ -16,7 +16,7 @@
  * */
 package com.gitlab.sample.data.common.db.datasource
 
-import android.arch.paging.PositionalDataSource
+import androidx.paging.PositionalDataSource
 import android.util.Log
 import io.objectbox.query.Query
 import io.objectbox.reactive.DataObserver

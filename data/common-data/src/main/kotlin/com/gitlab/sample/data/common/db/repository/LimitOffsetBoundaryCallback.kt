@@ -1,6 +1,6 @@
 package com.gitlab.sample.data.common.db.repository
 
-import android.arch.paging.PagedList
+import androidx.paging.PagedList
 import com.gitlab.sample.domain.common.Entity
 
 abstract class LimitOffsetBoundaryCallback(
