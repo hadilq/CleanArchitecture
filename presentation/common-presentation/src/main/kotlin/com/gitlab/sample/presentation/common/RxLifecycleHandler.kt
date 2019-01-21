@@ -19,11 +19,11 @@ class RxLifecycleHandler<T>(
     init {
         if (lifecycle.currentState != DESTROYED) {
             owner.lifecycle.addObserver(this)
-            observerIfPossible()
+            observeIfPossible()
         }
     }
 
-    private fun observerIfPossible() {
+    private fun observeIfPossible() {
         if (lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)) {
             disposable ?: let {
                 disposable = flowable.subscribe { data -> observer(data) }
@@ -33,7 +33,7 @@ class RxLifecycleHandler<T>(
 
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
     fun onStart() {
-        observerIfPossible()
+        observeIfPossible()
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
