@@ -29,6 +29,7 @@ import com.gitlab.sample.presentation.common.navigator.Navigator
 import com.gitlab.sample.presentation.common.extention.gone
 import com.gitlab.sample.presentation.common.extention.visible
 import com.gitlab.sample.presentation.common.recycler.RecyclerState
+import io.reactivex.Flowable
 import kotlinx.android.synthetic.main.albums.*
 import javax.inject.Inject
 

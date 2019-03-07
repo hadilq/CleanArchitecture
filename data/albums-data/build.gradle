@@ -3,11 +3,11 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 
 android {
-    compileSdkVersion compileVersion
+    compileSdkVersion Versions.compileSdkVersion
     defaultConfig {
-        minSdkVersion minVersion
-        targetSdkVersion targetVersion
-        testInstrumentationRunner testInstrumentationRunner
+        minSdkVersion Versions.minSdkVersion
+        targetSdkVersion Versions.targetSdkVersion
+        testInstrumentationRunner Depends.testInstrumentationRunner
     }
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
@@ -18,28 +18,28 @@ android {
 
 dependencies {
 
-    kapt applicationDependencies.daggerCompiler
+    kapt Depends.daggerCompiler
 
-    implementation applicationDependencies.kotlin
-    implementation applicationDependencies.supportCompat
-    implementation applicationDependencies.paging
-    implementation applicationDependencies.dagger
-    implementation applicationDependencies.rxJava
-    implementation applicationDependencies.retrofit
-    implementation applicationDependencies.retrofitGsonConverter
-    implementation applicationDependencies.retrofitRxJava2Adapter
+    implementation Depends.kotlin
+    implementation Depends.supportCompat
+    implementation Depends.paging
+    implementation Depends.dagger
+    implementation Depends.rxJava
+    implementation Depends.retrofit
+    implementation Depends.retrofitGsonConverter
+    implementation Depends.retrofitRxJava2Adapter
 
-    testImplementation unitTestDependencies.kotlin
-    testImplementation unitTestDependencies.kotlinTest
-    testImplementation unitTestDependencies.robolectric
-    testImplementation unitTestDependencies.junit
-    testImplementation unitTestDependencies.mockito
+    testImplementation Depends.kotlin
+    testImplementation Depends.kotlinTest
+    testImplementation Depends.robolectric
+    testImplementation Depends.junit
+    testImplementation Depends.mockito
 
-    androidTestImplementation acceptanceTestDependencies.testRunner
-    androidTestImplementation acceptanceTestDependencies.testRules
-    androidTestImplementation acceptanceTestDependencies.espressoCore
-    androidTestImplementation acceptanceTestDependencies.espressoIntents
-    androidTestImplementation acceptanceTestDependencies.androidAnnotations
+    androidTestImplementation Depends.testRunner
+    androidTestImplementation Depends.testRules
+    androidTestImplementation Depends.espressoCore
+    androidTestImplementation Depends.espressoIntents
+    androidTestImplementation Depends.androidAnnotations
 
     implementation project(':common-data')
     implementation project(':common-domain')

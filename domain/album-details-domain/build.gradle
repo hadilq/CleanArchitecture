@@ -4,11 +4,11 @@ sourceCompatibility = 1.8
 
 dependencies {
 
-    implementation applicationDependencies.kotlin
-    implementation applicationDependencies.rxJava
+    implementation Depends.kotlin
+    implementation Depends.rxJava
 
-    testImplementation unitTestDependencies.junit
-    testImplementation unitTestDependencies.mockito
+    testImplementation Depends.junit
+    testImplementation Depends.mockito
 
     implementation project(':common-domain')
 
