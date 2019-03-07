@@ -4,10 +4,10 @@ sourceCompatibility = 1.8
 
 dependencies {
 
-    implementation applicationDependencies.kotlin
-    implementation applicationDependencies.rxJava
-    implementation applicationDependencies.paging
+    implementation Depends.kotlin
+    implementation Depends.rxJava
+    implementation Depends.paging
 
-    testImplementation unitTestDependencies.junit
-    testImplementation unitTestDependencies.mockito
+    testImplementation Depends.junit
+    testImplementation Depends.mockito
 }

@@ -4,17 +4,11 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
 android {
-    compileSdkVersion compileVersion
+    compileSdkVersion Versions.compileSdkVersion
     defaultConfig {
-        minSdkVersion minVersion
-        targetSdkVersion targetVersion
-        testInstrumentationRunner testInstrumentationRunner
-    }
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
+        minSdkVersion Versions.minSdkVersion
+        targetSdkVersion Versions.targetSdkVersion
+        testInstrumentationRunner Depends.testInstrumentationRunner
     }
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
@@ -25,38 +19,38 @@ android {
 
 dependencies {
 
-    kapt applicationDependencies.daggerCompiler
-    kapt applicationDependencies.archComponentsCompiler
+    kapt Depends.daggerCompiler
+    kapt Depends.archComponentsCompiler
 
-    implementation applicationDependencies.kotlin
-    implementation applicationDependencies.supportCompat
-    implementation applicationDependencies.recycler
-    implementation applicationDependencies.paging
-    implementation applicationDependencies.pagingRx
-    implementation applicationDependencies.extensions
-    implementation applicationDependencies.design
-    implementation applicationDependencies.picasso
-    implementation applicationDependencies.dagger
-    implementation applicationDependencies.daggerAndroid
-    implementation applicationDependencies.archComponents
-    implementation applicationDependencies.rxJava
-    implementation applicationDependencies.rxAndroid
-    implementation applicationDependencies.retrofit
-    implementation applicationDependencies.retrofitGsonConverter
-    implementation applicationDependencies.retrofitRxJava2Adapter
-    implementation applicationDependencies.navigationFragment
+    implementation Depends.kotlin
+    implementation Depends.supportCompat
+    implementation Depends.recycler
+    implementation Depends.paging
+    implementation Depends.pagingRx
+    implementation Depends.extensions
+    implementation Depends.design
+    implementation Depends.picasso
+    implementation Depends.dagger
+    implementation Depends.daggerAndroid
+    implementation Depends.archComponents
+    implementation Depends.rxJava
+    implementation Depends.rxAndroid
+    implementation Depends.retrofit
+    implementation Depends.retrofitGsonConverter
+    implementation Depends.retrofitRxJava2Adapter
+    implementation Depends.navigationFragment
 
-    testImplementation unitTestDependencies.kotlin
-    testImplementation unitTestDependencies.kotlinTest
-    testImplementation unitTestDependencies.robolectric
-    testImplementation unitTestDependencies.junit
-    testImplementation unitTestDependencies.mockito
+    testImplementation Depends.kotlin
+    testImplementation Depends.kotlinTest
+    testImplementation Depends.robolectric
+    testImplementation Depends.junit
+    testImplementation Depends.mockito
 
-    androidTestImplementation acceptanceTestDependencies.testRunner
-    androidTestImplementation acceptanceTestDependencies.testRules
-    androidTestImplementation acceptanceTestDependencies.espressoCore
-    androidTestImplementation acceptanceTestDependencies.espressoIntents
-    androidTestImplementation acceptanceTestDependencies.androidAnnotations
+    androidTestImplementation Depends.testRunner
+    androidTestImplementation Depends.testRules
+    androidTestImplementation Depends.espressoCore
+    androidTestImplementation Depends.espressoIntents
+    androidTestImplementation Depends.androidAnnotations
 
     implementation project(':common-domain')
 }
