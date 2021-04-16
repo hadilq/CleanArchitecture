@@ -1,8 +1,9 @@
 package com.hadilq.guidomia.core.api.di
 
+import java.lang.annotation.Documented
 import javax.inject.Scope
-import kotlin.reflect.KClass
 
 @Scope
+@Documented
 @Retention(AnnotationRetention.RUNTIME)
-annotation class SingleIn(val clazz: KClass<*>)
+annotation class DaggerSingleActivityScope

@@ -30,4 +30,5 @@ dependencies {
   implementation(Depends.kotlinStdLib)
   implementation(Depends.material)
   implementation(Depends.dagger)
+  implementation(Depends.viewModel)
 }

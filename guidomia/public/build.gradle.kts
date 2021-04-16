@@ -14,9 +14,13 @@
  * limitations under the License.
  */
 plugins {
-  kotlin("jvm")
+  id("com.android.library")
+  kotlin("android")
 }
+
+configureAndroidLibrary()
 
 dependencies {
   implementation(Depends.kotlinStdLib)
+  implementation(Depends.appCompat)
 }

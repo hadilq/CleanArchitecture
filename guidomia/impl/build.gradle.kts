@@ -16,18 +16,28 @@
 plugins {
   id("com.android.library")
   kotlin("android")
+  kotlin("kapt")
+  id("com.squareup.anvil") version Versions.anvil
 }
 
 configureAndroidLibrary()
 
 dependencies {
+  implementation(project(Modules.corePublic))
+  implementation(project(Modules.singleActivityPublic))
   implementation(project(Modules.guidomiaPublic))
+
+  kapt(Depends.daggerCompiler)
 
   implementation(Depends.kotlinStdLib)
   implementation(Depends.coreKtx)
   implementation(Depends.appCompat)
   implementation(Depends.material)
   implementation(Depends.constraintLayout)
+  implementation(Depends.fragment)
+  implementation(Depends.dagger)
+  implementation(Depends.viewModel)
+
   testImplementation(Depends.junit)
   androidTestImplementation(Depends.testExtJunit)
   androidTestImplementation(Depends.espressoCore)

@@ -1,6 +1,8 @@
 package com.hadilq.guidomia
 
 import android.app.Application
+import com.hadilq.guidomia.core.api.di.AppScope
+import com.hadilq.guidomia.core.api.di.SingleIn
 import com.hadilq.guidomia.di.AppComponent
 import com.hadilq.guidomia.di.DaggerAppComponent
 import com.hadilq.guidomia.singleactivity.impl.di.SingleActivityComponent
@@ -8,6 +10,7 @@ import com.hadilq.guidomia.singleactivity.impl.di.SingleActivityComponentProvide
 import javax.inject.Singleton
 
 @Singleton
+@SingleIn(AppScope::class)
 class CustomApplication : Application(), SingleActivityComponentProvider {
 
   private val component: AppComponent by lazy { DaggerAppComponent.create() }

@@ -1,5 +1,6 @@
-package com.hadilq.guidomia.guidomia
+package com.hadilq.guidomia.guidomia.api
 
 interface GuidomiaNavigator {
+
   fun commit()
 }

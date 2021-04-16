@@ -24,5 +24,6 @@ dependencies {
   implementation(project(Modules.corePublic))
 
   implementation(Depends.kotlinStdLib)
+  implementation(Depends.appCompat)
   implementation(Depends.fragment)
 }

@@ -44,7 +44,9 @@ android {
 dependencies {
   implementation(project(Modules.corePublic))
   implementation(project(Modules.coreImpl))
+  implementation(project(Modules.singleActivityPublic))
   implementation(project(Modules.singleActivityImpl))
+  implementation(project(Modules.guidomiaPublic))
   implementation(project(Modules.guidomiaImpl))
 
   kapt(Depends.daggerCompiler)

@@ -1,23 +1,30 @@
 package com.hadilq.guidomia.singleactivity.impl
 
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
-import com.hadilq.guidomia.core.api.di.SingleActivityScope
+import com.hadilq.guidomia.core.api.di.AppScope
 import com.hadilq.guidomia.singleactivity.api.Navigator
+import com.hadilq.guidomia.singleactivity.api.NavigatorFactory
 import com.squareup.anvil.annotations.ContributesBinding
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import java.util.*
-import javax.inject.Inject
 
-@ContributesBinding(
-  scope = SingleActivityScope::class,
-  boundType = Navigator::class
-)
-class NavigatorImpl @Inject constructor(
-  private val activity: SingleActivity
+@ContributesBinding(AppScope::class)
+@AssistedFactory
+interface NavigatorFactoryImpl : NavigatorFactory {
+
+  override fun create(activity: AppCompatActivity): NavigatorImpl
+}
+
+class NavigatorImpl @AssistedInject constructor(
+  @Assisted private val activity: AppCompatActivity
 ) : Navigator, LifecycleObserver {
 
   private var paused = true

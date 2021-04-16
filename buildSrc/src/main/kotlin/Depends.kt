@@ -22,6 +22,7 @@ object Depends {
     "androidx.constraintlayout:constraintlayout:${Versions.constraintLayout}"
   const val lifecycleCompiler = "androidx.lifecycle:lifecycle-compiler:${Versions.lifecycle}"
   const val fragment = "androidx.fragment:fragment-ktx:${Versions.fragment}"
+  const val viewModel = "androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.lifecycle}"
   const val daggerCompiler = "com.google.dagger:dagger-compiler:${Versions.dagger}"
   const val dagger = "com.google.dagger:dagger:${Versions.dagger}"
 
