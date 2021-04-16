@@ -25,9 +25,11 @@ object Versions {
   const val material = "1.3.0"
   const val constraintLayout = "2.0.4"
   const val lifecycle = "2.3.1"
+  const val recyclerView = "1.1.0"
   const val fragment = "1.3.2"
   const val dagger = "2.34.1"
   const val anvil = "2.2.1"
+  const val coroutines = "1.4.3"
 
   const val junit = "4.13.2"
   const val testExtJunit = "1.1.2"

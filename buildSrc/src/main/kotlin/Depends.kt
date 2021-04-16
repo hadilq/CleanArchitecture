@@ -23,8 +23,10 @@ object Depends {
   const val lifecycleCompiler = "androidx.lifecycle:lifecycle-compiler:${Versions.lifecycle}"
   const val fragment = "androidx.fragment:fragment-ktx:${Versions.fragment}"
   const val viewModel = "androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.lifecycle}"
+  const val recyclerView = "androidx.recyclerview:recyclerview:${Versions.recyclerView}"
   const val daggerCompiler = "com.google.dagger:dagger-compiler:${Versions.dagger}"
   const val dagger = "com.google.dagger:dagger:${Versions.dagger}"
+  const val coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.coroutines}"
 
   const val junit = "junit:junit:${Versions.junit}"
   const val testExtJunit = "androidx.test.ext:junit:${Versions.testExtJunit}"

@@ -13,6 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 plugins {
   id("com.android.library")
   kotlin("android")
@@ -21,6 +23,12 @@ plugins {
 }
 
 configureAndroidLibrary()
+
+android {
+  buildFeatures {
+    viewBinding = true
+  }
+}
 
 dependencies {
   implementation(project(Modules.corePublic))
@@ -37,6 +45,8 @@ dependencies {
   implementation(Depends.fragment)
   implementation(Depends.dagger)
   implementation(Depends.viewModel)
+  implementation(Depends.recyclerView)
+  implementation(Depends.coroutines)
 
   testImplementation(Depends.junit)
   androidTestImplementation(Depends.testExtJunit)

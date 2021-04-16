@@ -1,7 +1,6 @@
 package com.hadilq.guidomia.core.impl
 
 import android.os.Looper
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.LifecycleOwner
@@ -20,13 +19,13 @@ class ViewBindingProviderImpl @Inject constructor() : ViewBindingProvider {
   override fun <T : ViewBinding> viewBinding(
     owner: LifecycleOwner,
     initializer: () -> T
-  ): ReadOnlyProperty<AppCompatActivity, T> = ViewBindingPropertyDelegate(owner, initializer)
+  ): ReadOnlyProperty<LifecycleOwner, T> = ViewBindingPropertyDelegate(owner, initializer)
 }
 
 class ViewBindingPropertyDelegate<T : ViewBinding>(
   private val owner: LifecycleOwner,
   private val initializer: () -> T
-) : ReadOnlyProperty<AppCompatActivity, T>, LifecycleObserver {
+) : ReadOnlyProperty<LifecycleOwner, T>, LifecycleObserver {
 
   private var _value: T? = null
 
@@ -39,7 +38,7 @@ class ViewBindingPropertyDelegate<T : ViewBinding>(
     _value = null
   }
 
-  override fun getValue(thisRef: AppCompatActivity, property: KProperty<*>): T {
+  override fun getValue(thisRef: LifecycleOwner, property: KProperty<*>): T {
     if (_value == null) {
 
       // This must be on the main thread only
