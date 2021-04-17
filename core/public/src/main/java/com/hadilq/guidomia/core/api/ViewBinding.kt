@@ -1,29 +1,21 @@
 package com.hadilq.guidomia.core.impl
 
 import android.os.Looper
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.OnLifecycleEvent
 import androidx.viewbinding.ViewBinding
-import com.hadilq.guidomia.core.api.ViewBindingProvider
-import com.hadilq.guidomia.core.api.di.AppScope
-import com.squareup.anvil.annotations.ContributesBinding
-import javax.inject.Inject
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
-@ContributesBinding(AppScope::class)
-class ViewBindingProviderImpl @Inject constructor() : ViewBindingProvider {
-
-  override fun <T : ViewBinding> viewBinding(
-    owner: LifecycleOwner,
-    initializer: () -> T
-  ): ReadOnlyProperty<LifecycleOwner, T> = ViewBindingPropertyDelegate(owner, initializer)
-}
+fun <T : ViewBinding> LifecycleOwner.viewBinding(
+  initializer: () -> T
+): ReadOnlyProperty<LifecycleOwner, T> = ViewBindingPropertyDelegate(this, initializer)
 
 class ViewBindingPropertyDelegate<T : ViewBinding>(
-  private val owner: LifecycleOwner,
+  owner: LifecycleOwner,
   private val initializer: () -> T
 ) : ReadOnlyProperty<LifecycleOwner, T>, LifecycleObserver {
 

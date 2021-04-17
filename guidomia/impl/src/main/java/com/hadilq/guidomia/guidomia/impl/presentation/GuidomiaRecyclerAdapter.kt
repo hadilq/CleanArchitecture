@@ -71,7 +71,7 @@ class CarViewHolder @AssistedInject constructor(
 ) : RecyclerView.ViewHolder(binding.root) {
 
   fun bind(car: CarModel) {
-
+    binding.model.text = car.model.model
   }
 }
 

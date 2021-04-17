@@ -2,10 +2,10 @@ package com.hadilq.guidomia.singleactivity.impl
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.hadilq.guidomia.core.api.ViewBindingProvider
 import com.hadilq.guidomia.core.api.di.DaggerSingleActivityScope
 import com.hadilq.guidomia.core.api.di.SingleActivityScope
 import com.hadilq.guidomia.core.api.di.SingleIn
+import com.hadilq.guidomia.core.impl.viewBinding
 import com.hadilq.guidomia.guidomia.api.GuidomiaNavigatorFactory
 import com.hadilq.guidomia.singleactivity.impl.databinding.ActivityMainBinding
 import com.hadilq.guidomia.singleactivity.impl.di.SingleActivityComponent
@@ -23,14 +23,9 @@ class SingleActivity : AppCompatActivity() {
   }
 
   @Inject
-  internal lateinit var viewBindingProvider: ViewBindingProvider
-
-  @Inject
   internal lateinit var guidomiaNavigatorFactory: GuidomiaNavigatorFactory
 
-  private val binding by viewBindingProvider.viewBinding(this) {
-    ActivityMainBinding.inflate(layoutInflater)
-  }
+  private val binding by viewBinding { ActivityMainBinding.inflate(layoutInflater) }
 
   override fun onCreate(savedInstanceState: Bundle?) {
     component.inject(this)

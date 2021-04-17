@@ -1,5 +1,8 @@
 package com.hadilq.guidomia.guidomia.impl.data.entity
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class CarDataEntity(
   val make: String,
   val model: String,
