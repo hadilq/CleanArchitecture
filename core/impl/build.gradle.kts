@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.kapt3.base.Kapt.kapt
-
 /**
  * Copyright 2021 Hadi Lashkari Ghouchani
 
@@ -42,6 +40,7 @@ dependencies {
   implementation(Depends.material)
   implementation(Depends.constraintLayout)
   implementation(Depends.dagger)
+  implementation(Depends.coroutines)
 
   testImplementation(Depends.junit)
   androidTestImplementation(Depends.testExtJunit)

@@ -20,6 +20,7 @@ plugins {
   kotlin("android")
   kotlin("kapt")
   id("com.squareup.anvil") version Versions.anvil
+  kotlin("plugin.serialization") version Versions.serialization
 }
 
 configureAndroidLibrary()
@@ -47,6 +48,7 @@ dependencies {
   implementation(Depends.viewModel)
   implementation(Depends.recyclerView)
   implementation(Depends.coroutines)
+  implementation(Depends.jsonSerialization)
 
   testImplementation(Depends.junit)
   androidTestImplementation(Depends.testExtJunit)

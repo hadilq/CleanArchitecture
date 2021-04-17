@@ -2,7 +2,7 @@ package com.hadilq.guidomia.guidomia.impl.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.hadilq.guidomia.guidomia.impl.domain.usecase.LoadCars
+import com.hadilq.guidomia.guidomia.impl.domain.usecase.GetCars
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
@@ -10,7 +10,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class GuidomiaViewModel @Inject constructor(
-  private val loadCars: LoadCars,
+  private val getCars: GetCars,
   private val carMapper: CarModelMapper,
 ) : ViewModel() {
 
@@ -19,7 +19,7 @@ class GuidomiaViewModel @Inject constructor(
 
   init {
     viewModelScope.launch {
-      loadCars().collect { cars ->
+      getCars().collect { cars ->
         _uiState.value = CarListUiState.Success(cars.map { carMapper.map(it) })
       }
     }

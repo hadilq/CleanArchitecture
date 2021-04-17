@@ -30,6 +30,8 @@ object Versions {
   const val dagger = "2.34.1"
   const val anvil = "2.2.1"
   const val coroutines = "1.4.3"
+  const val serialization = "1.4.30"
+  const val jsonSerialization = "1.1.0"
 
   const val junit = "4.13.2"
   const val testExtJunit = "1.1.2"

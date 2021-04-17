@@ -13,7 +13,11 @@ import javax.inject.Singleton
 @SingleIn(AppScope::class)
 class CustomApplication : Application(), SingleActivityComponentProvider {
 
-  private val component: AppComponent by lazy { DaggerAppComponent.create() }
+  private val component: AppComponent by lazy {
+    DaggerAppComponent.builder()
+      .application(this)
+      .build()
+  }
 
   override val singleActivityComponentProvider: SingleActivityComponent.Builder
     get() = component.singleActivityComponentBuilder()

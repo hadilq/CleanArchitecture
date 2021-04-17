@@ -27,6 +27,8 @@ object Depends {
   const val daggerCompiler = "com.google.dagger:dagger-compiler:${Versions.dagger}"
   const val dagger = "com.google.dagger:dagger:${Versions.dagger}"
   const val coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.coroutines}"
+  const val jsonSerialization =
+    "org.jetbrains.kotlinx:kotlinx-serialization-json:${Versions.jsonSerialization}"
 
   const val junit = "junit:junit:${Versions.junit}"
   const val testExtJunit = "androidx.test.ext:junit:${Versions.testExtJunit}"
