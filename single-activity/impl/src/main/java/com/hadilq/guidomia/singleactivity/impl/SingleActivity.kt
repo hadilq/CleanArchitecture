@@ -2,6 +2,7 @@ package com.hadilq.guidomia.singleactivity.impl
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import com.hadilq.guidomia.core.api.di.DaggerSingleActivityScope
 import com.hadilq.guidomia.core.api.di.SingleActivityScope
 import com.hadilq.guidomia.core.api.di.SingleIn
@@ -31,6 +32,14 @@ class SingleActivity : AppCompatActivity() {
     component.inject(this)
     super.onCreate(savedInstanceState)
     setContentView(binding.root)
+    setSupportActionBar(binding.toolbar)
+    supportActionBar?.setHomeAsUpIndicator(
+      ContextCompat.getDrawable(this, R.drawable.ic_baseline_dehaze_24)
+    )
+    supportActionBar?.setDisplayHomeAsUpEnabled(true)
+    supportActionBar?.setDisplayShowTitleEnabled(false)
+    binding.toolbar.logo = ContextCompat.getDrawable(this, R.drawable.logo)
+
     if (savedInstanceState == null) {
       guidomiaNavigatorFactory.create(this).commit()
     }

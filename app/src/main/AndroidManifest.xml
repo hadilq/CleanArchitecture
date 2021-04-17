@@ -10,7 +10,10 @@
     android:roundIcon="@mipmap/ic_launcher_round"
     android:supportsRtl="true"
     android:theme="@style/Theme.Guidomia">
-    <activity android:name=".singleactivity.impl.SingleActivity">
+    <activity
+      android:name=".singleactivity.impl.SingleActivity"
+      android:label="@string/app_name"
+      android:theme="@style/Theme.Guidomia.NoActionBar">
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
 
