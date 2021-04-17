@@ -13,8 +13,8 @@ class CarDataMapper @Inject constructor() {
       make = MakeEntity(make),
       price = PriceEntity(marketPrice),
       rate = Rate.values()[rating - 1],
-      pros = prosList,
-      cons = consList,
+      pros = prosList.filter { it.isNotBlank() },
+      cons = consList.filter { it.isNotBlank() },
       image = ImageEntity(
         when (model) {
           "Range Rover" -> R.drawable.range_rover

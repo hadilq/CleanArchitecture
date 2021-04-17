@@ -1,12 +1,12 @@
 package com.hadilq.guidomia.singleactivity.impl.di
 
-import com.hadilq.guidomia.core.api.di.DaggerSingleActivityScope
 import com.hadilq.guidomia.core.api.di.SingleActivityScope
+import com.hadilq.guidomia.core.api.di.SingleIn
 import com.hadilq.guidomia.singleactivity.impl.SingleActivity
 import com.squareup.anvil.annotations.MergeSubcomponent
 import dagger.Subcomponent
 
-@DaggerSingleActivityScope
+@SingleIn(SingleActivityScope::class)
 @MergeSubcomponent(SingleActivityScope::class)
 interface SingleActivityComponent {
 

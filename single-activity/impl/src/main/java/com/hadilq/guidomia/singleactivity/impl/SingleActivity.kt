@@ -3,7 +3,6 @@ package com.hadilq.guidomia.singleactivity.impl
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import com.hadilq.guidomia.core.api.di.DaggerSingleActivityScope
 import com.hadilq.guidomia.core.api.di.SingleActivityScope
 import com.hadilq.guidomia.core.api.di.SingleIn
 import com.hadilq.guidomia.core.impl.viewBinding
@@ -13,7 +12,6 @@ import com.hadilq.guidomia.singleactivity.impl.di.SingleActivityComponent
 import com.hadilq.guidomia.singleactivity.impl.di.SingleActivityComponentProvider
 import javax.inject.Inject
 
-@DaggerSingleActivityScope
 @SingleIn(SingleActivityScope::class)
 class SingleActivity : AppCompatActivity() {
 

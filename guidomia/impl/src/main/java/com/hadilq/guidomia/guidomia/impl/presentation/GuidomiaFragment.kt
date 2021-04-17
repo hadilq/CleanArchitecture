@@ -9,11 +9,14 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hadilq.guidomia.core.api.ViewModelFactory
+import com.hadilq.guidomia.core.api.di.FragmentScope
+import com.hadilq.guidomia.core.api.di.SingleIn
 import com.hadilq.guidomia.core.impl.viewBinding
 import com.hadilq.guidomia.guidomia.impl.databinding.FragmentGuidomiaBinding
 import kotlinx.coroutines.flow.collect
 import javax.inject.Inject
 
+@SingleIn(FragmentScope::class)
 class GuidomiaFragment @Inject constructor() : Fragment() {
 
   @Inject
@@ -24,7 +27,7 @@ class GuidomiaFragment @Inject constructor() : Fragment() {
 
   private val binding by viewBinding { FragmentGuidomiaBinding.inflate(layoutInflater) }
 
-  private val viewModel: GuidomiaViewModel by lazy {
+  internal val viewModel: GuidomiaViewModel by lazy {
     ViewModelProvider(this, viewModelFactory)
       .get(GuidomiaViewModel::class.java)
   }

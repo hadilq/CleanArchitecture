@@ -11,6 +11,7 @@ import com.hadilq.guidomia.guidomia.impl.R
 import com.hadilq.guidomia.guidomia.impl.databinding.CarItemBinding
 import com.hadilq.guidomia.guidomia.impl.databinding.FilterItemBinding
 import com.hadilq.guidomia.guidomia.impl.databinding.LineItemBinding
+import com.hadilq.guidomia.guidomia.impl.databinding.ProsConsItemBinding
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -88,20 +89,96 @@ interface CarViewHolderFactory {
 
 class CarViewHolder @AssistedInject constructor(
   @Assisted private val binding: CarItemBinding,
+  private val carItemOnClick: CarItemOnClick,
 ) : RecyclerView.ViewHolder(binding.root) {
 
-  fun bind(car: CarModel) {
-    binding.ivCar.setImageDrawable(ContextCompat.getDrawable(binding.root.context, car.image.value))
-    binding.tvTitle.text = binding.root.context.getString(
-        R.string.car_item_title, car.make.value, car.model.value
-      )
-    binding.tvPrice.text =
+  private val proConsBindingPool = ProConsItemPool(binding.root)
+
+  fun bind(car: CarModel) = binding.apply {
+    ivCar.setImageDrawable(ContextCompat.getDrawable(root.context, car.image.value))
+    tvTitle.text = root.context.getString(
+      R.string.car_item_title, car.make.value, car.model.value
+    )
+    tvPrice.text =
       binding.root.context.getString(R.string.car_item_price, (car.price.value / 1000).toInt())
-    binding.ivStar1.visibility = if (car.rate.value >= 1) View.VISIBLE else View.GONE
-    binding.ivStar2.visibility = if (car.rate.value >= 2) View.VISIBLE else View.GONE
-    binding.ivStar3.visibility = if (car.rate.value >= 3) View.VISIBLE else View.GONE
-    binding.ivStar4.visibility = if (car.rate.value >= 4) View.VISIBLE else View.GONE
-    binding.ivStar5.visibility = if (car.rate.value >= 5) View.VISIBLE else View.GONE
+    ivStar1.visibility = if (car.rate.value >= 1) View.VISIBLE else View.GONE
+    ivStar2.visibility = if (car.rate.value >= 2) View.VISIBLE else View.GONE
+    ivStar3.visibility = if (car.rate.value >= 3) View.VISIBLE else View.GONE
+    ivStar4.visibility = if (car.rate.value >= 4) View.VISIBLE else View.GONE
+    ivStar5.visibility = if (car.rate.value >= 5) View.VISIBLE else View.GONE
+
+    if (car.collapsed) {
+      collapsibles.visibility = View.GONE
+    } else {
+      collapsibles.visibility = View.VISIBLE
+
+      llPros.removeAllViews()
+      llCons.removeAllViews()
+      proConsBindingPool.releaseAll()
+      if (car.pros.isEmpty()) {
+        tvPros.visibility = View.GONE
+        llPros.visibility = View.GONE
+      } else {
+        tvPros.visibility = View.VISIBLE
+        llPros.visibility = View.VISIBLE
+        car.pros.forEach { pro ->
+          val prosConsBinding = proConsBindingPool.newItem
+          prosConsBinding.root.text = pro
+          llPros.addView(
+            prosConsBinding.root,
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+          )
+        }
+      }
+
+      if (car.cons.isEmpty()) {
+        tvCons.visibility = View.GONE
+        llCons.visibility = View.GONE
+      } else {
+        tvCons.visibility = View.VISIBLE
+        llCons.visibility = View.VISIBLE
+        car.cons.forEach { con ->
+          val prosConsBinding = proConsBindingPool.newItem
+          prosConsBinding.root.text = con
+          llCons.addView(
+            prosConsBinding.root,
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+          )
+        }
+      }
+    }
+    root.setOnClickListener { carItemOnClick.onClickCar(adapterPosition) }
+  }
+
+  /**
+   * To avoid inflation on each click.
+   */
+  private class ProConsItemPool(private val root: ViewGroup) {
+
+    private val pool = ArrayList<ItemState>()
+
+    val newItem: ProsConsItemBinding
+      get() =
+        pool.find { it.released }?.let {
+          it.released = false
+          it.prosConsItemBinding
+        } ?: run {
+          val prosConsBinding =
+            ProsConsItemBinding.inflate(LayoutInflater.from(root.context), root, false)
+          pool.add(ItemState(prosConsBinding, false))
+          prosConsBinding
+        }
+
+    fun releaseAll() {
+      pool.forEach { it.released = true }
+    }
+
+    private class ItemState(
+      val prosConsItemBinding: ProsConsItemBinding,
+      var released: Boolean = true
+    )
   }
 }
 

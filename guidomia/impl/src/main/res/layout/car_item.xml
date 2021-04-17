@@ -2,7 +2,8 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
   android:layout_width="match_parent"
-  android:layout_height="@dimen/car_item_height"
+  android:layout_height="wrap_content"
+  android:paddingBottom="@dimen/car_item_bottom_margin"
   android:background="@color/light_grey">
 
   <ImageView
@@ -18,7 +19,7 @@
 
   <TextView
     android:id="@+id/tvTitle"
-    android:layout_width="wrap_content"
+    android:layout_width="0dp"
     android:layout_height="wrap_content"
     android:layout_marginStart="@dimen/car_item_model_margin_start"
     android:layout_marginEnd="@dimen/car_item_model_margin_start"
@@ -26,7 +27,7 @@
     android:maxLines="1"
     android:paddingTop="@dimen/car_item_model_padding_top"
     android:textAppearance="@style/TextAppearance.AppCompat.Title"
-    android:textColor="?android:attr/textColorSecondary"
+    android:textColor="@color/text_black"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toEndOf="@+id/ivCar"
     app:layout_constraintTop_toTopOf="@+id/ivCar" />
@@ -36,6 +37,8 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Subtitle"
+    android:textColor="@color/text_black"
+    android:textStyle="bold"
     app:layout_constraintStart_toStartOf="@+id/tvTitle"
     app:layout_constraintTop_toBottomOf="@id/tvTitle" />
 
@@ -87,5 +90,57 @@
     android:src="@drawable/star"
     app:layout_constraintStart_toEndOf="@id/ivStar4"
     app:layout_constraintTop_toBottomOf="@id/tvPrice" />
+
+  <TextView
+    android:id="@+id/tvPros"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/car_item_pros_cons_start_margin"
+    android:layout_marginTop="@dimen/car_item_pros_cons_top_margin"
+    android:text="@string/pros"
+    android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Subtitle"
+    android:textColor="@color/text_black"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/ivCar" />
+
+  <LinearLayout
+    android:id="@+id/llPros"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/car_item_pros_cons_list_start_margin"
+    android:layout_marginTop="@dimen/car_item_pros_cons_item_top_margin"
+    android:layout_marginEnd="@dimen/car_item_pros_cons_list_start_margin"
+    android:orientation="vertical"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/tvPros" />
+
+  <TextView
+    android:id="@+id/tvCons"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/car_item_pros_cons_start_margin"
+    android:layout_marginTop="@dimen/car_item_pros_cons_item_top_margin"
+    android:text="@string/cons"
+    android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Subtitle"
+    android:textColor="@color/text_black"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/llPros" />
+
+  <LinearLayout
+    android:id="@+id/llCons"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/car_item_pros_cons_list_start_margin"
+    android:layout_marginTop="@dimen/car_item_pros_cons_item_top_margin"
+    android:layout_marginEnd="@dimen/car_item_pros_cons_list_start_margin"
+    android:orientation="vertical"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/tvCons" />
+
+  <androidx.constraintlayout.widget.Group
+    android:id="@+id/collapsibles"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    app:constraint_referenced_ids="tvPros,tvCons,llPros,llCons" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
