@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <dimen name="car_item_image_width">110dp</dimen>
+  <dimen name="car_item_image_height">80dp</dimen>
+  <dimen name="car_item_height">100dp</dimen>
+  <dimen name="car_item_image_margin_top">5dp</dimen>
+  <dimen name="car_item_image_margin_start">20dp</dimen>
+  <dimen name="car_item_model_margin_start">20dp</dimen>
+  <dimen name="line_item_margin_top">8dp</dimen>
+  <dimen name="line_item_margin_start">26dp</dimen>
+  <dimen name="car_item_model_padding_top">4dp</dimen>
+  <dimen name="car_item_star_margin_top">12dp</dimen>
+  <dimen name="car_item_star_margin_end">12dp</dimen>
+  <dimen name="car_item_start">14dp</dimen>
+</resources>

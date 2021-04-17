@@ -9,6 +9,11 @@ class CarModelMapper @Inject constructor() {
     CarModel(
       model = model,
       make = make,
+      image = image,
+      price = price,
+      rate = rate,
+      pros = pros,
+      cons = cons,
     )
   }
 }

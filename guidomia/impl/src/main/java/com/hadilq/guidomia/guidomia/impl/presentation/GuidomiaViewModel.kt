@@ -20,7 +20,10 @@ class GuidomiaViewModel @Inject constructor(
   init {
     viewModelScope.launch {
       getCars().collect { cars ->
-        _uiState.value = CarListUiState.Success(cars.map { carMapper.map(it) })
+        val list = cars.flatMap { listOf(carMapper.map(it), LineModel) }
+        _uiState.value = CarListUiState.Success(
+          list.take(list.size - 1)
+        )
       }
     }
   }

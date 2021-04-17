@@ -1,3 +1,3 @@
 package com.hadilq.guidomia.guidomia.impl.domain.entity
 
-inline class ModelEntity(val value: String)
+inline class PriceEntity(val value: Float)

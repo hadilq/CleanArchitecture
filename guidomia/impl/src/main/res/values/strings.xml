@@ -1,2 +1,4 @@
 <resources>
+  <string name="car_item_price">Price : %dk</string>
+  <string name="car_item_title">%s %s</string>
 </resources>

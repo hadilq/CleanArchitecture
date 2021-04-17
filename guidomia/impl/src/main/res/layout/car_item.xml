@@ -1,12 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
   android:layout_width="match_parent"
-  android:layout_height="match_parent">
+  android:layout_height="@dimen/car_item_height"
+  android:background="@color/light_grey">
+
+  <ImageView
+    android:id="@+id/ivCar"
+    android:layout_width="@dimen/car_item_image_width"
+    android:layout_height="@dimen/car_item_image_height"
+    android:layout_marginStart="@dimen/car_item_image_margin_start"
+    android:layout_marginLeft="@dimen/car_item_image_margin_start"
+    android:layout_marginTop="@dimen/car_item_image_margin_top"
+    android:adjustViewBounds="true"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent" />
 
   <TextView
-    android:id="@+id/model"
+    android:id="@+id/tvTitle"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    />
+    android:layout_marginStart="@dimen/car_item_model_margin_start"
+    android:layout_marginEnd="@dimen/car_item_model_margin_start"
+    android:ellipsize="end"
+    android:maxLines="1"
+    android:paddingTop="@dimen/car_item_model_padding_top"
+    android:textAppearance="@style/TextAppearance.AppCompat.Title"
+    android:textColor="?android:attr/textColorSecondary"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toEndOf="@+id/ivCar"
+    app:layout_constraintTop_toTopOf="@+id/ivCar" />
+
+  <TextView
+    android:id="@+id/tvPrice"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Subtitle"
+    app:layout_constraintStart_toStartOf="@+id/tvTitle"
+    app:layout_constraintTop_toBottomOf="@id/tvTitle" />
+
+  <ImageView
+    android:id="@+id/ivStar1"
+    android:layout_width="@dimen/car_item_start"
+    android:layout_height="@dimen/car_item_start"
+    android:layout_marginTop="@dimen/car_item_star_margin_top"
+    android:layout_marginEnd="@dimen/car_item_star_margin_end"
+    android:src="@drawable/star"
+    app:layout_constraintStart_toStartOf="@id/tvPrice"
+    app:layout_constraintTop_toBottomOf="@id/tvPrice" />
+
+  <ImageView
+    android:id="@+id/ivStar2"
+    android:layout_width="@dimen/car_item_start"
+    android:layout_height="@dimen/car_item_start"
+    android:layout_marginTop="@dimen/car_item_star_margin_top"
+    android:layout_marginEnd="@dimen/car_item_star_margin_end"
+    android:src="@drawable/star"
+    app:layout_constraintStart_toEndOf="@+id/ivStar1"
+    app:layout_constraintTop_toBottomOf="@id/tvPrice" />
+
+  <ImageView
+    android:id="@+id/ivStar3"
+    android:layout_width="@dimen/car_item_start"
+    android:layout_height="@dimen/car_item_start"
+    android:layout_marginTop="@dimen/car_item_star_margin_top"
+    android:layout_marginEnd="@dimen/car_item_star_margin_end"
+    android:src="@drawable/star"
+    app:layout_constraintStart_toEndOf="@id/ivStar2"
+    app:layout_constraintTop_toBottomOf="@id/tvPrice" />
+
+  <ImageView
+    android:id="@+id/ivStar4"
+    android:layout_width="@dimen/car_item_start"
+    android:layout_height="@dimen/car_item_start"
+    android:layout_marginTop="@dimen/car_item_star_margin_top"
+    android:layout_marginEnd="@dimen/car_item_star_margin_end"
+    android:src="@drawable/star"
+    app:layout_constraintStart_toEndOf="@id/ivStar3"
+    app:layout_constraintTop_toBottomOf="@id/tvPrice" />
+
+  <ImageView
+    android:id="@+id/ivStar5"
+    android:layout_width="@dimen/car_item_start"
+    android:layout_height="@dimen/car_item_start"
+    android:layout_marginTop="@dimen/car_item_star_margin_top"
+    android:src="@drawable/star"
+    app:layout_constraintStart_toEndOf="@id/ivStar4"
+    app:layout_constraintTop_toBottomOf="@id/tvPrice" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
