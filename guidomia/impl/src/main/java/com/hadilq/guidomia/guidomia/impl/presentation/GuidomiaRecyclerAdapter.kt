@@ -129,15 +129,16 @@ class CarViewHolder @AssistedInject constructor(
     ivStar5.visibility = if (car.rate.value >= 5) View.VISIBLE else View.GONE
 
     if (car.collapsed) {
-      collapsibles.visibility = View.GONE
+      tvPros.visibility = View.GONE
+      llPros.visibility = View.GONE
+      tvCons.visibility = View.GONE
+      llCons.visibility = View.GONE
     } else {
-      collapsibles.visibility = View.VISIBLE
-
       llPros.removeAllViews()
       llCons.removeAllViews()
       proConsBindingPool.releaseAll()
       if (car.pros.isEmpty()) {
-        tvPros.visibility = View.GONE // TODO This line is not working for Mercedes Benz!!
+        tvPros.visibility = View.GONE
         llPros.visibility = View.GONE
       } else {
         tvPros.visibility = View.VISIBLE
