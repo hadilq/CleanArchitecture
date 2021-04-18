@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
   id("com.android.library")
@@ -21,6 +20,7 @@ plugins {
   kotlin("kapt")
   id("com.squareup.anvil") version Versions.anvil
   kotlin("plugin.serialization") version Versions.serialization
+  id("de.mannodermaus.android-junit5")
 }
 
 configureAndroidLibrary()
@@ -50,7 +50,9 @@ dependencies {
   implementation(Depends.coroutines)
   implementation(Depends.jsonSerialization)
 
-  testImplementation(Depends.junit)
+  testImplementation(Depends.junitJupiterApi)
+  testRuntimeOnly(Depends.junitJupiterEngine)
+  testImplementation(Depends.mockk)
   androidTestImplementation(Depends.testExtJunit)
   androidTestImplementation(Depends.espressoCore)
 }

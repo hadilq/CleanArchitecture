@@ -34,6 +34,8 @@ object Versions {
   const val jsonSerialization = "1.1.0"
 
   const val junit = "4.13.2"
+  const val junitJupiter = "5.7.1"
+  const val mockk = "1.11.0"
   const val testExtJunit = "1.1.2"
   const val espressoCore = "3.3.0"
 }

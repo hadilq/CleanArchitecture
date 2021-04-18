@@ -1,6 +1,7 @@
 package com.hadilq.guidomia.guidomia.impl.presentation
 
 import com.hadilq.guidomia.guidomia.impl.domain.entity.CarEntity
+import com.hadilq.guidomia.guidomia.impl.domain.entity.FilterEntity
 import javax.inject.Inject
 
 class CarModelMapper @Inject constructor() {
@@ -15,6 +16,13 @@ class CarModelMapper @Inject constructor() {
       pros = pros,
       cons = cons,
       collapsed = collapsed
+    )
+  }
+
+  fun map(filterModel: FilterModel) = filterModel.run {
+    FilterEntity(
+      make = make,
+      model = model,
     )
   }
 }

@@ -2,10 +2,9 @@ package com.hadilq.guidomia.core.api
 
 import androidx.lifecycle.ViewModel
 import dagger.MapKey
-import java.lang.annotation.Documented
 import kotlin.reflect.KClass
 
-@Documented
+@MustBeDocumented
 @Target(AnnotationTarget.FUNCTION, AnnotationTarget.CLASS)
 @Retention(AnnotationRetention.SOURCE)
 @MapKey

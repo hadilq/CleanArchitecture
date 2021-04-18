@@ -24,5 +24,9 @@ data class CarModel(
 ) : CarListModel(CarListType.CAR)
 
 data class FilterModel(
-  val x: Int = 1,
+  val make: MakeEntity = MakeEntity(""),
+  val model: ModelEntity = ModelEntity(""),
+  val makeUpdated: Boolean = false,
+  val modelUpdated: Boolean = false,
+  val cursorPosition: Int = 0,
 ) : CarListModel(CarListType.FILTER)

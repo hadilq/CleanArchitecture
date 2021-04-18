@@ -1,5 +1,7 @@
 package com.hadilq.guidomia.guidomia.impl.presentation
 
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,10 +14,13 @@ import com.hadilq.guidomia.guidomia.impl.databinding.CarItemBinding
 import com.hadilq.guidomia.guidomia.impl.databinding.FilterItemBinding
 import com.hadilq.guidomia.guidomia.impl.databinding.LineItemBinding
 import com.hadilq.guidomia.guidomia.impl.databinding.ProsConsItemBinding
+import com.hadilq.guidomia.guidomia.impl.domain.entity.MakeEntity
+import com.hadilq.guidomia.guidomia.impl.domain.entity.ModelEntity
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import javax.inject.Inject
+
 
 class GuidomiaRecyclerAdapter @Inject constructor(
   private val carViewHolderFactory: CarViewHolderFactory,
@@ -28,6 +33,7 @@ class GuidomiaRecyclerAdapter @Inject constructor(
     override fun areItemsTheSame(oldItem: CarListModel, newItem: CarListModel): Boolean = when {
       oldItem is CarModel && newItem is CarModel -> oldItem.model == newItem.model
       oldItem is LineModel && newItem is LineModel -> true
+      oldItem is FilterModel && newItem is FilterModel -> true
       else -> false
     }
 
@@ -116,7 +122,7 @@ class CarViewHolder @AssistedInject constructor(
       llCons.removeAllViews()
       proConsBindingPool.releaseAll()
       if (car.pros.isEmpty()) {
-        tvPros.visibility = View.GONE
+        tvPros.visibility = View.GONE // TODO This line is not working for Mercedes Benz!!
         llPros.visibility = View.GONE
       } else {
         tvPros.visibility = View.VISIBLE
@@ -190,9 +196,66 @@ interface FilterViewHolderFactory {
 
 class FilterViewHolder @AssistedInject constructor(
   @Assisted private val binding: FilterItemBinding,
+  private val carItemFilter: CarItemFilter
 ) : RecyclerView.ViewHolder(binding.root) {
 
-  fun bind(car: FilterModel) {
+  private lateinit var currentFilter: FilterModel
 
+  private val makeTextWatcher: TextWatcher = object : TextWatcher {
+    override fun afterTextChanged(s: Editable) {
+    }
+
+    override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
+    }
+
+    override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+      carItemFilter.onNewFilter(
+        currentFilter.copy(
+          make = MakeEntity(s.toString()),
+          cursorPosition = start + count,
+          makeUpdated = true,
+          modelUpdated = false,
+        )
+      )
+    }
+  }
+
+  private val modelTextWatcher: TextWatcher = object : TextWatcher {
+    override fun afterTextChanged(s: Editable) {
+    }
+
+    override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
+    }
+
+    override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+      carItemFilter.onNewFilter(
+        currentFilter.copy(
+          model = ModelEntity(s.toString()),
+          cursorPosition = start + count,
+          makeUpdated = false,
+          modelUpdated = true,
+        )
+      )
+    }
+  }
+
+  fun bind(car: FilterModel) = binding.apply {
+    currentFilter = car
+
+    filterMake.removeTextChangedListener(makeTextWatcher)
+    filterMake.setText(car.make.value)
+    if (car.makeUpdated) {
+      filterMake.requestFocus()
+      filterMake.setSelection(car.cursorPosition)
+    }
+    filterMake.addTextChangedListener(makeTextWatcher)
+
+    filterModel.removeTextChangedListener(modelTextWatcher)
+    filterModel.setText(car.model.value)
+    if (car.modelUpdated) {
+      filterModel.requestFocus()
+      filterModel.setSelection(car.cursorPosition)
+    }
+    filterModel.addTextChangedListener(modelTextWatcher)
   }
 }

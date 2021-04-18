@@ -21,6 +21,7 @@ buildscript {
     dependencies {
         classpath("com.android.tools.build:gradle:4.1.3") // Change the version in buildSrc dependencies too.
         classpath(kotlin("gradle-plugin", version = Versions.kotlin))
+        classpath("de.mannodermaus.gradle.plugins:android-junit5:1.7.1.1")
     }
 }
 

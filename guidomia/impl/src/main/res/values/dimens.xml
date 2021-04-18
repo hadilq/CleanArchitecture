@@ -18,4 +18,13 @@
   <dimen name="pros_cons_item_start_margin">12dp</dimen>
   <dimen name="pros_cons_item_bottom_margin">8dp</dimen>
   <dimen name="car_item_pros_cons_item_top_margin">4dp</dimen>
+  <dimen name="filter_item_margin_top">18dp</dimen>
+  <dimen name="filter_item_margin_start">14dp</dimen>
+  <dimen name="filter_item_margin_bottom">32dp</dimen>
+  <dimen name="filter_item_padding_top">10dp</dimen>
+  <dimen name="filter_item_padding_start">14dp</dimen>
+  <dimen name="filter_item_title_margin_top">16dp</dimen>
+  <dimen name="filter_item_padding_bottom">24dp</dimen>
+  <dimen name="filter_item_edittext_padding_top">8dp</dimen>
+  <dimen name="filter_item_edittext_padding_start">16dp</dimen>
 </resources>

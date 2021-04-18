@@ -4,7 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hadilq.guidomia.core.api.di.RetainScope
 import com.hadilq.guidomia.core.api.di.SingleIn
+import com.hadilq.guidomia.guidomia.impl.domain.entity.CarEntity
 import com.hadilq.guidomia.guidomia.impl.domain.usecase.GetCars
+import com.hadilq.guidomia.guidomia.impl.domain.usecase.GetFilteredCars
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
@@ -14,23 +16,29 @@ import javax.inject.Inject
 @SingleIn(RetainScope::class)
 class GuidomiaViewModel @Inject constructor(
   private val getCars: GetCars,
+  private val getFilteredCars: GetFilteredCars,
   private val carMapper: CarModelMapper,
-) : ViewModel(), CarItemOnClick {
+) : ViewModel(), CarItemOnClick, CarItemFilter {
 
   private val _uiState = MutableStateFlow(CarListUiState.Success(emptyList()))
   val uiState: StateFlow<CarListUiState> = _uiState
 
   init {
     viewModelScope.launch {
-      getCars().collect { cars ->
-        val list = cars.flatMapIndexed { index, car ->
-          val collapsed = index != 0
-          listOf(carMapper.map(car, collapsed), LineModel)
-        }.toMutableList()
-        list.removeAt(list.size - 1)
-        _uiState.value = CarListUiState.Success(list)
-      }
+      getCars().collect(::updateCars)
     }
+  }
+
+  private fun updateCars(cars: List<CarEntity>, filter: FilterModel = FilterModel()) {
+    val list = cars.flatMapIndexed { index, car ->
+      val collapsed = index != 0
+      listOf(carMapper.map(car, collapsed), LineModel)
+    }.toMutableList()
+    if (list.size > 0) {
+      list.removeAt(list.size - 1)
+    }
+    list.add(0, filter)
+    _uiState.value = CarListUiState.Success(list)
   }
 
   override fun onClickCar(position: Int) {
@@ -46,6 +54,14 @@ class GuidomiaViewModel @Inject constructor(
           carList
         }
       })
+    }
+  }
+
+  override fun onNewFilter(filterModel: FilterModel) {
+    viewModelScope.launch {
+      getFilteredCars(carMapper.map(filterModel)).collect {
+        updateCars(it, filterModel)
+      }
     }
   }
 }

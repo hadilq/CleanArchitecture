@@ -31,6 +31,9 @@ object Depends {
     "org.jetbrains.kotlinx:kotlinx-serialization-json:${Versions.jsonSerialization}"
 
   const val junit = "junit:junit:${Versions.junit}"
+  const val junitJupiterApi = "org.junit.jupiter:junit-jupiter-api:${Versions.junitJupiter}"
+  const val junitJupiterEngine = "org.junit.jupiter:junit-jupiter-engine:${Versions.junitJupiter}"
+  const val mockk = "io.mockk:mockk:${Versions.mockk}"
   const val testExtJunit = "androidx.test.ext:junit:${Versions.testExtJunit}"
   const val espressoCore = "androidx.test.espresso:espresso-core:${Versions.espressoCore}"
 }
