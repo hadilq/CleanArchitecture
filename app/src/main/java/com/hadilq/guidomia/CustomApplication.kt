@@ -7,9 +7,7 @@ import com.hadilq.guidomia.di.AppComponent
 import com.hadilq.guidomia.di.DaggerAppComponent
 import com.hadilq.guidomia.singleactivity.impl.di.SingleActivityComponent
 import com.hadilq.guidomia.singleactivity.impl.di.SingleActivityComponentProvider
-import javax.inject.Singleton
 
-@Singleton
 @SingleIn(AppScope::class)
 class CustomApplication : Application(), SingleActivityComponentProvider {
 

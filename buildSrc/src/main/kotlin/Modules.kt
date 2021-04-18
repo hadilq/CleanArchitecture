@@ -5,4 +5,6 @@ object Modules {
   const val singleActivityImpl = ":single-activity:impl"
   const val guidomiaPublic = ":guidomia:public"
   const val guidomiaImpl = ":guidomia:impl"
+  const val databaseImpl = ":database:impl"
+  const val databasePublic = ":database:public"
 }

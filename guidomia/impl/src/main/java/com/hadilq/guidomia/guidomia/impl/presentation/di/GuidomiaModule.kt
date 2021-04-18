@@ -9,8 +9,7 @@ import com.squareup.anvil.annotations.ContributesTo
 import dagger.Module
 import dagger.Provides
 
-@Module
-@ContributesTo(scope = FragmentScope::class)
+@[Module ContributesTo(scope = FragmentScope::class)]
 object GuidomiaModule {
 
   /**

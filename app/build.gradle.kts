@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
   id("com.android.application")
@@ -66,6 +65,8 @@ dependencies {
   implementation(project(Modules.singleActivityImpl))
   implementation(project(Modules.guidomiaPublic))
   implementation(project(Modules.guidomiaImpl))
+  implementation(project(Modules.databasePublic))
+  implementation(project(Modules.databaseImpl))
 
   kapt(Depends.daggerCompiler)
 

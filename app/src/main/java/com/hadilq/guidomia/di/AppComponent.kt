@@ -2,13 +2,13 @@ package com.hadilq.guidomia.di
 
 import com.hadilq.guidomia.CustomApplication
 import com.hadilq.guidomia.core.api.di.AppScope
+import com.hadilq.guidomia.core.api.di.SingleIn
 import com.hadilq.guidomia.singleactivity.impl.di.SingleActivityComponent
 import com.squareup.anvil.annotations.MergeComponent
 import dagger.BindsInstance
 import dagger.Component
-import javax.inject.Singleton
 
-@Singleton
+@SingleIn(AppScope::class)
 @MergeComponent(
   scope = AppScope::class,
   modules = [

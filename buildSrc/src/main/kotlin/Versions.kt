@@ -32,6 +32,7 @@ object Versions {
   const val coroutines = "1.4.3"
   const val serialization = "1.4.30"
   const val jsonSerialization = "1.1.0"
+  const val room = "2.2.6"
 
   const val junit = "4.13.2"
   const val junitJupiter = "5.7.1"

@@ -13,12 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-include(":app")
-include(":core:public")
-include(":core:impl")
-include(":single-activity:public")
-include(":single-activity:impl")
-include(":guidomia:public")
-include(":guidomia:impl")
-include(":database:public")
-include(":database:impl")
+plugins {
+  kotlin("jvm")
+}
+
+dependencies {
+  implementation(Depends.kotlinStdLib)
+}

@@ -13,47 +13,43 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 plugins {
   id("com.android.library")
   kotlin("android")
   kotlin("kapt")
   id("com.squareup.anvil") version Versions.anvil
-  kotlin("plugin.serialization") version Versions.serialization
-  id("de.mannodermaus.android-junit5")
 }
 
 configureAndroidLibrary()
 
 android {
-  buildFeatures {
-    viewBinding = true
+  defaultConfig {
+    javaCompileOptions {
+      annotationProcessorOptions {
+        arguments += mapOf(
+          "room.schemaLocation" to "$projectDir/schemas",
+          "room.incremental" to "true",
+          "room.expandProjection" to "true"
+        )
+      }
+    }
   }
 }
 
 dependencies {
   implementation(project(Modules.corePublic))
-  implementation(project(Modules.singleActivityPublic))
-  implementation(project(Modules.guidomiaPublic))
   implementation(project(Modules.databasePublic))
 
   kapt(Depends.daggerCompiler)
+  kapt(Depends.roomCompiler)
 
   implementation(Depends.kotlinStdLib)
-  implementation(Depends.coreKtx)
-  implementation(Depends.appCompat)
-  implementation(Depends.material)
-  implementation(Depends.constraintLayout)
-  implementation(Depends.fragment)
   implementation(Depends.dagger)
-  implementation(Depends.viewModel)
-  implementation(Depends.recyclerView)
   implementation(Depends.coroutines)
-  implementation(Depends.jsonSerialization)
+  implementation(Depends.roomRuntime)
+  implementation(Depends.roomKtx)
 
-  testImplementation(Depends.junitJupiterApi)
-  testRuntimeOnly(Depends.junitJupiterEngine)
-  testImplementation(Depends.mockk)
+  testImplementation(Depends.junit)
   androidTestImplementation(Depends.testExtJunit)
   androidTestImplementation(Depends.espressoCore)
 }
