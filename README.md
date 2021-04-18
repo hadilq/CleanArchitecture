@@ -19,6 +19,12 @@ Android app.
  - JUnit 5
  - Mockk
 
+### Dependency Inversion Principle
+
+All modules are depending on each other only by `:public` interfaces, except the `:app`
+where is the only user of `:impl` modules. Also keep the `:app` as light as possible so
+rebuilding time of any `:impl` module will be short.
+
 ### Dagger
 
 Defined scopes in Dagger
