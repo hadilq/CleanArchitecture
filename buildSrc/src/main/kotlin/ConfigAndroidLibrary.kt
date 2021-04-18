@@ -51,6 +51,15 @@ fun Project.configureAndroidLibrary() {
         ignore = true
       }
     }
+
+    buildFeatures {
+      aidl = false
+      dataBinding = false
+      viewBinding = false
+      shaders = false
+      buildConfig = false
+      renderScript = false
+    }
   }
 }
 
