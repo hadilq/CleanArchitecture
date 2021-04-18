@@ -46,24 +46,28 @@ internal class CarRepositoryTest {
   @Test
   fun `given_empty_cache_and_empty_database then_fetch_cars`() = runBlocking {
     val repository = CarsRepository(carsDataSource, cacheDataSource, carDatabaseDataSource)
-    every { cacheDataSource.caching } returns null
+    every { cacheDataSource.caching } returns listOf()
     coEvery { carDatabaseDataSource.isEmpty() } returns true
     every { carsDataSource.fetchCars() } returns flowOf()
 
     repository.getCars().collect()
 
     verify(exactly = 1) { carsDataSource.fetchCars() }
+    coVerify(exactly = 1) { cacheDataSource.caching }
+    coVerify(exactly = 0) { carDatabaseDataSource.fetchCars() }
   }
 
   @Test
-  fun `given_empty_cache_and_non_empty_database then_fetch_cars`() = runBlocking {
+  fun `given_empty_cache_and_non_empty_database then_fetch_cars_from_database`() = runBlocking {
     val repository = CarsRepository(carsDataSource, cacheDataSource, carDatabaseDataSource)
-    every { cacheDataSource.caching } returns null
+    every { cacheDataSource.caching } returns listOf()
     coEvery { carDatabaseDataSource.isEmpty() } returns false
     coEvery { carDatabaseDataSource.fetchCars() } returns listOf()
 
     repository.getCars().collect()
 
+    coVerify(exactly = 0) { carsDataSource.fetchCars() }
+    coVerify(exactly = 1) { cacheDataSource.caching }
     coVerify(exactly = 1) { carDatabaseDataSource.fetchCars() }
   }
 
@@ -76,5 +80,7 @@ internal class CarRepositoryTest {
     repository.getCars().collect()
 
     verify(exactly = 0) { carsDataSource.fetchCars() }
+    coVerify(exactly = 2) { cacheDataSource.caching }
+    coVerify(exactly = 0) { carDatabaseDataSource.fetchCars() }
   }
 }

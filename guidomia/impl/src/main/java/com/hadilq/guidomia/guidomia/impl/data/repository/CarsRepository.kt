@@ -29,13 +29,18 @@ class CarsRepository @Inject constructor(
 ) {
 
   fun getCars(): Flow<List<CarEntity>> =
-    if (cacheDataSource.caching.isNullOrEmpty())
+    if (cacheDataSource.caching.isEmpty()) {
       flow {
-        if (carDatabaseDataSource.isEmpty())
-          emitAll(carsDataSource.fetchCars().onEach { carDatabaseDataSource.save(it) })
-        else
+        if (carDatabaseDataSource.isEmpty()) {
+          emitAll(carsDataSource.fetchCars()
+            .onEach { carDatabaseDataSource.save(it) }
+            .onEach { cacheDataSource.caching = it }
+          )
+        } else {
           emit(carDatabaseDataSource.fetchCars())
+        }
       }
-    else
+    } else {
       flowOf(cacheDataSource.caching)
+    }
 }

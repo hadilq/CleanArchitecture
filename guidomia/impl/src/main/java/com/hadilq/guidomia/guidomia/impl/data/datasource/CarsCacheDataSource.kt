@@ -20,5 +20,5 @@ import javax.inject.Inject
 
 class CarsCacheDataSource @Inject constructor() {
 
-  val caching: List<CarEntity>? = null
+  var caching: List<CarEntity> = listOf()
 }
