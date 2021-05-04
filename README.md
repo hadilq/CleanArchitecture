@@ -22,7 +22,7 @@ Android app.
 ### Dependency Inversion Principle
 
 All modules are depending on each other only by `:public` interfaces, except the `:app`
-where is the only user of `:impl` modules. Also keep the `:app` as light as possible so
+where is the only user of `:impl` modules. Also by keeping the `:app` as light as possible,
 rebuilding time of any `:impl` module will be short.
 
 ### Dagger
