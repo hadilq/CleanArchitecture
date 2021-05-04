@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <dimen name="get_yours_bottom_margin">28dp</dimen>
+  <dimen name="get_yours_start_margin">25dp</dimen>
+  <dimen name="title_bottom_margin">1dp</dimen>
+  <dimen name="title_start_margin">20dp</dimen>
+  <dimen name="title_size">42sp</dimen>
+</resources>

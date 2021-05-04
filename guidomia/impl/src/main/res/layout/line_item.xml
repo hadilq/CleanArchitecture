@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content">
+
+  <View
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/line"
+    android:layout_marginStart="@dimen/line_item_margin_start"
+    android:layout_marginTop="@dimen/line_item_margin_top"
+    android:layout_marginEnd="@dimen/line_item_margin_start"
+    android:layout_marginBottom="@dimen/line_item_margin_top"
+    android:background="@color/orange" />
+</FrameLayout>

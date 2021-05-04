@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:layout_marginStart="@dimen/filter_item_margin_start"
+  android:layout_marginLeft="@dimen/filter_item_margin_start"
+  android:layout_marginTop="@dimen/filter_item_margin_top"
+  android:layout_marginEnd="@dimen/filter_item_margin_start"
+  android:layout_marginRight="@dimen/filter_item_margin_start"
+  android:layout_marginBottom="@dimen/filter_item_margin_bottom"
+  android:background="@drawable/filter_background"
+  android:paddingStart="@dimen/filter_item_padding_start"
+  android:paddingLeft="@dimen/filter_item_padding_start"
+  android:paddingTop="@dimen/filter_item_padding_top"
+  android:paddingEnd="@dimen/filter_item_padding_start"
+  android:paddingRight="@dimen/filter_item_padding_start"
+  android:paddingBottom="@dimen/filter_item_padding_bottom">
+
+  <TextView
+    android:id="@+id/title"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="@string/filters"
+    android:textAppearance="@style/TextAppearance.AppCompat.Title"
+    android:textColor="@color/white"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent" />
+
+  <EditText
+    android:id="@+id/filter_make"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/filter_item_title_margin_top"
+    android:background="@drawable/filter_edittext_background"
+    android:hint="@string/filter_any_make"
+    android:paddingStart="@dimen/filter_item_edittext_padding_start"
+    android:paddingLeft="@dimen/filter_item_edittext_padding_start"
+    android:paddingTop="@dimen/filter_item_edittext_padding_top"
+    android:paddingEnd="@dimen/filter_item_edittext_padding_start"
+    android:paddingRight="@dimen/filter_item_edittext_padding_start"
+    android:paddingBottom="@dimen/filter_item_edittext_padding_top"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/title" />
+
+  <EditText
+    android:id="@+id/filter_model"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/filter_item_title_margin_top"
+    android:background="@drawable/filter_edittext_background"
+    android:hint="@string/filter_any_model"
+    android:paddingStart="@dimen/filter_item_edittext_padding_start"
+    android:paddingLeft="@dimen/filter_item_edittext_padding_start"
+    android:paddingTop="@dimen/filter_item_edittext_padding_top"
+    android:paddingEnd="@dimen/filter_item_edittext_padding_start"
+    android:paddingRight="@dimen/filter_item_edittext_padding_start"
+    android:paddingBottom="@dimen/filter_item_edittext_padding_top"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/filter_make" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
