@@ -1,4 +1,4 @@
-# Guidomia
+# Clean Architecture
 
 This is a sample app to show best practices up to authors's knowledge by trying to
 stay close to standard technologies for a highly scalable, maintainable, and testable
@@ -32,4 +32,15 @@ Defined scopes in Dagger
  - SingleActivityScope
  - FragmentScope
  - RetainScope
+
+### Modules
+Here we have one root module, which is the `:app`, and one feature module `:guidomia` that
+is following clean architecture practices.
+Other modules considered as library modules.
+
+ - core
+ - database
+ - single-activity
+
+For your convenient you may want to put them in separated directories, such as `features`, `libraries`, etc.
 
