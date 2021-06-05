@@ -18,7 +18,7 @@ package com.hadilq.guidomia.di.fragment
 import androidx.fragment.app.Fragment
 import com.hadilq.guidomia.core.api.FragmentFactory
 import com.hadilq.guidomia.core.api.SimpleFragmentFactory
-import com.hadilq.guidomia.core.api.di.AppScope
+import com.hadilq.guidomia.di.api.AppScope
 import com.squareup.anvil.annotations.ContributesBinding
 import javax.inject.Inject
 import kotlin.reflect.KClass

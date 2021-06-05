@@ -17,8 +17,13 @@ package com.hadilq.guidomia.di
 
 import android.content.Context
 import com.hadilq.guidomia.CustomApplication
+import com.hadilq.guidomia.di.api.AppScope
+import com.hadilq.guidomia.featureflags.api.CommandHook
+import com.hadilq.guidomia.featureflags.api.CommandRegister
+import com.squareup.anvil.annotations.ContributesMultibinding
 import dagger.Binds
 import dagger.Module
+import javax.inject.Inject
 
 @Module
 interface AppModule {

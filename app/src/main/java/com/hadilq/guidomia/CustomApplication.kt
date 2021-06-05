@@ -16,12 +16,15 @@
 package com.hadilq.guidomia
 
 import android.app.Application
-import com.hadilq.guidomia.core.api.di.AppScope
-import com.hadilq.guidomia.core.api.di.SingleIn
 import com.hadilq.guidomia.di.AppComponent
 import com.hadilq.guidomia.di.DaggerAppComponent
+import com.hadilq.guidomia.di.api.AppScope
+import com.hadilq.guidomia.di.api.SingleIn
+import com.hadilq.guidomia.featureflags.api.CommandHook
+import com.hadilq.guidomia.featureflags.api.CommandRegister
 import com.hadilq.guidomia.singleactivity.impl.di.SingleActivityComponent
 import com.hadilq.guidomia.singleactivity.impl.di.SingleActivityComponentProvider
+import javax.inject.Inject
 
 @SingleIn(AppScope::class)
 class CustomApplication : Application(), SingleActivityComponentProvider {
@@ -34,4 +37,20 @@ class CustomApplication : Application(), SingleActivityComponentProvider {
 
   override val singleActivityComponentProvider: SingleActivityComponent.Builder
     get() = component.singleActivityComponentBuilder()
+
+  @Inject
+  protected lateinit var commandHookSet: Set<@JvmSuppressWildcards CommandHook>
+
+  @Inject
+  protected lateinit var commandRegister: CommandRegister
+
+  override fun onCreate() {
+    super.onCreate()
+    component.inject(this)
+    hookUpFeatureFlags()
+  }
+
+  private fun hookUpFeatureFlags() {
+    commandHookSet.forEach { it.hookUp(commandRegister) }
+  }
 }

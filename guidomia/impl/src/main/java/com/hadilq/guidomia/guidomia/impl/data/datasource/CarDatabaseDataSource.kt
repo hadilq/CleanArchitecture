@@ -15,22 +15,33 @@
  */
 package com.hadilq.guidomia.guidomia.impl.data.datasource
 
-import com.hadilq.guidomia.database.api.CarDataEntityCommand
+import com.hadilq.guidomia.database.api.*
+import com.hadilq.guidomia.featureflags.api.CommandExecutor
+import com.hadilq.guidomia.featureflags.api.exe
 import com.hadilq.guidomia.guidomia.impl.data.mapper.CarDatabaseMapper
 import com.hadilq.guidomia.guidomia.impl.domain.entity.CarEntity
 import javax.inject.Inject
 
 class CarDatabaseDataSource @Inject constructor(
-  private val command: CarDataEntityCommand,
+  private val executor: CommandExecutor,
   private val mapper: CarDatabaseMapper,
 ) {
 
-  suspend fun isEmpty() = command.isEmpty()
+  suspend fun isEmpty(): Boolean = callIsEmpty().result
 
   suspend fun fetchCars(): List<CarEntity> =
-    command.getAll().map { mapper.map(it) }
+    callFetchCars().result.map { mapper.map(it) }
 
   suspend fun save(cars: List<CarEntity>) {
-    command.insertAll(cars.map { mapper.map(it) })
+    callSave(cars.map { mapper.map(it) })
   }
+
+  private suspend fun callIsEmpty(): CarDataEntityCommandIsEmptyResult =
+    executor.exe(CarDataEntityCommandIsEmpty())
+
+  private suspend fun callFetchCars(): CarDataEntityCommandGetAllResult =
+    executor.exe(CarDataEntityCommandGetAll())
+
+  private suspend fun callSave(cars: List<CarDatabaseEntity>): CarDataEntityCommandInsertAllResult =
+    executor.exe(CarDataEntityCommandInsertAll(cars))
 }

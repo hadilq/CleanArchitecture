@@ -15,8 +15,8 @@
  */
 package com.hadilq.guidomia.guidomia.impl.presentation.di
 
-import com.hadilq.guidomia.core.api.di.FragmentScope
-import com.hadilq.guidomia.core.api.di.RetainScope
+import com.hadilq.guidomia.di.api.FragmentScope
+import com.hadilq.guidomia.di.api.RetainScope
 import com.hadilq.guidomia.guidomia.impl.presentation.CarItemFilter
 import com.hadilq.guidomia.guidomia.impl.presentation.CarItemOnClick
 import com.hadilq.guidomia.guidomia.impl.presentation.GuidomiaFragment

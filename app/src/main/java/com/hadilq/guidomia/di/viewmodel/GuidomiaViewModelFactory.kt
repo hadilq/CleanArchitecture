@@ -18,7 +18,7 @@ package com.hadilq.guidomia.di.viewmodel
 import androidx.lifecycle.ViewModel
 import com.hadilq.guidomia.core.api.SimpleViewModelFactory
 import com.hadilq.guidomia.core.api.ViewModelKey
-import com.hadilq.guidomia.core.api.di.AppScope
+import com.hadilq.guidomia.di.api.AppScope
 import com.hadilq.guidomia.guidomia.impl.presentation.GuidomiaViewModel
 import com.hadilq.guidomia.di.RetainComponent
 import com.squareup.anvil.annotations.ContributesMultibinding

@@ -17,8 +17,8 @@ package com.hadilq.guidomia.guidomia.impl.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.hadilq.guidomia.core.api.di.RetainScope
-import com.hadilq.guidomia.core.api.di.SingleIn
+import com.hadilq.guidomia.di.api.RetainScope
+import com.hadilq.guidomia.di.api.SingleIn
 import com.hadilq.guidomia.guidomia.impl.domain.entity.CarEntity
 import com.hadilq.guidomia.guidomia.impl.domain.usecase.GetCars
 import com.hadilq.guidomia.guidomia.impl.domain.usecase.GetFilteredCars

@@ -17,7 +17,7 @@ package com.hadilq.guidomia.guidomia.impl.presentation
 
 import androidx.appcompat.app.AppCompatActivity
 import com.hadilq.guidomia.core.api.FragmentFactory
-import com.hadilq.guidomia.core.api.di.AppScope
+import com.hadilq.guidomia.di.api.AppScope
 import com.hadilq.guidomia.guidomia.api.GuidomiaNavigator
 import com.hadilq.guidomia.guidomia.api.GuidomiaNavigatorFactory
 import com.hadilq.guidomia.singleactivity.api.NavigatorFactory

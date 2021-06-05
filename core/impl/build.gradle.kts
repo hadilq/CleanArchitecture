@@ -30,6 +30,7 @@ android {
 
 dependencies {
   implementation(project(Modules.corePublic))
+  implementation(project(Modules.diPublic))
   implementation(project(Modules.guidomiaPublic))
 
   kapt(Depends.daggerCompiler)

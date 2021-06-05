@@ -53,20 +53,22 @@ android {
   }
 
   packagingOptions {
-    exclude("META-INF/public_release.kotlin_module")
-    exclude("META-INF/impl_release.kotlin_module")
+    exclude("META-INF/*.kotlin_module")
   }
 }
 
 dependencies {
   implementation(project(Modules.corePublic))
   implementation(project(Modules.coreImpl))
+  implementation(project(Modules.diPublic))
   implementation(project(Modules.singleActivityPublic))
   implementation(project(Modules.singleActivityImpl))
   implementation(project(Modules.guidomiaPublic))
   implementation(project(Modules.guidomiaImpl))
   implementation(project(Modules.databasePublic))
   implementation(project(Modules.databaseImpl))
+  implementation(project(Modules.featureFlagsPublic))
+  implementation(project(Modules.featureFlagsImpl))
 
   kapt(Depends.daggerCompiler)
 

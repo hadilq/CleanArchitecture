@@ -22,7 +22,7 @@ import androidx.fragment.app.commit
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
-import com.hadilq.guidomia.core.api.di.AppScope
+import com.hadilq.guidomia.di.api.AppScope
 import com.hadilq.guidomia.singleactivity.api.Navigator
 import com.hadilq.guidomia.singleactivity.api.NavigatorFactory
 import com.squareup.anvil.annotations.ContributesBinding

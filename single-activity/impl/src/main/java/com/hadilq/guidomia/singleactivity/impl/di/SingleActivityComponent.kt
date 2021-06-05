@@ -15,8 +15,8 @@
  */
 package com.hadilq.guidomia.singleactivity.impl.di
 
-import com.hadilq.guidomia.core.api.di.SingleActivityScope
-import com.hadilq.guidomia.core.api.di.SingleIn
+import com.hadilq.guidomia.di.api.SingleActivityScope
+import com.hadilq.guidomia.di.api.SingleIn
 import com.hadilq.guidomia.singleactivity.impl.SingleActivity
 import com.squareup.anvil.annotations.MergeSubcomponent
 import dagger.Subcomponent

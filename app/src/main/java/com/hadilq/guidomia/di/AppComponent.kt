@@ -16,8 +16,8 @@
 package com.hadilq.guidomia.di
 
 import com.hadilq.guidomia.CustomApplication
-import com.hadilq.guidomia.core.api.di.AppScope
-import com.hadilq.guidomia.core.api.di.SingleIn
+import com.hadilq.guidomia.di.api.AppScope
+import com.hadilq.guidomia.di.api.SingleIn
 import com.hadilq.guidomia.singleactivity.impl.di.SingleActivityComponent
 import com.squareup.anvil.annotations.MergeComponent
 import dagger.BindsInstance
@@ -38,6 +38,8 @@ interface AppComponent {
     fun application(customApplication: CustomApplication): Builder
     fun build(): AppComponent
   }
+
+  fun inject(app: CustomApplication)
 
   fun singleActivityComponentBuilder(): SingleActivityComponent.Builder
   fun fragmentComponentBuilder(): FragmentComponent.Builder

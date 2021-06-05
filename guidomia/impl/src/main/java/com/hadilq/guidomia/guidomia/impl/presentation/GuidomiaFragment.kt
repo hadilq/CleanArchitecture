@@ -24,9 +24,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hadilq.guidomia.core.api.ViewModelFactory
-import com.hadilq.guidomia.core.api.di.FragmentScope
-import com.hadilq.guidomia.core.api.di.SingleIn
 import com.hadilq.guidomia.core.api.viewBinding
+import com.hadilq.guidomia.di.api.FragmentScope
+import com.hadilq.guidomia.di.api.SingleIn
 import com.hadilq.guidomia.guidomia.impl.databinding.FragmentGuidomiaBinding
 import kotlinx.coroutines.flow.collect
 import javax.inject.Inject

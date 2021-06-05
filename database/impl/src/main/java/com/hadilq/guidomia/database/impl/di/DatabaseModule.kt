@@ -17,8 +17,8 @@ package com.hadilq.guidomia.database.impl.di
 
 import android.content.Context
 import androidx.room.Room
-import com.hadilq.guidomia.core.api.di.AppScope
-import com.hadilq.guidomia.core.api.di.SingleIn
+import com.hadilq.guidomia.di.api.AppScope
+import com.hadilq.guidomia.di.api.SingleIn
 import com.hadilq.guidomia.database.impl.AppDatabase
 import com.squareup.anvil.annotations.ContributesTo
 import dagger.Module

@@ -13,6 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.hadilq.guidomia.core.api.di
+plugins {
+  kotlin("jvm")
+}
 
-abstract class SingleActivityScope private constructor()
+dependencies {
+  implementation(Depends.kotlinStdLib)
+  implementation(Depends.dagger)
+}

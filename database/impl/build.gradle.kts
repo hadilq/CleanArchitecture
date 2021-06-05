@@ -38,7 +38,9 @@ android {
 
 dependencies {
   implementation(project(Modules.corePublic))
+  implementation(project(Modules.diPublic))
   implementation(project(Modules.databasePublic))
+  implementation(project(Modules.featureFlagsPublic))
 
   kapt(Depends.daggerCompiler)
   kapt(Depends.roomCompiler)

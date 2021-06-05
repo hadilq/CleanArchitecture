@@ -13,11 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.hadilq.guidomia.core.api.di
+plugins {
+  kotlin("jvm")
+  kotlin("kapt")
+  id("com.squareup.anvil") version Versions.anvil
+}
 
-import javax.inject.Scope
-import kotlin.reflect.KClass
+tasks.test {
+  useJUnitPlatform()
+}
 
-@Scope
-@Retention(AnnotationRetention.RUNTIME)
-annotation class SingleIn(val clazz: KClass<*>)
+dependencies {
+  implementation(project(Modules.featureFlagsPublic))
+  implementation(project(Modules.diPublic))
+
+  kapt(Depends.daggerCompiler)
+
+  implementation(Depends.dagger)
+  implementation(Depends.kotlinStdLib)
+  implementation(Depends.coroutines)
+
+  testImplementation(Depends.kotlinTest)
+  testImplementation(Depends.junitJupiterApi)
+  testRuntimeOnly(Depends.junitJupiterEngine)
+  testImplementation(Depends.mockk)
+}

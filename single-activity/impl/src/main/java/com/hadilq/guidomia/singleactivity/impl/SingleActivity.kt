@@ -18,9 +18,9 @@ package com.hadilq.guidomia.singleactivity.impl
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import com.hadilq.guidomia.core.api.di.SingleActivityScope
-import com.hadilq.guidomia.core.api.di.SingleIn
 import com.hadilq.guidomia.core.api.viewBinding
+import com.hadilq.guidomia.di.api.SingleActivityScope
+import com.hadilq.guidomia.di.api.SingleIn
 import com.hadilq.guidomia.guidomia.api.GuidomiaNavigatorFactory
 import com.hadilq.guidomia.singleactivity.impl.databinding.ActivityMainBinding
 import com.hadilq.guidomia.singleactivity.impl.di.SingleActivityComponent

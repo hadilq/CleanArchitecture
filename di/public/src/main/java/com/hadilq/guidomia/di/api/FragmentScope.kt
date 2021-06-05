@@ -13,13 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.hadilq.guidomia.database.api
+package com.hadilq.guidomia.di.api
 
-interface CarDataEntityCommand {
-
-  suspend fun getAll(): List<CarDatabaseEntity>
-
-  suspend fun insertAll(cars: List<CarDatabaseEntity>)
-
-  suspend fun isEmpty(): Boolean
-}
+abstract class FragmentScope private constructor()

@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 include(":app")
+include(":di:public")
 include(":core:public")
 include(":core:impl")
 include(":single-activity:public")
@@ -22,3 +23,5 @@ include(":guidomia:public")
 include(":guidomia:impl")
 include(":database:public")
 include(":database:impl")
+include(":feature-flags:public")
+include(":feature-flags:impl")

@@ -13,6 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.hadilq.guidomia.core.api.di
+plugins {
+  kotlin("jvm")
+}
 
-abstract class RetainScope private constructor()
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
+  kotlinOptions {
+    freeCompilerArgs = listOf("-Xinline-classes")
+  }
+}
+
+dependencies {
+  implementation(Depends.kotlinStdLib)
+}
