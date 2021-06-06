@@ -36,7 +36,7 @@ class CarDatabaseDataSource @Inject constructor(
   suspend fun availableCommand(): Boolean =
     if (command != null) true else when (val carEntityCommand = getCarEntityCommand()) {
       is Available<*> -> {
-        command = carEntityCommand.command as CarDataEntityCommand
+        command = (carEntityCommand.command as GetCarEntityCommandResult).result
         true
       }
       else -> false
