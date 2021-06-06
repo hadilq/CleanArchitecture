@@ -7,6 +7,6 @@ interface CommandResultRegister {
   fun <C : Command> register(
     commandClass: KClass<C>,
     key: CommandKey,
-    callback: CommandCallback<C>,
+    callback: CommandResultCallback<C>,
   )
 }

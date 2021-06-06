@@ -19,10 +19,14 @@ class CommandResultRegisterImpl @Inject constructor() : CommandResultRegister by
 @SingleIn(AppScope::class)
 class CommandShooterImpl @Inject constructor() : CommandShooter by impl
 
+@ContributesBinding(AppScope::class)
+@SingleIn(AppScope::class)
+class CommandResultShooterImpl @Inject constructor() : CommandResultShooter by impl
+
 
 private val impl = Impl()
 
-private class Impl : CommandRegister, CommandResultRegister, CommandShooter {
+private class Impl : CommandRegister, CommandResultRegister, CommandShooter, CommandResultShooter {
 
   private val store = mutableMapOf<KClass<Command>, MutableSet<Cmd>>()
 
@@ -41,10 +45,10 @@ private class Impl : CommandRegister, CommandResultRegister, CommandShooter {
   override fun <C : Command> register(
     commandClass: KClass<C>,
     key: CommandKey,
-    callback: CommandCallback<C>
+    callback: CommandResultCallback<C>
   ) {
     val commandClass = commandClass as KClass<Command>
-    val element = ResponseCmd(key, callback)
+    val element = ResultCmd(key, callback)
     store[commandClass] = store[commandClass]?.apply { add(element) } ?: mutableSetOf(element)
   }
 
@@ -64,11 +68,11 @@ private class Impl : CommandRegister, CommandResultRegister, CommandShooter {
     }
   }
 
-  private fun <C : Command> disposeResponse(callback: CommandCallback<C>) {
+  private fun <C : Command> disposeResult(callback: CommandResultCallback<C>) {
     store.values.forEach { set ->
       set.firstOrNull { cmd ->
         when (cmd) {
-          is ResponseCmd<*> -> {
+          is ResultCmd<*> -> {
             cmd.callback === callback
           }
           else -> false
@@ -81,18 +85,23 @@ private class Impl : CommandRegister, CommandResultRegister, CommandShooter {
   }
 
   @Suppress("UNCHECKED_CAST", "TYPE_INFERENCE_ONLY_INPUT_TYPES_WARNING")
-  override suspend fun <C : Command> shoot(commandBall: CommandBall<C>) {
+  override suspend fun <C : Command> shoot(commandBall: CommandBall<C>): Boolean {
+    var found = false
     store[commandBall.commandClass]?.forEach { cmd ->
-      when (cmd) {
-        is RequestCmd<*> -> {
-          (cmd.callback as CommandCallback<C>).invoke(commandBall)
-        }
-        is ResponseCmd<*> -> {
-          if (cmd.key == commandBall.key) {
-            (cmd.callback as CommandCallback<C>).invoke(commandBall)
-            disposeResponse(cmd.callback)
-          }
-        }
+      if (cmd is RequestCmd<*>) {
+        (cmd.callback as CommandCallback<C>).invoke(commandBall)
+        found = true
+      }
+    }
+    return found
+  }
+
+  @Suppress("UNCHECKED_CAST", "TYPE_INFERENCE_ONLY_INPUT_TYPES_WARNING")
+  override suspend fun <C : Command> shoot(commandBall: CommandResultBall<C>) {
+    store[commandBall.commandClass]?.forEach { cmd ->
+      if (cmd is ResultCmd<*> && cmd.key == commandBall.key) {
+        (cmd.callback as CommandResultCallback<C>).invoke(commandBall)
+        disposeResult(cmd.callback)
       }
     }
   }
@@ -104,9 +113,9 @@ private class RequestCmd<C : Command>(
   val callback: CommandCallback<C>,
 ) : Cmd()
 
-private class ResponseCmd<C : Command>(
+private class ResultCmd<C : Command>(
   val key: CommandKey,
-  val callback: CommandCallback<C>,
+  val callback: CommandResultCallback<C>,
 ) : Cmd()
 
 private class RegistrationImpl<C : Command>(

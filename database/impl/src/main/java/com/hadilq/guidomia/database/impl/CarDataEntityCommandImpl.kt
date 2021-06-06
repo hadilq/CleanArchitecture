@@ -15,27 +15,23 @@
  */
 package com.hadilq.guidomia.database.impl
 
-import com.hadilq.guidomia.database.api.*
+import com.hadilq.guidomia.database.api.CarDataEntityCommand
+import com.hadilq.guidomia.database.api.CarDatabaseEntity
 import com.hadilq.guidomia.di.api.AppScope
-import com.hadilq.guidomia.featureflags.api.CommandCallbackImpl
-import com.hadilq.guidomia.featureflags.api.CommandHook
-import com.hadilq.guidomia.featureflags.api.CommandRegister
-import com.hadilq.guidomia.featureflags.api.CommandShooter
-import com.squareup.anvil.annotations.ContributesMultibinding
+import com.hadilq.guidomia.di.api.SingleIn
 import javax.inject.Inject
 
-@ContributesMultibinding(AppScope::class)
+@SingleIn(AppScope::class)
 class CarDataEntityCommandImpl @Inject constructor(
   private val carDao: CarDao,
   private val carEntityMapper: CarEntityMapper,
-  private val commandShooter: CommandShooter,
-) : CommandHook {
+) : CarDataEntityCommand {
 
-  private suspend fun getAll(): List<CarDatabaseEntity> =
+  override suspend fun getAll(): List<CarDatabaseEntity> =
     carDao.getAll().map { carEntityMapper.map(it) }
 
 
-  private suspend fun insertAll(cars: List<CarDatabaseEntity>) {
+  override suspend fun insertAll(cars: List<CarDatabaseEntity>) {
     val carEntities = carDao.insertCarEntity(
       *cars.map { carEntityMapper.mapToCarEntity(it) }.toTypedArray()
     ).mapIndexed { index, id ->
@@ -51,24 +47,5 @@ class CarDataEntityCommandImpl @Inject constructor(
     }.toTypedArray())
   }
 
-  private suspend fun isEmpty(): Boolean = carDao.getAll().isEmpty()
-
-  override fun hookUp(commandRegister: CommandRegister) {
-
-    commandRegister.register(CarDataEntityCommandGetAll::class,
-      CommandCallbackImpl(commandShooter, CarDataEntityCommandGetAllResult::class) {
-        CarDataEntityCommandGetAllResult(getAll())
-      })
-
-    commandRegister.register(CarDataEntityCommandInsertAll::class,
-      CommandCallbackImpl(commandShooter, CarDataEntityCommandInsertAllResult::class) {
-        insertAll(it.cars)
-        CarDataEntityCommandInsertAllResult()
-      })
-
-    commandRegister.register(CarDataEntityCommandIsEmpty::class,
-      CommandCallbackImpl(commandShooter, CarDataEntityCommandIsEmptyResult::class) {
-        CarDataEntityCommandIsEmptyResult(isEmpty())
-      })
-  }
+  override suspend fun isEmpty(): Boolean = carDao.getAll().isEmpty()
 }

@@ -15,14 +15,14 @@ interface Registration {
 }
 
 class CommandCallbackImpl<IN : Command, OUT : Command>(
-  private val commandShooter: CommandShooter,
-  private val commandResultClass:KClass<OUT>,
-  private val result: suspend (IN) -> OUT,
+  private val commandShooter: CommandResultShooter,
+  private val commandResultClass: KClass<OUT>,
+  private val result: suspend (IN) -> CommandResult<OUT>,
 ) : CommandCallback<IN> {
 
   override suspend fun invoke(commandBall: CommandBall<IN>) {
     commandShooter.shoot(
-      CommandBall(
+      CommandResultBall(
         commandBall.key,
         result(commandBall.command),
         commandResultClass

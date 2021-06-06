@@ -31,3 +31,9 @@ interface AppModule {
   @Binds
   fun provideContext(app: CustomApplication): Context
 }
+
+@ContributesMultibinding(AppScope::class)
+class EmptyHook @Inject constructor() : CommandHook {
+  override fun hookUp(commandRegister: CommandRegister) {
+  }
+}

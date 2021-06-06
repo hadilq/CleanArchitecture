@@ -15,8 +15,12 @@
  */
 package com.hadilq.guidomia.guidomia.impl.data.datasource
 
-import com.hadilq.guidomia.database.api.*
+import com.hadilq.guidomia.database.api.CarDataEntityCommand
+import com.hadilq.guidomia.database.api.GetCarEntityCommand
+import com.hadilq.guidomia.database.api.GetCarEntityCommandResult
+import com.hadilq.guidomia.featureflags.api.Available
 import com.hadilq.guidomia.featureflags.api.CommandExecutor
+import com.hadilq.guidomia.featureflags.api.CommandResult
 import com.hadilq.guidomia.featureflags.api.exe
 import com.hadilq.guidomia.guidomia.impl.data.mapper.CarDatabaseMapper
 import com.hadilq.guidomia.guidomia.impl.domain.entity.CarEntity
@@ -27,21 +31,26 @@ class CarDatabaseDataSource @Inject constructor(
   private val mapper: CarDatabaseMapper,
 ) {
 
-  suspend fun isEmpty(): Boolean = callIsEmpty().result
+  private var command: CarDataEntityCommand? = null
+
+  suspend fun availableCommand(): Boolean =
+    if (command != null) true else when (val carEntityCommand = getCarEntityCommand()) {
+      is Available<*> -> {
+        command = carEntityCommand.command as CarDataEntityCommand
+        true
+      }
+      else -> false
+    }
+
+  suspend fun isEmpty(): Boolean = command?.isEmpty() ?: true
 
   suspend fun fetchCars(): List<CarEntity> =
-    callFetchCars().result.map { mapper.map(it) }
+    command?.getAll()?.map { mapper.map(it) } ?: emptyList()
 
   suspend fun save(cars: List<CarEntity>) {
-    callSave(cars.map { mapper.map(it) })
+    command?.insertAll(cars.map { mapper.map(it) })
   }
 
-  private suspend fun callIsEmpty(): CarDataEntityCommandIsEmptyResult =
-    executor.exe(CarDataEntityCommandIsEmpty())
-
-  private suspend fun callFetchCars(): CarDataEntityCommandGetAllResult =
-    executor.exe(CarDataEntityCommandGetAll())
-
-  private suspend fun callSave(cars: List<CarDatabaseEntity>): CarDataEntityCommandInsertAllResult =
-    executor.exe(CarDataEntityCommandInsertAll(cars))
+  private suspend fun getCarEntityCommand(): CommandResult<GetCarEntityCommandResult> =
+    executor.exe(GetCarEntityCommand())
 }

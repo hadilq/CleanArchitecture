@@ -8,8 +8,11 @@ interface CommandExecutor {
     input: IN,
     inputClass: KClass<IN>,
     expectedOut: KClass<OUT>
-  ): OUT
+  ): CommandResult<OUT>
 }
 
-suspend inline fun <reified IN : Command, reified OUT : Command> CommandExecutor.exe(input: IN): OUT =
+suspend inline
+fun <reified IN : Command, reified OUT : Command> CommandExecutor.exe(
+  input: IN
+): CommandResult<OUT> =
   execute(input, IN::class, OUT::class)
