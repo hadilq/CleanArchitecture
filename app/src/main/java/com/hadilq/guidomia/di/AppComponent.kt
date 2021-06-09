@@ -42,6 +42,4 @@ interface AppComponent {
   fun inject(app: CustomApplication)
 
   fun singleActivityComponentBuilder(): SingleActivityComponent.Builder
-  fun fragmentComponentBuilder(): FragmentComponent.Builder
-  fun retainComponentBuilder(): RetainComponent.Builder
 }

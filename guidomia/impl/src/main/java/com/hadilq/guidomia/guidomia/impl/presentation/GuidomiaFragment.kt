@@ -32,13 +32,10 @@ import kotlinx.coroutines.flow.collect
 import javax.inject.Inject
 
 @SingleIn(FragmentScope::class)
-class GuidomiaFragment @Inject constructor() : Fragment() {
-
-  @Inject
-  internal lateinit var viewModelFactory: ViewModelFactory
-
-  @Inject
-  internal lateinit var adapter: GuidomiaRecyclerAdapter
+class GuidomiaFragment @Inject constructor(
+  val viewModelFactory: ViewModelFactory,
+  val adapter: GuidomiaRecyclerAdapter,
+) : Fragment() {
 
   private val binding by viewBinding { FragmentGuidomiaBinding.inflate(layoutInflater) }
 

@@ -21,6 +21,8 @@ plugins {
 configureAndroidLibrary()
 
 dependencies {
+  implementation(project(Modules.featureFlagsPublic))
+
   implementation(Depends.kotlinStdLib)
   implementation(Depends.appCompat)
 }

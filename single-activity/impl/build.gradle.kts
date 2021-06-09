@@ -32,6 +32,7 @@ dependencies {
   implementation(project(Modules.singleActivityPublic))
   implementation(project(Modules.corePublic))
   implementation(project(Modules.diPublic))
+  implementation(project(Modules.featureFlagsPublic))
   implementation(project(Modules.guidomiaPublic))
 
   kapt(Depends.lifecycleCompiler)

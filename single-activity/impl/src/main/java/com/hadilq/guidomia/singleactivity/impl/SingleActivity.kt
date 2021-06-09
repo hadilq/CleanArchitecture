@@ -18,9 +18,14 @@ package com.hadilq.guidomia.singleactivity.impl
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope
 import com.hadilq.guidomia.core.api.viewBinding
 import com.hadilq.guidomia.di.api.SingleActivityScope
 import com.hadilq.guidomia.di.api.SingleIn
+import com.hadilq.guidomia.featureflags.api.CommandExecutor
+import com.hadilq.guidomia.featureflags.api.available
+import com.hadilq.guidomia.guidomia.api.GetGuidomiaNavigatorFactoryCommand
+import com.hadilq.guidomia.guidomia.api.GetGuidomiaNavigatorFactoryCommandResult
 import com.hadilq.guidomia.guidomia.api.GuidomiaNavigatorFactory
 import com.hadilq.guidomia.singleactivity.impl.databinding.ActivityMainBinding
 import com.hadilq.guidomia.singleactivity.impl.di.SingleActivityComponent
@@ -37,7 +42,9 @@ class SingleActivity : AppCompatActivity() {
   }
 
   @Inject
-  internal lateinit var guidomiaNavigatorFactory: GuidomiaNavigatorFactory
+  internal lateinit var executor: CommandExecutor
+
+  private var  guidomiaNavigatorFactory: GuidomiaNavigatorFactory? = null
 
   private val binding by viewBinding { ActivityMainBinding.inflate(layoutInflater) }
 
@@ -54,9 +61,24 @@ class SingleActivity : AppCompatActivity() {
     binding.toolbar.logo = ContextCompat.getDrawable(this, R.drawable.logo)
 
     if (savedInstanceState == null) {
-      guidomiaNavigatorFactory.create(this).commit()
+      openFirstPossiblePage()
     }
   }
+
+  private fun openFirstPossiblePage() = lifecycleScope.launchWhenCreated {
+    if (guidomiaNavigatorFactoryAvailable()) {
+      guidomiaNavigatorFactory?.create(this@SingleActivity)?.commit()
+    }
+  }
+
+  private suspend fun guidomiaNavigatorFactoryAvailable(): Boolean =
+    if (guidomiaNavigatorFactory != null) {
+      true
+    } else {
+      guidomiaNavigatorFactory = executor.available(
+        GetGuidomiaNavigatorFactoryCommand(),
+        GetGuidomiaNavigatorFactoryCommandResult::class
+      )?.result
+      guidomiaNavigatorFactory != null
+    }
 }
-
-

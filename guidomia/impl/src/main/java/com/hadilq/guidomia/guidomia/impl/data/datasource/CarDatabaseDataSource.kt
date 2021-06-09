@@ -18,10 +18,8 @@ package com.hadilq.guidomia.guidomia.impl.data.datasource
 import com.hadilq.guidomia.database.api.CarDataEntityCommand
 import com.hadilq.guidomia.database.api.GetCarEntityCommand
 import com.hadilq.guidomia.database.api.GetCarEntityCommandResult
-import com.hadilq.guidomia.featureflags.api.Available
 import com.hadilq.guidomia.featureflags.api.CommandExecutor
-import com.hadilq.guidomia.featureflags.api.CommandResult
-import com.hadilq.guidomia.featureflags.api.exe
+import com.hadilq.guidomia.featureflags.api.available
 import com.hadilq.guidomia.guidomia.impl.data.mapper.CarDatabaseMapper
 import com.hadilq.guidomia.guidomia.impl.domain.entity.CarEntity
 import javax.inject.Inject
@@ -34,12 +32,11 @@ class CarDatabaseDataSource @Inject constructor(
   private var command: CarDataEntityCommand? = null
 
   suspend fun availableCommand(): Boolean =
-    if (command != null) true else when (val carEntityCommand = getCarEntityCommand()) {
-      is Available<*> -> {
-        command = (carEntityCommand.command as GetCarEntityCommandResult).result
-        true
-      }
-      else -> false
+    if (command != null) {
+      true
+    } else {
+      command = executor.available(GetCarEntityCommand(), GetCarEntityCommandResult::class)?.result
+      command != null
     }
 
   suspend fun isEmpty(): Boolean = command?.isEmpty() ?: true
@@ -50,7 +47,4 @@ class CarDatabaseDataSource @Inject constructor(
   suspend fun save(cars: List<CarEntity>) {
     command?.insertAll(cars.map { mapper.map(it) })
   }
-
-  private suspend fun getCarEntityCommand(): CommandResult<GetCarEntityCommandResult> =
-    executor.exe(GetCarEntityCommand())
 }
