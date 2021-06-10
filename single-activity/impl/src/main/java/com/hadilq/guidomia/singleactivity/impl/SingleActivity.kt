@@ -44,7 +44,7 @@ class SingleActivity : AppCompatActivity() {
   @Inject
   internal lateinit var executor: CommandExecutor
 
-  private var  guidomiaNavigatorFactory: GuidomiaNavigatorFactory? = null
+  private var guidomiaNavigatorFactory: GuidomiaNavigatorFactory? = null
 
   private val binding by viewBinding { ActivityMainBinding.inflate(layoutInflater) }
 

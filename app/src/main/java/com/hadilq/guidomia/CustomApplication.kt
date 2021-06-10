@@ -38,8 +38,8 @@ class CustomApplication : Application(), SingleActivityComponentProvider {
   override val singleActivityComponentProvider: SingleActivityComponent.Builder
     get() = component.singleActivityComponentBuilder()
 
-//  @Inject
-//  protected lateinit var commandHookSet: Set<@JvmSuppressWildcards CommandHook>
+  @Inject
+  protected lateinit var commandHookSet: Set<@JvmSuppressWildcards CommandHook>
 
   @Inject
   protected lateinit var commandRegister: CommandRegister
@@ -51,6 +51,6 @@ class CustomApplication : Application(), SingleActivityComponentProvider {
   }
 
   private fun hookUpFeatureFlags() {
-//    commandHookSet.forEach { it.hookUp(commandRegister) }
+    commandHookSet.forEach { it.hookUp(commandRegister) }
   }
 }

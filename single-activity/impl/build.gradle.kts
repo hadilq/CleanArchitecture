@@ -28,6 +28,10 @@ android {
   }
 }
 
+anvil {
+  generateDaggerFactories = true
+}
+
 dependencies {
   implementation(project(Modules.singleActivityPublic))
   implementation(project(Modules.corePublic))
@@ -36,7 +40,6 @@ dependencies {
   implementation(project(Modules.guidomiaPublic))
 
   kapt(Depends.lifecycleCompiler)
-  kapt(Depends.daggerCompiler)
 
   implementation(Depends.kotlinStdLib)
   implementation(Depends.coreKtx)

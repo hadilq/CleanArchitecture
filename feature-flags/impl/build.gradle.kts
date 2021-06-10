@@ -23,11 +23,13 @@ tasks.test {
   useJUnitPlatform()
 }
 
+anvil {
+  generateDaggerFactories = true
+}
+
 dependencies {
   implementation(project(Modules.featureFlagsPublic))
   implementation(project(Modules.diPublic))
-
-  kapt(Depends.daggerCompiler)
 
   implementation(Depends.dagger)
   implementation(Depends.kotlinStdLib)

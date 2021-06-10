@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.hadilq.guidomia.core.api
+package com.hadilq.guidomia.guidomia.impl.presentation.di
 
-import androidx.lifecycle.ViewModel
+import androidx.fragment.app.Fragment
 import dagger.MapKey
 import kotlin.reflect.KClass
 
 @MustBeDocumented
 @Target(AnnotationTarget.FUNCTION, AnnotationTarget.CLASS)
-@Retention(AnnotationRetention.SOURCE)
+@Retention(AnnotationRetention.RUNTIME)
 @MapKey
-annotation class ViewModelKey(val value: KClass<out ViewModel>)
+annotation class GuidomiaFragmentKey(val value: KClass<out Fragment>)
