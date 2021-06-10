@@ -6,8 +6,7 @@ import com.hadilq.guidomia.guidomia.impl.presentation.GuidomiaViewModel
 import com.squareup.anvil.annotations.MergeSubcomponent
 import dagger.Subcomponent
 
-@SingleIn(RetainScope::class)
-@MergeSubcomponent(RetainScope::class)
+@[SingleIn(RetainScope::class) MergeSubcomponent(RetainScope::class)]
 interface GuidomiaRetainComponent {
 
   @Subcomponent.Builder

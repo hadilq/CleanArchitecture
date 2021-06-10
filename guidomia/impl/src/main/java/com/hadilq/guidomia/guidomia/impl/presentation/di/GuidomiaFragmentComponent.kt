@@ -6,8 +6,7 @@ import com.hadilq.guidomia.guidomia.impl.presentation.GuidomiaFragment
 import com.squareup.anvil.annotations.MergeSubcomponent
 import dagger.Subcomponent
 
-@SingleIn(FragmentScope::class)
-@MergeSubcomponent(FragmentScope::class)
+@[SingleIn(FragmentScope::class) MergeSubcomponent(FragmentScope::class)]
 interface GuidomiaFragmentComponent {
 
   @Subcomponent.Builder

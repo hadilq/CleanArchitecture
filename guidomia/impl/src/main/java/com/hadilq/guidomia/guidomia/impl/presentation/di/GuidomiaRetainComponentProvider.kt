@@ -4,8 +4,7 @@ import com.hadilq.guidomia.di.api.AppScope
 import com.hadilq.guidomia.di.api.SingleIn
 import com.squareup.anvil.annotations.ContributesTo
 
-@SingleIn(AppScope::class)
-@ContributesTo(AppScope::class)
+@[SingleIn(AppScope::class) ContributesTo(AppScope::class)]
 interface GuidomiaRetainComponentProvider {
 
   fun guidomiaRetainComponentBuilder(): GuidomiaRetainComponent.Builder

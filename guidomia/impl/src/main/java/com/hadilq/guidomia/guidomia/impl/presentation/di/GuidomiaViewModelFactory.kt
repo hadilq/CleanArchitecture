@@ -7,8 +7,7 @@ import com.hadilq.guidomia.guidomia.impl.presentation.GuidomiaViewModel
 import com.squareup.anvil.annotations.ContributesMultibinding
 import javax.inject.Inject
 
-@ContributesMultibinding(AppScope::class)
-@GuidomiaViewModelKey(GuidomiaViewModel::class)
+@[ContributesMultibinding(AppScope::class) GuidomiaViewModelKey(GuidomiaViewModel::class)]
 class GuidomiaViewModelFactory @Inject constructor(
   private val componentBuilder: GuidomiaRetainComponent.Builder
 ) : SimpleViewModelFactory {
