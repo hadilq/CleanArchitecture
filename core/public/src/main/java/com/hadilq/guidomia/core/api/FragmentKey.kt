@@ -13,21 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.hadilq.guidomia.guidomia.impl.presentation.di
+package com.hadilq.guidomia.core.api
 
-import com.hadilq.guidomia.di.api.RetainScope
-import com.hadilq.guidomia.di.api.SingleIn
-import com.hadilq.guidomia.guidomia.impl.presentation.GuidomiaViewModel
-import com.squareup.anvil.annotations.MergeSubcomponent
-import dagger.Subcomponent
+import androidx.fragment.app.Fragment
+import dagger.MapKey
+import kotlin.reflect.KClass
 
-@[SingleIn(RetainScope::class) MergeSubcomponent(RetainScope::class)]
-interface GuidomiaRetainComponent {
-
-  @Subcomponent.Builder
-  interface Builder {
-    fun build(): GuidomiaRetainComponent
-  }
-
-  fun guidomiaViewModel(): GuidomiaViewModel
-}
+@MustBeDocumented
+@Target(AnnotationTarget.FUNCTION, AnnotationTarget.CLASS)
+@Retention(AnnotationRetention.RUNTIME)
+@MapKey
+annotation class FragmentKey(val value: KClass<out Fragment>)

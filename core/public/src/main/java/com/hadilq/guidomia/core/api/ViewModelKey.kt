@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.hadilq.guidomia.guidomia.impl.presentation.di
+package com.hadilq.guidomia.core.api
 
-import com.hadilq.guidomia.di.api.AppScope
-import com.hadilq.guidomia.di.api.SingleIn
-import com.squareup.anvil.annotations.ContributesTo
+import androidx.lifecycle.ViewModel
+import dagger.MapKey
+import kotlin.reflect.KClass
 
-@[SingleIn(AppScope::class) ContributesTo(AppScope::class)]
-interface GuidomiaRetainComponentProvider {
-
-  fun guidomiaRetainComponentBuilder(): GuidomiaRetainComponent.Builder
-}
+@MustBeDocumented
+@Target(AnnotationTarget.FUNCTION, AnnotationTarget.CLASS)
+@Retention(AnnotationRetention.RUNTIME)
+@MapKey
+annotation class ViewModelKey(val value: KClass<out ViewModel>)
