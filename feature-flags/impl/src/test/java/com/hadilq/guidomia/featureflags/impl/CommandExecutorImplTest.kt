@@ -23,7 +23,6 @@ import org.junit.jupiter.api.extension.ExtendWith
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
-@ExtendWith(MockKExtension::class)
 internal class CommandExecutorImplTest {
 
   private val operation = CommandOperation()

@@ -1,4 +1,7 @@
 <resources>
+  <string name="tacoma2021">Tacoma 2021</string>
+  <string name="get_yours_now">Get your\'s now</string>
+
   <string name="car_item_price">Price : %dk</string>
   <string name="car_item_title">%s %s</string>
   <string name="pros">Pros :</string>

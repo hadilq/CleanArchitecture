@@ -24,7 +24,6 @@ import kotlin.random.Random
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
 
-@ExtendWith(MockKExtension::class)
 internal class CommandRegisterImplTest {
 
   private val operation = CommandOperation()

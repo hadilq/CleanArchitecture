@@ -17,7 +17,6 @@ package com.hadilq.guidomia.singleactivity.impl
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import com.hadilq.guidomia.core.api.viewBinding
 import com.hadilq.guidomia.di.api.SingleActivityScope
@@ -53,13 +52,6 @@ class SingleActivity : AppCompatActivity() {
     component.inject(this)
     super.onCreate(savedInstanceState)
     setContentView(binding.root)
-    setSupportActionBar(binding.toolbar)
-    supportActionBar?.setHomeAsUpIndicator(
-      ContextCompat.getDrawable(this, R.drawable.ic_baseline_dehaze_24)
-    )
-    supportActionBar?.setDisplayHomeAsUpEnabled(true)
-    supportActionBar?.setDisplayShowTitleEnabled(false)
-    binding.toolbar.logo = ContextCompat.getDrawable(this, R.drawable.logo)
 
     if (savedInstanceState == null) {
       openFirstPossiblePage()

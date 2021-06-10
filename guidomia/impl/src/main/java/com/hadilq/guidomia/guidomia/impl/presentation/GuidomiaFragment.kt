@@ -19,6 +19,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -27,14 +29,15 @@ import com.hadilq.guidomia.core.api.ViewModelFactory
 import com.hadilq.guidomia.core.api.viewBinding
 import com.hadilq.guidomia.di.api.FragmentScope
 import com.hadilq.guidomia.di.api.SingleIn
+import com.hadilq.guidomia.guidomia.impl.R
 import com.hadilq.guidomia.guidomia.impl.databinding.FragmentGuidomiaBinding
 import kotlinx.coroutines.flow.collect
 import javax.inject.Inject
 
 @SingleIn(FragmentScope::class)
 class GuidomiaFragment @Inject constructor(
-  val viewModelFactory: ViewModelFactory,
-  val adapter: GuidomiaRecyclerAdapter,
+  private val viewModelFactory: ViewModelFactory,
+  private val adapter: GuidomiaRecyclerAdapter,
 ) : Fragment() {
 
   private val binding by viewBinding { FragmentGuidomiaBinding.inflate(layoutInflater) }
@@ -63,6 +66,17 @@ class GuidomiaFragment @Inject constructor(
   ): View {
     binding.rvGuidomia.adapter = adapter
     binding.rvGuidomia.layoutManager = LinearLayoutManager(context)
+    (requireActivity() as? AppCompatActivity)?.apply {
+      setSupportActionBar(binding.toolbar)
+      supportActionBar?.setHomeAsUpIndicator(
+        ContextCompat.getDrawable(this, R.drawable.ic_baseline_dehaze_24)
+      )
+      supportActionBar?.setDisplayHomeAsUpEnabled(true)
+      supportActionBar?.setDisplayShowTitleEnabled(false)
+      binding.toolbar.logo = ContextCompat.getDrawable(this, R.drawable.logo)
+    }
+
+
     return binding.root
   }
 }
