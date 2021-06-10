@@ -48,7 +48,7 @@ internal class CarRepositoryTest {
     val repository = CarsRepository(carsDataSource, cacheDataSource, carDatabaseDataSource)
     every { cacheDataSource.caching } returns listOf()
     coEvery { carDatabaseDataSource.isEmpty() } returns true
-    coEvery { carDatabaseDataSource.availableCommand() } returns true
+    coEvery { carDatabaseDataSource.featureFlag() } returns true
     every { carsDataSource.fetchCars() } returns flowOf()
 
     repository.getCars().collect()
@@ -63,7 +63,7 @@ internal class CarRepositoryTest {
     val repository = CarsRepository(carsDataSource, cacheDataSource, carDatabaseDataSource)
     every { cacheDataSource.caching } returns listOf()
     coEvery { carDatabaseDataSource.isEmpty() } returns true
-    coEvery { carDatabaseDataSource.availableCommand() } returns false
+    coEvery { carDatabaseDataSource.featureFlag() } returns false
     every { carsDataSource.fetchCars() } returns flowOf()
 
     repository.getCars().collect()
@@ -78,7 +78,7 @@ internal class CarRepositoryTest {
     val repository = CarsRepository(carsDataSource, cacheDataSource, carDatabaseDataSource)
     every { cacheDataSource.caching } returns listOf()
     coEvery { carDatabaseDataSource.isEmpty() } returns false
-    coEvery { carDatabaseDataSource.availableCommand() } returns true
+    coEvery { carDatabaseDataSource.featureFlag() } returns true
     coEvery { carDatabaseDataSource.fetchCars() } returns listOf()
 
     repository.getCars().collect()

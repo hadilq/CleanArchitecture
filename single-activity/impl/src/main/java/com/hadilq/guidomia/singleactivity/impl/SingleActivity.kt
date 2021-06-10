@@ -23,7 +23,8 @@ import com.hadilq.guidomia.core.api.viewBinding
 import com.hadilq.guidomia.di.api.SingleActivityScope
 import com.hadilq.guidomia.di.api.SingleIn
 import com.hadilq.guidomia.featureflags.api.CommandExecutor
-import com.hadilq.guidomia.featureflags.api.available
+import com.hadilq.guidomia.featureflags.api.FeatureFlag
+import com.hadilq.guidomia.featureflags.api.featureFlag
 import com.hadilq.guidomia.guidomia.api.GetGuidomiaNavigatorFactoryCommand
 import com.hadilq.guidomia.guidomia.api.GetGuidomiaNavigatorFactoryCommandResult
 import com.hadilq.guidomia.guidomia.api.GuidomiaNavigatorFactory
@@ -44,7 +45,7 @@ class SingleActivity : AppCompatActivity() {
   @Inject
   internal lateinit var executor: CommandExecutor
 
-  private var guidomiaNavigatorFactory: GuidomiaNavigatorFactory? = null
+  private var guidomiaNavigatorFactory: FeatureFlag<GuidomiaNavigatorFactory>? = null
 
   private val binding by viewBinding { ActivityMainBinding.inflate(layoutInflater) }
 
@@ -66,19 +67,18 @@ class SingleActivity : AppCompatActivity() {
   }
 
   private fun openFirstPossiblePage() = lifecycleScope.launchWhenCreated {
-    if (guidomiaNavigatorFactoryAvailable()) {
-      guidomiaNavigatorFactory?.create(this@SingleActivity)?.commit()
+    when (val flag = fetchFlag()) {
+      is FeatureFlag.On -> flag.value.create(this@SingleActivity).commit()
     }
   }
 
-  private suspend fun guidomiaNavigatorFactoryAvailable(): Boolean =
-    if (guidomiaNavigatorFactory != null) {
-      true
-    } else {
-      guidomiaNavigatorFactory = executor.available(
+  private suspend fun fetchFlag(): FeatureFlag<GuidomiaNavigatorFactory> =
+    guidomiaNavigatorFactory ?: run {
+      executor.featureFlag(
         GetGuidomiaNavigatorFactoryCommand(),
-        GetGuidomiaNavigatorFactoryCommandResult::class
-      )?.result
-      guidomiaNavigatorFactory != null
+        GetGuidomiaNavigatorFactoryCommandResult::class,
+      ).to { result }
+        .also { guidomiaNavigatorFactory = it }
     }
+
 }

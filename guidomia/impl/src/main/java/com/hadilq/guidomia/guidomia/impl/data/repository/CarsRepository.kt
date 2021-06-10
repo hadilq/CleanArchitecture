@@ -31,7 +31,7 @@ class CarsRepository @Inject constructor(
   fun getCars(): Flow<List<CarEntity>> =
     if (cacheDataSource.caching.isEmpty()) {
       flow {
-        if (!carDatabaseDataSource.availableCommand() || carDatabaseDataSource.isEmpty()) {
+        if (!carDatabaseDataSource.featureFlag() || carDatabaseDataSource.isEmpty()) {
           emitAll(carsDataSource.fetchCars()
             .onEach { carDatabaseDataSource.save(it) }
             .onEach { cacheDataSource.caching = it }

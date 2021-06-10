@@ -33,11 +33,23 @@ fun <reified IN : Command, reified OUT : Command> CommandExecutor.exe(
   execute(input, IN::class, OUT::class)
 
 suspend inline
-fun <reified IN : Command, reified OUT : Command> CommandExecutor.available(
+fun <reified IN : Command, reified OUT : Command> CommandExecutor.featureFlag(
   input: IN,
   @Suppress("UNUSED_PARAMETER") output: KClass<OUT>,
-): OUT? =
+): FeatureFlag<OUT> =
   when (val commandResult: CommandResult<OUT> = exe(input)) {
-    is Available<*> -> commandResult.command as OUT
-    else -> null
+    is Available<*> -> FeatureFlag.On(commandResult.command as OUT)
+    else -> FeatureFlag.Off()
   }
+
+sealed class FeatureFlag<T> {
+  abstract fun <O> to(map: T.() -> O): FeatureFlag<O>
+
+  class On<T>(val value: T) : FeatureFlag<T>() {
+    override fun <O> to(map: T.() -> O): FeatureFlag<O> = On(value.map())
+  }
+
+  class Off<T> : FeatureFlag<T>() {
+    override fun <O> to(map: T.() -> O): FeatureFlag<O> = Off()
+  }
+}

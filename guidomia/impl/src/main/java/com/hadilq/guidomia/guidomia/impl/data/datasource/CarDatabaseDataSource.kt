@@ -19,7 +19,8 @@ import com.hadilq.guidomia.database.api.CarDataEntityCommand
 import com.hadilq.guidomia.database.api.GetCarEntityCommand
 import com.hadilq.guidomia.database.api.GetCarEntityCommandResult
 import com.hadilq.guidomia.featureflags.api.CommandExecutor
-import com.hadilq.guidomia.featureflags.api.available
+import com.hadilq.guidomia.featureflags.api.FeatureFlag
+import com.hadilq.guidomia.featureflags.api.featureFlag
 import com.hadilq.guidomia.guidomia.impl.data.mapper.CarDatabaseMapper
 import com.hadilq.guidomia.guidomia.impl.domain.entity.CarEntity
 import javax.inject.Inject
@@ -29,22 +30,32 @@ class CarDatabaseDataSource @Inject constructor(
   private val mapper: CarDatabaseMapper,
 ) {
 
-  private var command: CarDataEntityCommand? = null
+  private var command: FeatureFlag<CarDataEntityCommand>? = null
 
-  suspend fun availableCommand(): Boolean =
-    if (command != null) {
-      true
-    } else {
-      command = executor.available(GetCarEntityCommand(), GetCarEntityCommandResult::class)?.result
-      command != null
-    }
+  suspend fun featureFlag(): Boolean = when (fetchFlag()) {
+    is FeatureFlag.On -> true
+    is FeatureFlag.Off -> false
+  }
 
-  suspend fun isEmpty(): Boolean = command?.isEmpty() ?: true
+  suspend fun isEmpty(): Boolean = when (val flag = fetchFlag()) {
+    is FeatureFlag.On -> flag.value.isEmpty()
+    is FeatureFlag.Off -> true
+  }
 
-  suspend fun fetchCars(): List<CarEntity> =
-    command?.getAll()?.map { mapper.map(it) } ?: emptyList()
+  suspend fun fetchCars(): List<CarEntity> = when (val flag = fetchFlag()) {
+    is FeatureFlag.On -> flag.value.getAll().map { mapper.map(it) }
+    is FeatureFlag.Off -> emptyList()
+  }
 
   suspend fun save(cars: List<CarEntity>) {
-    command?.insertAll(cars.map { mapper.map(it) })
+    when (val flag = fetchFlag()) {
+      is FeatureFlag.On -> flag.value.insertAll(cars.map { mapper.map(it) })
+    }
+  }
+
+  private suspend fun fetchFlag(): FeatureFlag<CarDataEntityCommand> = command ?: run {
+    executor.featureFlag(GetCarEntityCommand(), GetCarEntityCommandResult::class)
+      .to { result }
+      .also { command = it }
   }
 }
