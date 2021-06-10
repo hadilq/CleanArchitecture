@@ -24,24 +24,31 @@ import kotlin.reflect.KClass
 
 @ContributesBinding(AppScope::class)
 @SingleIn(AppScope::class)
-class CommandRegisterImpl @Inject constructor() : CommandRegister by impl
+class CommandRegisterImpl @Inject constructor(
+  private val operation: CommandOperation,
+) : CommandRegister by operation
 
 @ContributesBinding(AppScope::class)
 @SingleIn(AppScope::class)
-class CommandResultRegisterImpl @Inject constructor() : CommandResultRegister by impl
+class CommandResultRegisterImpl @Inject constructor(
+  private val operation: CommandOperation,
+) : CommandResultRegister by operation
 
 @ContributesBinding(AppScope::class)
 @SingleIn(AppScope::class)
-class CommandShooterImpl @Inject constructor() : CommandShooter by impl
+class CommandShooterImpl @Inject constructor(
+  private val operation: CommandOperation,
+) : CommandShooter by operation
 
 @ContributesBinding(AppScope::class)
 @SingleIn(AppScope::class)
-class CommandResultShooterImpl @Inject constructor() : CommandResultShooter by impl
+class CommandResultShooterImpl @Inject constructor(
+  private val operation: CommandOperation,
+) : CommandResultShooter by operation
 
-
-private val impl = Impl()
-
-private class Impl : CommandRegister, CommandResultRegister, CommandShooter, CommandResultShooter {
+@SingleIn(AppScope::class)
+class CommandOperation @Inject constructor() : CommandRegister, CommandResultRegister,
+  CommandShooter, CommandResultShooter {
 
   private val store = mutableMapOf<KClass<Command>, MutableSet<Cmd>>()
 
@@ -134,7 +141,7 @@ private class ResultCmd<C : Command>(
 ) : Cmd()
 
 private class RegistrationImpl<C : Command>(
-  private val disposer: Impl,
+  private val disposer: CommandOperation,
   private val callback: CommandCallback<C>,
 ) : Registration {
 

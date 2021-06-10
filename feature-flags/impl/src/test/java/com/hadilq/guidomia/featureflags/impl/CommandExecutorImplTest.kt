@@ -26,12 +26,14 @@ import kotlin.test.assertTrue
 @ExtendWith(MockKExtension::class)
 internal class CommandExecutorImplTest {
 
+  private val operation = CommandOperation()
+
   @Test
   fun `given_a_command then_available_result_command`() = runBlocking {
-    val commandRegister = CommandRegisterImpl()
-    val commandShooter = CommandShooterImpl()
-    val commandResultShooter = CommandResultShooterImpl()
-    val commandResultRegister = CommandResultRegisterImpl()
+    val commandRegister = CommandRegisterImpl(operation)
+    val commandShooter = CommandShooterImpl(operation)
+    val commandResultShooter = CommandResultShooterImpl(operation)
+    val commandResultRegister = CommandResultRegisterImpl(operation)
     val executor = CommandExecutorImpl(commandShooter, commandResultRegister)
     val expectedResult = FakeResultCommand()
     commandRegister.register(
@@ -49,8 +51,8 @@ internal class CommandExecutorImplTest {
 
   @Test
   fun `given_a_command then_not_available_result_command`() = runBlocking {
-    val commandShooter = CommandShooterImpl()
-    val commandResultRegister = CommandResultRegisterImpl()
+    val commandShooter = CommandShooterImpl(operation)
+    val commandResultRegister = CommandResultRegisterImpl(operation)
     val executor = CommandExecutorImpl(commandShooter, commandResultRegister)
 
     val result: CommandResult<FakeResultCommand> = executor.exe(FakeCommand())
