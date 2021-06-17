@@ -33,6 +33,8 @@ object Depends {
   const val roomRuntime = "androidx.room:room-runtime:${Versions.room}"
   const val roomCompiler = "androidx.room:room-compiler:${Versions.room}"
   const val roomKtx = "androidx.room:room-ktx:${Versions.room}"
+  const val commandKuApi = "com.github.hadilq:command-ku-api:${Versions.commandKu}"
+  const val commandKuImpl = "com.github.hadilq:command-ku-impl:${Versions.commandKu}"
 
   const val junit = "junit:junit:${Versions.junit}"
   const val junitJupiterApi = "org.junit.jupiter:junit-jupiter-api:${Versions.junitJupiter}"

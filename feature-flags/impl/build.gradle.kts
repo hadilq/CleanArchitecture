@@ -19,10 +19,6 @@ plugins {
   id("com.squareup.anvil") version Versions.anvil
 }
 
-tasks.test {
-  useJUnitPlatform()
-}
-
 anvil {
   generateDaggerFactories = true
 }
@@ -31,12 +27,8 @@ dependencies {
   implementation(project(Modules.featureFlagsPublic))
   implementation(project(Modules.diPublic))
 
+  api(Depends.commandKuImpl)
   implementation(Depends.dagger)
   implementation(Depends.kotlinStdLib)
   implementation(Depends.coroutines)
-
-  testImplementation(Depends.kotlinTest)
-  testImplementation(Depends.junitJupiterApi)
-  testRuntimeOnly(Depends.junitJupiterEngine)
-  testImplementation(Depends.mockk)
 }

@@ -15,29 +15,15 @@
  */
 package com.hadilq.guidomia.featureflags.api
 
+import com.github.hadilq.commandku.api.*
 import kotlin.reflect.KClass
-
-interface CommandExecutor {
-
-  suspend fun <IN : Command, OUT : Command> execute(
-    input: IN,
-    inputClass: KClass<IN>,
-    expectedOut: KClass<OUT>
-  ): CommandResult<OUT>
-}
-
-suspend inline
-fun <reified IN : Command, reified OUT : Command> CommandExecutor.exe(
-  input: IN
-): CommandResult<OUT> =
-  execute(input, IN::class, OUT::class)
 
 suspend inline
 fun <reified IN : Command, reified OUT : Command> CommandExecutor.featureFlag(
   input: IN,
   @Suppress("UNUSED_PARAMETER") output: KClass<OUT>,
 ): FeatureFlag<OUT> =
-  when (val commandResult: CommandResult<OUT> = exe(input)) {
+  when (val commandResult: CommandResponse<OUT> = exe(input)) {
     is Available<*> -> FeatureFlag.On(commandResult.command as OUT)
     else -> FeatureFlag.Off()
   }

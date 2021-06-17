@@ -1,9 +1,9 @@
 package com.hadilq.guidomia.database.impl
 
+import com.github.hadilq.commandku.api.*
 import com.hadilq.guidomia.database.api.GetCarEntityCommand
 import com.hadilq.guidomia.database.api.GetCarEntityCommandResult
 import com.hadilq.guidomia.di.api.AppScope
-import com.hadilq.guidomia.featureflags.api.*
 import com.squareup.anvil.annotations.ContributesMultibinding
 import javax.inject.Inject
 
@@ -15,8 +15,8 @@ class CarDataEntityCommandHook @Inject constructor(
 
   override fun hookUp(commandRegister: CommandRegister) {
     commandRegister.register(GetCarEntityCommand::class,
-      CommandCallbackImpl(commandShooter, GetCarEntityCommandResult::class) {
-        Available(GetCarEntityCommandResult(carDataEntityCommand))
+      CommandCallbackImpl(commandShooter) {
+        GetCarEntityCommandResult(carDataEntityCommand)
       })
   }
 }

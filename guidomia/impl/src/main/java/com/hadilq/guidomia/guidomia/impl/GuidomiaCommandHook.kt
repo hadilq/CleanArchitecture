@@ -15,8 +15,11 @@
  */
 package com.hadilq.guidomia.guidomia.impl
 
+import com.github.hadilq.commandku.api.CommandCallbackImpl
+import com.github.hadilq.commandku.api.CommandHook
+import com.github.hadilq.commandku.api.CommandRegister
+import com.github.hadilq.commandku.api.CommandResultShooter
 import com.hadilq.guidomia.di.api.AppScope
-import com.hadilq.guidomia.featureflags.api.*
 import com.hadilq.guidomia.guidomia.api.GetGuidomiaNavigatorFactoryCommand
 import com.hadilq.guidomia.guidomia.api.GetGuidomiaNavigatorFactoryCommandResult
 import com.hadilq.guidomia.guidomia.api.GuidomiaNavigatorFactory
@@ -31,8 +34,8 @@ class GuidomiaCommandHook @Inject constructor(
 
   override fun hookUp(commandRegister: CommandRegister) {
     commandRegister.register(GetGuidomiaNavigatorFactoryCommand::class,
-      CommandCallbackImpl(commandShooter, GetGuidomiaNavigatorFactoryCommandResult::class) {
-        Available(GetGuidomiaNavigatorFactoryCommandResult(factory))
+      CommandCallbackImpl(commandShooter) {
+        GetGuidomiaNavigatorFactoryCommandResult(factory)
       })
   }
 }

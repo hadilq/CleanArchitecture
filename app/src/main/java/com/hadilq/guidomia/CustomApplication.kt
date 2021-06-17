@@ -16,12 +16,12 @@
 package com.hadilq.guidomia
 
 import android.app.Application
+import com.github.hadilq.commandku.api.CommandHook
+import com.github.hadilq.commandku.api.CommandRegister
 import com.hadilq.guidomia.di.AppComponent
 import com.hadilq.guidomia.di.DaggerAppComponent
 import com.hadilq.guidomia.di.api.AppScope
 import com.hadilq.guidomia.di.api.SingleIn
-import com.hadilq.guidomia.featureflags.api.CommandHook
-import com.hadilq.guidomia.featureflags.api.CommandRegister
 import com.hadilq.guidomia.singleactivity.impl.di.SingleActivityComponent
 import com.hadilq.guidomia.singleactivity.impl.di.SingleActivityComponentProvider
 import javax.inject.Inject

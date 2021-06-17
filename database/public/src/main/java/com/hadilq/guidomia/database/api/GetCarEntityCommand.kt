@@ -1,6 +1,6 @@
 package com.hadilq.guidomia.database.api
 
-import com.hadilq.guidomia.featureflags.api.Command
+import com.github.hadilq.commandku.api.Command
 
 class GetCarEntityCommand : Command
 

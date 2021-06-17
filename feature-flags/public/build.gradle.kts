@@ -25,4 +25,5 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach 
 
 dependencies {
   implementation(Depends.kotlinStdLib)
+  api(Depends.commandKuApi)
 }

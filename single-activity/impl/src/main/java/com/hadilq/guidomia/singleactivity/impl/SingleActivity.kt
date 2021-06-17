@@ -18,10 +18,10 @@ package com.hadilq.guidomia.singleactivity.impl
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import com.github.hadilq.commandku.api.CommandExecutor
 import com.hadilq.guidomia.core.api.viewBinding
 import com.hadilq.guidomia.di.api.SingleActivityScope
 import com.hadilq.guidomia.di.api.SingleIn
-import com.hadilq.guidomia.featureflags.api.CommandExecutor
 import com.hadilq.guidomia.featureflags.api.FeatureFlag
 import com.hadilq.guidomia.featureflags.api.featureFlag
 import com.hadilq.guidomia.guidomia.api.GetGuidomiaNavigatorFactoryCommand
