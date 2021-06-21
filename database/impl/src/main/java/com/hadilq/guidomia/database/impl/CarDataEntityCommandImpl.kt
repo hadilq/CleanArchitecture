@@ -15,13 +15,13 @@
  */
 package com.hadilq.guidomia.database.impl
 
-import com.hadilq.guidomia.core.api.di.AppScope
 import com.hadilq.guidomia.database.api.CarDataEntityCommand
 import com.hadilq.guidomia.database.api.CarDatabaseEntity
-import com.squareup.anvil.annotations.ContributesBinding
+import com.hadilq.guidomia.di.api.AppScope
+import com.hadilq.guidomia.di.api.SingleIn
 import javax.inject.Inject
 
-@ContributesBinding(AppScope::class)
+@SingleIn(AppScope::class)
 class CarDataEntityCommandImpl @Inject constructor(
   private val carDao: CarDao,
   private val carEntityMapper: CarEntityMapper,

@@ -16,13 +16,24 @@
 package com.hadilq.guidomia.di
 
 import android.content.Context
+import com.github.hadilq.commandku.api.CommandHook
+import com.github.hadilq.commandku.api.CommandRegister
 import com.hadilq.guidomia.CustomApplication
+import com.hadilq.guidomia.di.api.AppScope
+import com.squareup.anvil.annotations.ContributesMultibinding
 import dagger.Binds
 import dagger.Module
+import javax.inject.Inject
 
 @Module
 interface AppModule {
 
   @Binds
   fun provideContext(app: CustomApplication): Context
+}
+
+@ContributesMultibinding(AppScope::class)
+class EmptyHook @Inject constructor() : CommandHook {
+  override fun hookUp(commandRegister: CommandRegister) {
+  }
 }

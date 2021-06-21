@@ -1,6 +1,6 @@
 # Clean Architecture
 
-This is a sample app to show best practices up to authors's knowledge by trying to
+This is a sample app to show best practices up to author's knowledge by trying to
 stay close to standard technologies for a highly scalable, maintainable, and testable
 Android app.
 

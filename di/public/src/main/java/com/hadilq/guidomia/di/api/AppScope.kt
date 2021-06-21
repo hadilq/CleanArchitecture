@@ -13,6 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.hadilq.guidomia.core.api.di
+package com.hadilq.guidomia.di.api
 
 abstract class AppScope private constructor()

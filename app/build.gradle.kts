@@ -13,6 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import featureflags.installScenario
+import featureflags.loadScenarioFromLocal
+import featureflags.scenarios
+
 
 plugins {
   id("com.android.application")
@@ -53,20 +57,22 @@ android {
   }
 
   packagingOptions {
-    exclude("META-INF/public_release.kotlin_module")
-    exclude("META-INF/impl_release.kotlin_module")
+    exclude("META-INF/*.kotlin_module")
   }
 }
 
 dependencies {
+  installScenario(scenarios, project.loadScenarioFromLocal())
+
   implementation(project(Modules.corePublic))
   implementation(project(Modules.coreImpl))
+  implementation(project(Modules.diPublic))
   implementation(project(Modules.singleActivityPublic))
   implementation(project(Modules.singleActivityImpl))
   implementation(project(Modules.guidomiaPublic))
-  implementation(project(Modules.guidomiaImpl))
   implementation(project(Modules.databasePublic))
-  implementation(project(Modules.databaseImpl))
+  implementation(project(Modules.featureFlagsPublic))
+  implementation(project(Modules.featureFlagsImpl))
 
   kapt(Depends.daggerCompiler)
 

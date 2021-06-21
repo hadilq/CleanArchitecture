@@ -15,22 +15,47 @@
  */
 package com.hadilq.guidomia.guidomia.impl.data.datasource
 
+import com.github.hadilq.commandku.api.CommandExecutor
 import com.hadilq.guidomia.database.api.CarDataEntityCommand
+import com.hadilq.guidomia.database.api.GetCarEntityCommand
+import com.hadilq.guidomia.database.api.GetCarEntityCommandResult
+import com.hadilq.guidomia.featureflags.api.FeatureFlag
+import com.hadilq.guidomia.featureflags.api.featureFlag
 import com.hadilq.guidomia.guidomia.impl.data.mapper.CarDatabaseMapper
 import com.hadilq.guidomia.guidomia.impl.domain.entity.CarEntity
 import javax.inject.Inject
 
 class CarDatabaseDataSource @Inject constructor(
-  private val command: CarDataEntityCommand,
+  private val executor: CommandExecutor,
   private val mapper: CarDatabaseMapper,
 ) {
 
-  suspend fun isEmpty() = command.isEmpty()
+  private var command: FeatureFlag<CarDataEntityCommand>? = null
 
-  suspend fun fetchCars(): List<CarEntity> =
-    command.getAll().map { mapper.map(it) }
+  suspend fun featureFlag(): Boolean = when (fetchFlag()) {
+    is FeatureFlag.On -> true
+    is FeatureFlag.Off -> false
+  }
+
+  suspend fun isEmpty(): Boolean = when (val flag = fetchFlag()) {
+    is FeatureFlag.On -> flag.value.isEmpty()
+    is FeatureFlag.Off -> true
+  }
+
+  suspend fun fetchCars(): List<CarEntity> = when (val flag = fetchFlag()) {
+    is FeatureFlag.On -> flag.value.getAll().map { mapper.map(it) }
+    is FeatureFlag.Off -> emptyList()
+  }
 
   suspend fun save(cars: List<CarEntity>) {
-    command.insertAll(cars.map { mapper.map(it) })
+    when (val flag = fetchFlag()) {
+      is FeatureFlag.On -> flag.value.insertAll(cars.map { mapper.map(it) })
+    }
+  }
+
+  private suspend fun fetchFlag(): FeatureFlag<CarDataEntityCommand> = command ?: run {
+    executor.featureFlag(GetCarEntityCommand(), GetCarEntityCommandResult::class)
+      .to { result }
+      .also { command = it }
   }
 }

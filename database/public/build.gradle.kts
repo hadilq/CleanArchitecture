@@ -19,4 +19,5 @@ plugins {
 
 dependencies {
   implementation(Depends.kotlinStdLib)
+  implementation(project(Modules.featureFlagsPublic))
 }

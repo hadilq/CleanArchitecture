@@ -13,6 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.hadilq.guidomia.core.api.di
+package featureflags
 
-abstract class FragmentScope private constructor()
+val scenarios = mapOf(
+  Scenario.default to listOf(Scenario.guidomiaWithDatabase),
+  Scenario.root to listOf(),
+  Scenario.guidomia to listOf(Modules.guidomiaImpl),
+  Scenario.guidomiaWithDatabase to listOf(Modules.databaseImpl)
+)
+
+private object Scenario {
+  const val default = DEFAULT_SCENARIO
+  const val root = ">"
+  const val guidomia = ">guidomia"
+  const val guidomiaWithDatabase = ">guidomia>database"
+}

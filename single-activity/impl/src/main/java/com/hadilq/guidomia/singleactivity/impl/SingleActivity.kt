@@ -17,10 +17,15 @@ package com.hadilq.guidomia.singleactivity.impl
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
-import com.hadilq.guidomia.core.api.di.SingleActivityScope
-import com.hadilq.guidomia.core.api.di.SingleIn
+import androidx.lifecycle.lifecycleScope
+import com.github.hadilq.commandku.api.CommandExecutor
 import com.hadilq.guidomia.core.api.viewBinding
+import com.hadilq.guidomia.di.api.SingleActivityScope
+import com.hadilq.guidomia.di.api.SingleIn
+import com.hadilq.guidomia.featureflags.api.FeatureFlag
+import com.hadilq.guidomia.featureflags.api.featureFlag
+import com.hadilq.guidomia.guidomia.api.GetGuidomiaNavigatorFactoryCommand
+import com.hadilq.guidomia.guidomia.api.GetGuidomiaNavigatorFactoryCommandResult
 import com.hadilq.guidomia.guidomia.api.GuidomiaNavigatorFactory
 import com.hadilq.guidomia.singleactivity.impl.databinding.ActivityMainBinding
 import com.hadilq.guidomia.singleactivity.impl.di.SingleActivityComponent
@@ -37,7 +42,9 @@ class SingleActivity : AppCompatActivity() {
   }
 
   @Inject
-  internal lateinit var guidomiaNavigatorFactory: GuidomiaNavigatorFactory
+  internal lateinit var executor: CommandExecutor
+
+  private var guidomiaNavigatorFactory: FeatureFlag<GuidomiaNavigatorFactory>? = null
 
   private val binding by viewBinding { ActivityMainBinding.inflate(layoutInflater) }
 
@@ -45,18 +52,25 @@ class SingleActivity : AppCompatActivity() {
     component.inject(this)
     super.onCreate(savedInstanceState)
     setContentView(binding.root)
-    setSupportActionBar(binding.toolbar)
-    supportActionBar?.setHomeAsUpIndicator(
-      ContextCompat.getDrawable(this, R.drawable.ic_baseline_dehaze_24)
-    )
-    supportActionBar?.setDisplayHomeAsUpEnabled(true)
-    supportActionBar?.setDisplayShowTitleEnabled(false)
-    binding.toolbar.logo = ContextCompat.getDrawable(this, R.drawable.logo)
 
     if (savedInstanceState == null) {
-      guidomiaNavigatorFactory.create(this).commit()
+      openFirstPossiblePage()
     }
   }
+
+  private fun openFirstPossiblePage() = lifecycleScope.launchWhenCreated {
+    when (val flag = fetchFlag()) {
+      is FeatureFlag.On -> flag.value.create(this@SingleActivity).commit()
+    }
+  }
+
+  private suspend fun fetchFlag(): FeatureFlag<GuidomiaNavigatorFactory> =
+    guidomiaNavigatorFactory ?: run {
+      executor.featureFlag(
+        GetGuidomiaNavigatorFactoryCommand(),
+        GetGuidomiaNavigatorFactoryCommandResult::class,
+      ).to { result }
+        .also { guidomiaNavigatorFactory = it }
+    }
+
 }
-
-

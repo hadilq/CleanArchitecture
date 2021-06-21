@@ -17,9 +17,10 @@ package com.hadilq.guidomia.database.impl.di
 
 import android.content.Context
 import androidx.room.Room
-import com.hadilq.guidomia.core.api.di.AppScope
-import com.hadilq.guidomia.core.api.di.SingleIn
 import com.hadilq.guidomia.database.impl.AppDatabase
+import com.hadilq.guidomia.database.impl.CarDao
+import com.hadilq.guidomia.di.api.AppScope
+import com.hadilq.guidomia.di.api.SingleIn
 import com.squareup.anvil.annotations.ContributesTo
 import dagger.Module
 import dagger.Provides
@@ -28,11 +29,11 @@ import dagger.Provides
 object DatabaseModule {
 
   @[Provides SingleIn(AppScope::class)]
-  fun provideDatabase(context: Context) = Room.databaseBuilder(
+  fun provideDatabase(context: Context): AppDatabase = Room.databaseBuilder(
     context.applicationContext,
     AppDatabase::class.java, "car-database"
   ).build()
 
   @[Provides SingleIn(AppScope::class)]
-  fun provideCarDao(database: AppDatabase) = database.carDao()
+  fun provideCarDao(database: AppDatabase): CarDao = database.carDao()
 }

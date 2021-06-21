@@ -31,13 +31,17 @@ android {
   }
 }
 
+anvil {
+  generateDaggerFactories = true
+}
+
 dependencies {
   implementation(project(Modules.corePublic))
+  implementation(project(Modules.diPublic))
   implementation(project(Modules.singleActivityPublic))
   implementation(project(Modules.guidomiaPublic))
   implementation(project(Modules.databasePublic))
-
-  kapt(Depends.daggerCompiler)
+  implementation(project(Modules.featureFlagsPublic))
 
   implementation(Depends.kotlinStdLib)
   implementation(Depends.coreKtx)
