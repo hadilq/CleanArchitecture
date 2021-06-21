@@ -33,7 +33,7 @@ object Versions {
   const val serialization = "1.4.30"
   const val jsonSerialization = "1.1.0"
   const val room = "2.2.6"
-  const val commandKu = "0.0.1.1623900535009-SNAPSHOT"
+  const val commandKu = "0.0.1"
 
   const val junit = "4.13.2"
   const val junitJupiter = "5.7.1"
