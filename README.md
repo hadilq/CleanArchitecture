@@ -53,7 +53,7 @@ flags, because they use the same logic of runtime feature flags, the concept tha
 Here we have switches for `:database` and `:guidomia` modules, one library module and one feature
 module. In this project, where you can find part of its dependency tree here
 
-![dependency tree](https://github.com/hadilq/CleanArchitecture)
+![dependency tree](https://raw.githubusercontent.com/hadilq/CleanArchitecture/main/doc-image/dip-module-dependencies-switch.png)
 
 the feature flag logic to handle switch off of `:database:impl` is in the `:guidomia:impl`, and
 feature flag logic to handle switch off of `:guimomia:impl` is in `:single-activity:impl`.
